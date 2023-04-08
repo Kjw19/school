@@ -10,7 +10,7 @@ import javax.validation.constraints.NotEmpty;
 @Getter
 public class Address {
 
-    @NotEmpty
+    @NotEmpty //해당 필드의 값이 null이 아니고, 비어있지 않아야 함
     private String zipcode;
     @NotEmpty
     private String address;
@@ -19,6 +19,7 @@ public class Address {
 
     protected Address() {}
 
+    //address 생성자
     @Builder
     public Address(String zipcode, String address, String deAddress) {
         this.zipcode = zipcode;

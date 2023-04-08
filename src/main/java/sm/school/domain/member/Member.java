@@ -12,24 +12,24 @@ import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED) //Getter 및 생성자로만 접근 가능하도록 설정
 public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "mem_id")
-    private Long id;
+    private Long id;//기본값
 
-    @NotEmpty
+    @NotEmpty //해당 필드의 값이 null이 아니고, 비어있지 않아야 함
     @Column(unique = true)
-    private String user_id;
+    private String user_id;//유저 아이디
 
     @NotEmpty
-    private String passwd;
+    private String passwd;//비밀번호
     @NotEmpty
-    private String school;
+    private String school;//학교
     @NotEmpty
-    private String major;
+    private String major;//전공
     @NotEmpty
     private String mem_profile;//회원 이미지
 
@@ -40,7 +40,7 @@ public class Member {
     private Address address; //우편번호, 주소, 상세 주소 내장
 
 
-    @Builder
+    @Builder //회원가입 생성자
     public Member(Long id, String user_id, String passwd, String school,
                   String major, String mem_profile, PersonalInf personalInf,
                   Address address) {
@@ -54,6 +54,7 @@ public class Member {
         this.address = address;
     }
 
+    //회원수정 메서드
     public void updateMember(String user_id, String school, String major,
                   String mem_profile, PersonalInf personalInf,
                   Address address) {
@@ -66,6 +67,7 @@ public class Member {
     }
 
 
+    //비밀번호 변경 메서드
     public void updatePasswd(String passwd) {
         this.passwd = passwd;
     }
