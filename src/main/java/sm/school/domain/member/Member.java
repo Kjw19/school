@@ -31,7 +31,6 @@ public class Member {
     private String school;//학교
     @NotEmpty
     private String major;//전공
-    @NotEmpty
     private String mem_profile;//회원 이미지
 
     @NotEmpty
