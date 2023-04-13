@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import sm.school.domain.embeded.Address;
 import sm.school.domain.embeded.PersonalInf;
 
@@ -32,6 +33,11 @@ public class Member {
     private String major;//전공
     @NotEmpty
     private String mem_profile;//회원 이미지
+
+    @NotEmpty
+    @Column(name = "mem_role")
+    @ColumnDefault("1")//1: 일반회원, 2:정지회원, 3:탈퇴회원, 9:관리자
+    private int role;
 
     @Embedded
     private PersonalInf personalInf;//이름 생년월일 전화번호 내장

@@ -5,6 +5,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
 import sm.school.domain.member.Member;
 
 import javax.persistence.*;
@@ -29,11 +31,13 @@ public class StudyMember {
     @JoinColumn(name = "mem_id")
     private Member member; //스터디 가입한 사람
 
-    @Column(name = "study_reg_date", columnDefinition = "DEFAULT SYSDATE")
+    @Column(name = "study_reg_date")
+    @CreationTimestamp
     private Date date; // 가입일자
 
     @NotEmpty //해당 필드의 값이 null이 아니고, 비어있지 않아야 함
-    @Column(name = "study_mem_role", columnDefinition = "INT DEFAULT 1")
+    @Column(name = "study_mem_role")
+    @ColumnDefault("1")
     private int role; // 권한
 
     //스터디 회원 가입
