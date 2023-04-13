@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.apache.ibatis.annotations.One;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
 import sm.school.domain.member.Member;
 
 import javax.persistence.*;
@@ -29,7 +31,8 @@ public class Study {
     private String study_content; // 스터디 설명
 
     @NotEmpty
-    @Column(name = "create_study_date", columnDefinition = "DEFAULT SYSDATE")
+    @Column(name = "create_study_date")
+    @CreationTimestamp
     private Date date; //스터디 생성일자
 
     @ManyToOne(fetch = FetchType.LAZY) //지연 로딩 방식
@@ -37,7 +40,8 @@ public class Study {
     private Member member; //스터디 생성한사람
 
     @NotEmpty //해당 필드의 값이 null이 아니고, 비어있지 않아야 함
-    @Column(name = "study_reg_type", columnDefinition = "INT DEFAULT 0")
+    @Column(name = "study_reg_type")
+    @ColumnDefault("0")
     private int reg_type; // 가입 방식(즉시가입(0), 승인 후 가입(1))
 
     //스터디 생성
