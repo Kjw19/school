@@ -48,7 +48,7 @@ public class Member {
 
     @Builder //회원가입 생성자
     public Member(Long id, String user_id, String passwd, String school,
-                  String major, String mem_profile, PersonalInf personalInf,
+                  String major, String mem_profile, int role, PersonalInf personalInf,
                   Address address) {
         this.id = id;
         this.user_id = user_id;
@@ -56,18 +56,20 @@ public class Member {
         this.school = school;
         this.major = major;
         this.mem_profile = mem_profile;
+        this.role = role;
         this.personalInf = personalInf;
         this.address = address;
     }
 
     //회원수정 메서드
     public void updateMember(String user_id, String school, String major,
-                  String mem_profile, PersonalInf personalInf,
+                  String mem_profile, int role, PersonalInf personalInf,
                   Address address) {
         this.user_id = user_id;
         this.school = school;
         this.major = major;
         this.mem_profile = mem_profile;
+        this.role = role;
         this.personalInf = personalInf;
         this.address = address;
     }
