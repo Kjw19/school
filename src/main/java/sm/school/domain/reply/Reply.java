@@ -1,18 +1,31 @@
 package sm.school.domain.reply;
 
-import lombok.Getter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import sm.school.domain.member.Member;
 
-@Entity
-@Getter
+import javax.persistence.*;
+import java.util.Date;
+
+//댓글 추상체
 public abstract class Reply {
 
-    @Id
-    @GeneratedValue
-    @Column(name = "reply_id")
-    private Long id;
+    @Column(columnDefinition = "TEXT")
+    private String content; //댓글 내용
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "mem_id")
+    private Member member; //작성자
+
+    @CreationTimestamp
+    @Column(name = "reply_date")
+    private Date date; // 작성 시간
+
+    @UpdateTimestamp
+    @Column(name = "modify_reply_date")
+    private Date modify_date; //수정 시간
+
+
+
 }
