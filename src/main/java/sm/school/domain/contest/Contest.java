@@ -6,9 +6,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
 import sm.school.domain.member.Member;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.util.Date;
 
@@ -20,21 +22,26 @@ public class Contest {
     @GeneratedValue
     @Column(name = "contest_id")
     private Long id;//기본값
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;//대회 생성한 사람
 
-    @NotEmpty
+    @NotBlank
     @Column(unique = true)
     private String con_name;//대회 이름
+
     @NotEmpty
     private String con_inf;//대회 정보
+
     @NotEmpty
     private String con_picture;//대문사진
+
     @NotEmpty
-    @CreationTimestamp
+    @CreatedDate
     @Column(name = "contest_reg_date")
     private Date date;//대회 생성 날짜
+
     @NotEmpty
     @Column(name = "contest_role")
     @ColumnDefault("1")

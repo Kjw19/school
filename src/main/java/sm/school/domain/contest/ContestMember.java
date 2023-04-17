@@ -17,6 +17,7 @@ import java.util.Date;
 public class ContestMember {
     @Id
     @GeneratedValue
+    @Column(name = "con_mem_id")
     private Long id;//기본값
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "contest_id")
@@ -24,10 +25,10 @@ public class ContestMember {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mem_id")
     private Member member;//대회 참가한 사람
-    @Column(name = "contest_reg_date")
+    @Column(name = "contest_date")
     @CreationTimestamp
     private Date date;//참여 날짜
-    @Column(name = "contest_reg_type")
+    @Column(name = "contest_mem_type")
     @ColumnDefault("1")//1.기본회원 2.차단회원
     private int reg_type;//권한
     @Builder
