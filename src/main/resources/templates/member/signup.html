@@ -78,21 +78,27 @@
         $('#check_userId_btn').click(function(event) {
             event.preventDefault(); // 기본 동작 막기
             let userId = $('#userId').val();
-            $.ajax({
-                url: '/member/' + userId + '/exists',
-                type: 'GET',
-                success: function(data) {
-                    if (data === true) {
-                        alert('이미 존재하는 아이디입니다.');
-                    } else {
-                        alert('사용가능한 아이디입니다.');
-                        isDuplicated = true;
+            if (userId == '') {
+                alert('아이디를 입력해주세요.');
+            }
+            else {
+
+                $.ajax({
+                    url: '/member/' + userId + '/exists',
+                    type: 'GET',
+                    success: function (data) {
+                        if (data === true) {
+                            alert('이미 존재하는 아이디입니다.');
+                        } else {
+                            alert('사용가능한 아이디입니다.');
+                            isDuplicated = true;
+                        }
+                    },
+                    error: function () {
+                        alert('오류 발생');
                     }
-                },
-                error: function() {
-                    alert('오류 발생');
-                }
-            });
+                });
+            }
         });
         $('form').submit(function (event) {
             if (isDuplicated) {
