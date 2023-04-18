@@ -3,15 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>회원가입</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 <h1>회원가입</h1>
 
 <form th:object="${member}" th:action="@{/member/signup}" method="post">
     <div><!-- 아이디 중복 체크 기능 필요 -->
-        <label for="user_id">아이디</label>
-        <input type="text" id="user_id" name="user_id" th:field="*{user_id}"/>
+        <label for="userId">아이디</label>
+        <input type="text" id="userId" name="userId" th:field="*{userId}"/>
     </div>
+    <input type="button" class="check_userId_btn" id="check_userId_btn" value="아이디 중복 체크"/>
+
 
     <div>
         <label for="passwd">비밀번호</label>
@@ -67,5 +70,38 @@
         <button type="submit">가입하기</button>
     </div>
 </form>
+
+<script>
+    $(document).ready(function() {
+        let isDuplicated = false;
+
+        $('#check_userId_btn').click(function(event) {
+            event.preventDefault(); // 기본 동작 막기
+            let userId = $('#userId').val();
+            $.ajax({
+                url: '/member/' + userId + '/exists',
+                type: 'GET',
+                success: function(data) {
+                    if (data === true) {
+                        alert('이미 존재하는 아이디입니다.');
+                    } else {
+                        alert('사용가능한 아이디입니다.');
+                        isDuplicated = true;
+                    }
+                },
+                error: function() {
+                    alert('오류 발생');
+                }
+            });
+        });
+        $('form').submit(function (event) {
+            if (isDuplicated) {
+                event.preventDefault();
+                alert('아이디 중복 체크를 필수!');
+            }
+        });
+    });
+
+</script>
 </body>
 </html>

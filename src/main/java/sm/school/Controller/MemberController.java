@@ -4,13 +4,11 @@ package sm.school.Controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import sm.school.Service.MemberService;
 import sm.school.domain.member.Member;
 
@@ -44,5 +42,10 @@ public class MemberController {
 
 
         return "redirect:/";
+    }
+
+    @GetMapping("/{userId}/exists")
+    public ResponseEntity<Boolean> checkUserIdDuplicate(@PathVariable String userId) {
+        return ResponseEntity.ok(memberService.checkUserIdDuplicate(userId));
     }
 }

@@ -20,12 +20,12 @@ public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "mem_id")
+    @Column(name = "memId")
     private Long id;//기본값
 
     @NotEmpty //해당 필드의 값이 null이 아니고, 비어있지 않아야 함
     @Column(unique = true)
-    private String user_id;//유저 아이디
+    private String userId;//유저 아이디
 
     @NotEmpty
     private String passwd;//비밀번호
@@ -36,12 +36,12 @@ public class Member {
     private String mem_profile;//회원 이미지
 
 
-    @Column(name = "mem_role")
+    @Column(name = "memRole")
     @NotNull
     @ColumnDefault("1")//1: 일반회원, 2:정지회원, 3:탈퇴회원, 9:관리자
     private Integer role;
 
-    @Column(name = "mem_reg")
+    @Column(name = "memReg")
     @CreationTimestamp
     private Date date; //가입일자
 
@@ -62,11 +62,11 @@ public class Member {
 
 
     @Builder //회원가입 생성자
-    public Member(Long id, String user_id, String passwd, String school,
+    public Member(Long id, String userId, String passwd, String school,
                   String major, String mem_profile, Integer role, Date date, PersonalInf personalInf,
                   Address address) {
         this.id = id;
-        this.user_id = user_id;
+        this.userId = userId;
         this.passwd = passwd;
         this.school = school;
         this.major = major;
@@ -78,10 +78,10 @@ public class Member {
     }
 
     //회원수정 메서드
-    public void updateMember(String user_id, String school, String major,
+    public void updateMember(String userId, String school, String major,
                   String mem_profile, PersonalInf personalInf,
                   Address address) {
-        this.user_id = user_id;
+        this.userId = userId;
         this.school = school;
         this.major = major;
         this.mem_profile = mem_profile;

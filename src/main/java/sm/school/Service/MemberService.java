@@ -36,7 +36,7 @@ public class MemberService {
 
 
         Member memberSave = Member.builder()
-                .user_id(member.getUser_id())
+                .userId(member.getUserId())
                 .passwd(passwordEncoder.encode(member.getPasswd()))
                 .school(member.getSchool())
                 .major(member.getMajor())
@@ -48,5 +48,9 @@ public class MemberService {
                 .build();
 
         return memberRepository.save(memberSave);
+    }
+
+    public boolean checkUserIdDuplicate(String userId) {
+        return memberRepository.existsByUserId(userId);
     }
 }
