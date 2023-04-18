@@ -1,12 +1,16 @@
 package sm.school.Service;
 
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import sm.school.Repository.member.MemberRepository;
-import sm.school.domain.embeded.Address;
-import sm.school.domain.embeded.PersonalInf;
+import sm.school.domain.member.Address;
+import sm.school.domain.member.PersonalInf;
 import sm.school.domain.member.Member;
+
+import java.util.Date;
 
 @Service
 @RequiredArgsConstructor
@@ -15,22 +19,34 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public Member signUp(String user_id, String passwd, String school,
-                         String major, String mem_profile, int role,
-                         PersonalInf personalInf, Address address) {
 
+    public Member signUp(Member member) {
 
-        Member member = Member.builder()
-                .user_id(user_id)
-                .passwd(passwordEncoder.encode(passwd))
-                .school(school)
-                .major(major)
-                .mem_profile(mem_profile)
-                .role(role)
-                .personalInf(personalInf)
-                .address(address)
+        PersonalInf personalInf = PersonalInf.builder()
+                .name(member.getPersonalInf().getName())
+                .birth(member.getPersonalInf().getBirth())
+                .phone(member.getPersonalInf().getPhone())
                 .build();
 
-        return memberRepository.save(member);
+        Address address = Address.builder()
+                .zipcode(member.getAddress().getZipcode())
+                .address1(member.getAddress().getAddress1())
+                .address2(member.getAddress().getAddress2())
+                .build();
+
+
+        Member memberSave = Member.builder()
+                .user_id(member.getUser_id())
+                .passwd(passwordEncoder.encode(member.getPasswd()))
+                .school(member.getSchool())
+                .major(member.getMajor())
+                .mem_profile(member.getMem_profile())
+                .role(member.getRole())
+                .date(member.getDate())
+                .personalInf(personalInf) // 값을 할당
+                .address(address) // 값을 할당
+                .build();
+
+        return memberRepository.save(memberSave);
     }
 }

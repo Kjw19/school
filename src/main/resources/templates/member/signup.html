@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>회원가입</title>
+</head>
+<body>
+<h1>회원가입</h1>
+
+<form th:object="${member}" th:action="@{/member/signup}" method="post">
+    <div><!-- 아이디 중복 체크 기능 필요 -->
+        <label for="user_id">아이디</label>
+        <input type="text" id="user_id" name="user_id" th:field="*{user_id}"/>
+    </div>
+
+    <div>
+        <label for="passwd">비밀번호</label>
+        <input type="password" id="passwd" name="passwd" th:field="*{passwd}"/>
+    </div>
+
+    <div>
+        <label for="school">학교</label>
+        <input type="text" id="school" name="school" th:field="*{school}"/>
+    </div>
+
+    <div>
+        <label for="major">전공</label>
+        <input type="text" id="major" name="major" th:field="*{major}"/>
+    </div>
+<!-- 사진 추가 기능 필요
+    <div>
+        <label for="mem_profile">회원 이미지</label>
+        <input type="text" id="mem_profile" name="mem_profile" th:field="*{mem_profile}" />
+    </div>
+    -->
+
+    <div>
+        <label for="personalInf.name">이름</label>
+        <input type="text" id="personalInf.name" name="personalInf.name" th:field="*{personalInf.name}"/>
+    </div>
+
+    <div>
+        <label for="personalInf.birth">생년월일</label>
+        <input type="text" id="personalInf.birth" name="personalInf.birth" th:field="*{personalInf.birth}"/>
+    </div>
+
+    <div>
+        <label for="personalInf.phone">전화번호</label>
+        <input type="text" id="personalInf.phone" name="personalInf.phone" th:field="*{personalInf.phone}"/>
+    </div>
+
+    <div>
+        <label for="address.zipcode">우편번호</label>
+        <input type="text" id="address.zipcode" name="address.zipcode" th:field="*{address.zipcode}"/>
+    </div>
+
+    <div>
+        <label for="address.address1">주소</label>
+        <input type="text" id="address.address1" name="address.address1" th:field="*{address.address1}"/>
+    </div>
+
+    <div>
+        <label for="address.address2">상세 주소</label>
+        <input type="text" id="address.address2" name="address.address2" th:field="*{address.address2}" />
+    </div>
+    <div>
+        <button type="submit">가입하기</button>
+    </div>
+</form>
+</body>
+</html>

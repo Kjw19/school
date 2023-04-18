@@ -1,31 +1,30 @@
-package sm.school.domain.embeded;
+package sm.school.domain.member;
 
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotEmpty;
 
 @Embeddable
 @Getter
+@Setter
+@NoArgsConstructor
 public class Address {
-
     @NotEmpty //해당 필드의 값이 null이 아니고, 비어있지 않아야 함
     private String zipcode;
     @NotEmpty
-    private String address;
+    private String address1;
     @NotEmpty
-    private String deAddress;
-
-    protected Address() {}
+    private String address2;
 
     //address 생성자
     @Builder
-    public Address(String zipcode, String address, String deAddress) {
+    public Address(String zipcode, String address1, String address2) {
         this.zipcode = zipcode;
-        this.address = address;
-        this.deAddress = deAddress;
+        this.address1 = address1;
+        this.address2 = address2;
     }
+
 }
 
 
