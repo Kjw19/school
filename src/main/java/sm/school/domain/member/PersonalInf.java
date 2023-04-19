@@ -9,17 +9,16 @@ import javax.validation.constraints.NotNull;
 
 @Embeddable
 @Getter
-@Setter
 @NoArgsConstructor
 public class PersonalInf {
 
-    @NotEmpty //해당 필드의 값이 null이 아니고, 비어있지 않아야 함
+    @NotEmpty(message = "이름은 필수입니다.")
     private String name;
 
-    @NotEmpty
+    @NotEmpty(message = "생년월일은 필수입니다.")
     private String birth;
 
-    @NotEmpty
+    @NotEmpty(message = "전화번호는 필수입니다.")
     private String phone;
 
     //개인정보 생성자

@@ -7,7 +7,6 @@ import javax.validation.constraints.NotEmpty;
 
 @Embeddable
 @Getter
-@Setter
 @NoArgsConstructor
 public class Address {
     @NotEmpty //해당 필드의 값이 null이 아니고, 비어있지 않아야 함

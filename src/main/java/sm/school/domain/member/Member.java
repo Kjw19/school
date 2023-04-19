@@ -23,21 +23,19 @@ public class Member {
     @Column(name = "memId")
     private Long id;//기본값
 
-    @NotEmpty //해당 필드의 값이 null이 아니고, 비어있지 않아야 함
     @Column(unique = true)
     private String userId;//유저 아이디
 
-    @NotEmpty
+
     private String passwd;//비밀번호
-    @NotEmpty
+
     private String school;//학교
-    @NotEmpty
+
     private String major;//전공
     private String mem_profile;//회원 이미지
 
 
     @Column(name = "memRole")
-    @NotNull
     @ColumnDefault("1")//1: 일반회원, 2:정지회원, 3:탈퇴회원, 9:관리자
     private Integer role;
 
@@ -46,20 +44,10 @@ public class Member {
     private Date date; //가입일자
 
     @Embedded
-    private PersonalInf personalInf = new PersonalInf();//이름 생년월일 전화번호 내장
+    private PersonalInf personalInf;//이름 생년월일 전화번호 내장
 
     @Embedded
-    private Address address = new Address(); //우편번호, 주소, 상세 주소 내장
-
-    //내장형 접근용 setter(사용하지않으면 접근이 불가능하다 왜지?)
-    public void setPersonalInf(PersonalInf personalInf) {
-        this.personalInf = personalInf;
-    }
-    public void setAddress(Address address) {
-        this.address = address;
-    }
-
-
+    private Address address; //우편번호, 주소, 상세 주소 내장
 
     @Builder //회원가입 생성자
     public Member(Long id, String userId, String passwd, String school,
@@ -70,7 +58,7 @@ public class Member {
         this.passwd = passwd;
         this.school = school;
         this.major = major;
-        this.role = (role == null) ? 1 : role;;
+        this.role = (role == null) ? 1 : role;
         this.date = date;
         this.mem_profile = mem_profile;
         this.personalInf = personalInf;
