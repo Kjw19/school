@@ -9,6 +9,7 @@ import sm.school.Repository.member.MemberRepository;
 import sm.school.domain.member.Address;
 import sm.school.domain.member.PersonalInf;
 import sm.school.domain.member.Member;
+import sm.school.dto.MemberDTO;
 
 import java.util.Date;
 
@@ -20,29 +21,19 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
 
 
-    public Member signUp(Member member) {
+    public Member signUp(MemberDTO memberDTO) {
 
-        PersonalInf personalInf = PersonalInf.builder()
-                .name(member.getPersonalInf().getName())
-                .birth(member.getPersonalInf().getBirth())
-                .phone(member.getPersonalInf().getPhone())
-                .build();
-
-        Address address = Address.builder()
-                .zipcode(member.getAddress().getZipcode())
-                .address1(member.getAddress().getAddress1())
-                .address2(member.getAddress().getAddress2())
-                .build();
-
+        PersonalInf personalInf = memberDTO.getPersonalInfDTO().toPersonalInf();
+        Address address = memberDTO.getAddressDTO().toAddress();
 
         Member memberSave = Member.builder()
-                .userId(member.getUserId())
-                .passwd(passwordEncoder.encode(member.getPasswd()))
-                .school(member.getSchool())
-                .major(member.getMajor())
-                .mem_profile(member.getMem_profile())
-                .role(member.getRole())
-                .date(member.getDate())
+                .userId(memberDTO.getUserId())
+                .passwd(passwordEncoder.encode(memberDTO.getPasswd()))
+                .school(memberDTO.getSchool())
+                .major(memberDTO.getMajor())
+                .mem_profile(memberDTO.getMem_profile())
+                .role(memberDTO.getRole())
+                .date(memberDTO.getDate())
                 .personalInf(personalInf) // 값을 할당
                 .address(address) // 값을 할당
                 .build();

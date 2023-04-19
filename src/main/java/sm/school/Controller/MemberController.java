@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import sm.school.Service.MemberService;
 import sm.school.domain.member.Member;
+import sm.school.dto.MemberDTO;
 
 import javax.validation.Valid;
 
@@ -25,20 +26,20 @@ public class MemberController {
     private final PasswordEncoder passwordEncoder;
 
     @GetMapping("/signup")
-    public String signup(@ModelAttribute("member") Member member) {
+    public String signup(@ModelAttribute("memberDTO") MemberDTO memberDTO) {
 
         return "member/signup";
     }
 
 
     @PostMapping("/signup")
-    public String signup(@Valid Member member, BindingResult bindingResult) {
+    public String signup(@Valid MemberDTO memberDTO, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             return "member/signup";
         }
 
-        memberService.signUp(member);
+        memberService.signUp(memberDTO);
 
 
         return "redirect:/";
