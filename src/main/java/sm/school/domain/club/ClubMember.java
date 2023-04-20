@@ -18,19 +18,16 @@ public class ClubMember {
     @Id
     @GeneratedValue
     @Column(name = "club_mem_id")
-    private Long id;
+    private Long id;//기본값
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_id")
-    private Club club;
+    private Club club;//협동 동아리 번호
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mem_id")
     private Member member;//협동 동아리 참가한 사람
 
-    @Column(name = "club_date")
-    @CreatedDate
-    private Date date;//참여 날짜
 
     @Column(name = "club_mem_type")
     @ColumnDefault("1")//1.기본회원 2.차단회원

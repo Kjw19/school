@@ -3,6 +3,7 @@ package sm.school.domain.club;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
+import sm.school.domain.enumType.LocationType;
 import sm.school.domain.member.Member;
 
 import javax.persistence.*;
@@ -25,19 +26,22 @@ public class Club {
 
     @NotBlank
     @Column(unique = true)
-    private String club_name;//클럽 협동 이름
+    private String clubName;//클럽 협동 이름
 
     @NotEmpty
-    private String club_inf;//협동 내용
+    private String clubInf;//협동 내용
 
     @NotEmpty
-    private String club_picture;//대문 사진
+    private String clubPicture;//대문 사진
 
     @NotEmpty
     private String clubs;//협동동아리
 
+    @Enumerated(EnumType.STRING)
+    private LocationType locationType;//개최 주소
+
     @NotEmpty
-    private String location;//개최장소
+    private String location;//개최 상세 장소
 
     @NotEmpty
     @CreatedDate
@@ -45,28 +49,31 @@ public class Club {
     private Date date;//생성 날짜
 
     @NotEmpty
-    @ColumnDefault("2")
+    @ColumnDefault("1")
     @Column(name = "club_reg_type")
-    private int reg_type;//1번 즉시가입 2번 승인 후 가입
+    private int regType;//1번 즉시가입 2번 승인 후 가입 3번 관리자
     @Builder
-    public Club(Long id, Member member, String club_name, String club_inf
-                ,String club_picture, String clubs, String location, Date date, int reg_type) {
+    public Club(Long id, Member member, String clubName, String clubInf, String clubPicture, String clubs, LocationType locationType, String location, Date date, int regType) {
         this.id = id;
         this.member = member;
-        this.club_name = club_name;
-        this.club_inf = club_inf;
-        this.club_picture = club_picture;
+        this.clubName = clubName;
+        this.clubInf = clubInf;
+        this.clubPicture = clubPicture;
         this.clubs = clubs;
+        this.locationType = locationType;
         this.location = location;
         this.date = date;
-        this.reg_type = reg_type;
+        this.regType = regType;
     }
-    public void ModifyClub(String club_name,String club_inf,String clubs,String club_picture,int reg_type){
-        this.club_name=club_name;
-        this.club_inf = club_inf;
+
+
+
+    public void ModifyClub(String clubName,String clubInf,String clubs,String clubPicture,int regType){
+        this.clubName=clubName;
+        this.clubInf = clubInf;
         this.clubs = clubs;
-        this.club_picture = club_picture;
-        this.reg_type = reg_type;
+        this.clubPicture = clubPicture;
+        this.regType = regType;
 
     }
 }
