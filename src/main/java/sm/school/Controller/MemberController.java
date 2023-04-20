@@ -3,14 +3,12 @@ package sm.school.Controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import sm.school.Service.MemberService;
-import sm.school.domain.member.Member;
 import sm.school.dto.MemberDTO;
 
 import javax.validation.Valid;
@@ -24,6 +22,11 @@ public class MemberController {
     private final MemberService memberService;
 
     private final PasswordEncoder passwordEncoder;
+
+    @GetMapping("/login")
+    public String login() {
+        return "member/login";
+    }
 
     @GetMapping("/signup")
     public String signup(@ModelAttribute("memberDTO") MemberDTO memberDTO) {

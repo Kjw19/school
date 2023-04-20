@@ -1,17 +1,14 @@
 package sm.school.Service;
 
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import sm.school.Repository.member.MemberRepository;
 import sm.school.domain.member.Address;
 import sm.school.domain.member.PersonalInf;
 import sm.school.domain.member.Member;
 import sm.school.dto.MemberDTO;
 
-import java.util.Date;
 
 @Service
 @RequiredArgsConstructor
