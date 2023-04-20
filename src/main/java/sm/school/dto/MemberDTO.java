@@ -8,7 +8,6 @@ import sm.school.domain.member.Member;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Getter
@@ -26,7 +25,7 @@ public class MemberDTO {
     private String major;
 
     private String mem_profile;
-    private Integer role;
+    private Integer role = 1;
     private Date date;
 
     @Valid

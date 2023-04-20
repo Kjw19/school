@@ -8,9 +8,6 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
@@ -36,7 +33,7 @@ public class Member {
 
 
     @Column(name = "memRole")
-    @ColumnDefault("1")//1: 일반회원, 2:정지회원, 3:탈퇴회원, 9:관리자
+    @ColumnDefault("1")//1: 일반회원, 2:정지회원, 3:탈퇴회원
     private Integer role;
 
     @Column(name = "memReg")
@@ -58,7 +55,7 @@ public class Member {
         this.passwd = passwd;
         this.school = school;
         this.major = major;
-        this.role = (role == null) ? 1 : role;
+        this.role = role;
         this.date = date;
         this.mem_profile = mem_profile;
         this.personalInf = personalInf;
