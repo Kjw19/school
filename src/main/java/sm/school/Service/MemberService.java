@@ -15,25 +15,14 @@ import sm.school.dto.MemberDTO;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+
     private final PasswordEncoder passwordEncoder;
 
 
     public Member signUp(MemberDTO memberDTO) {
 
-        PersonalInf personalInf = memberDTO.getPersonalInfDTO().toPersonalInf();
-        Address address = memberDTO.getAddressDTO().toAddress();
-
-        Member memberSave = Member.builder()
-                .userId(memberDTO.getUserId())
-                .passwd(passwordEncoder.encode(memberDTO.getPasswd()))
-                .school(memberDTO.getSchool())
-                .major(memberDTO.getMajor())
-                .mem_profile(memberDTO.getMem_profile())
-                .role(memberDTO.getRole())
-                .date(memberDTO.getDate())
-                .personalInf(personalInf) // 값을 할당
-                .address(address) // 값을 할당
-                .build();
+        memberDTO.setPasswd(passwordEncoder.encode(memberDTO.getPasswd()));//패스워드 인코딩진행
+        Member memberSave = memberDTO.toMemberEntity();//MemberDTO -> 엔티티로 변환
 
         return memberRepository.save(memberSave);
     }

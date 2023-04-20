@@ -53,7 +53,7 @@ public class MemberDTO {
     }
 
     //MemberDTO -> Member 변환
-    public Member toEntity() {
+    public Member toMemberEntity() {
         return Member.builder()
                 .id(this.id)
                 .userId(this.userId)

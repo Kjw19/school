@@ -28,6 +28,7 @@ public class AddressDTO {
     }
 
     //Address 를 AddressDTO로 변환하는 메서드
+    @Builder
     public AddressDTO(Address address) {
         this.zipcode = address.getZipcode();
         this.address1 = address.getAddress1();
