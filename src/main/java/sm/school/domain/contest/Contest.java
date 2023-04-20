@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.CreatedDate;
+import sm.school.domain.enumType.ContestType;
+import sm.school.domain.enumType.LocationType;
 import sm.school.domain.member.Member;
 
 import javax.persistence.*;
@@ -29,13 +31,23 @@ public class Contest {
 
     @NotBlank
     @Column(unique = true)
-    private String con_name;//대회 이름
+    private String conName;//대회 이름
 
     @NotEmpty
-    private String con_inf;//대회 정보
+    private String conInf;//대회 정보
 
     @NotEmpty
-    private String con_picture;//대문사진
+    @Enumerated(EnumType.STRING)
+    private ContestType contestType;//대회 카테고리
+
+    @Enumerated(EnumType.STRING)
+    private LocationType locationType;//개최 주소
+
+    @NotEmpty
+    private String location;//개최 상세 장소
+
+    @NotEmpty
+    private String conPicture;//대문사진
 
     @NotEmpty
     @CreatedDate
@@ -45,25 +57,32 @@ public class Contest {
     @NotEmpty
     @Column(name = "contest_role")
     @ColumnDefault("1")
-    private int reg_type;//1번 즉시가입 2번 승인 후 가입
+    private int regType;//1번 즉시가입 2번 승인 후 가입
 
     //생성자
-
     @Builder
-    public Contest(Long id, Member member, String con_name, String con_inf, String con_picture, Date date, int reg_type) {
+    public Contest(Long id, Member member, String conName, String conInf, ContestType contestType,
+                   LocationType locationType, String location, String conPicture, Date date, int regType) {
         this.id = id;
         this.member = member;
-        this.con_name = con_name;
-        this.con_inf = con_inf;
-        this.con_picture = con_picture;
+        this.conName = conName;
+        this.conInf = conInf;
+        this.contestType = contestType;
+        this.locationType = locationType;
+        this.location = location;
+        this.conPicture = conPicture;
         this.date = date;
-        this.reg_type = reg_type;
+        this.regType = regType;
     }
-    public void ModifyContest(String con_name, String con_inf, String con_picture, int reg_type){
-        this.con_name=con_name;
-        this.con_inf=con_inf;
-        this.con_picture=con_picture;
-        this.reg_type=reg_type;
+
+
+
+
+    public void ModifyContest(String conName, String conInf, String conPicture, int regType){
+        this.conName=conName;
+        this.conInf=conInf;
+        this.conPicture=conPicture;
+        this.regType=regType;
     }
 }
 
