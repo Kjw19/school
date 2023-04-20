@@ -15,43 +15,43 @@ import javax.validation.constraints.NotEmpty;
 public class Meeting {
 
     @Id//기본값
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "meet_id")
     private Long id;
 
-    @NotEmpty//해당 필드의 값이 null이 아니고, 비어있지 않아야 함
+    @Column(nullable = false)
     private String school; //학교
 
-    @NotEmpty
+    @Column(nullable = false)
     private String major; // 전공
 
-    @NotEmpty
+    @Column(nullable = false)
     private String region; //지역
 
-    @NotEmpty
-    private int mem_count; //미팅인원
+    @Column(nullable = false)
+    private int count; //미팅인원
 
     @ManyToOne(fetch = FetchType.LAZY) //지연로딩 방식
-    @JoinColumn(name = "mem_id")
+    @JoinColumn(name = "mem_id", nullable = false)
     private Member member;//미팅 생성 회원
 
 
     //미팅 등록
     @Builder
-    public Meeting(Long id, String school, String major, String region, int mem_count, Member member) {
+    public Meeting(Long id, String school, String major, String region, int count, Member member) {
         this.id = id;
         this.school = school;
         this.major = major;
         this.region = region;
-        this.mem_count = mem_count;
+        this.count = count;
         this.member = member;
     }
 
     //미팅 정보 수정
-    public void ModifyMeeting(String school, String major, String region, int mem_count) {
+    public void ModifyMeeting(String school, String major, String region, int count) {
         this.school = school;
         this.major = major;
         this.region = region;
-        this.mem_count = mem_count;
+        this.count = count;
     }
 }
