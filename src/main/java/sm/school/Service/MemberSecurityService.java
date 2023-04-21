@@ -2,15 +2,19 @@ package sm.school.Service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import sm.school.Repository.member.MemberRepository;
+import sm.school.domain.enumType.MemRole;
 import sm.school.domain.member.Member;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -29,9 +33,16 @@ public class MemberSecurityService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
         Member member = memberRepository.findByUserId(userId)
-                .orElseThrow(() -> new UsernameNotFoundException("사용자ID를 찾을 수 없습니다."));//람다식 사용 예외처리
+                .orElseThrow(() -> new UsernameNotFoundException("사용자 ID를 찾을 수 없습니다."));//람다식 사용 예외처리
+
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        if ("admin".equals(userId)) { //ID가 admin일 때 관리자 권한을 부여
+            authorities.add(new SimpleGrantedAuthority(MemRole.ADMIN.getValue()));
+        } else {
+            authorities.add(new SimpleGrantedAuthority(MemRole.USER.getValue()));
+        }
 
         log.debug("userId,passwd {} {}", userId, member.getPasswd()); //디버그 userid passwd
-        return new User(member.getUserId(), member.getPasswd(), new ArrayList<>()); //시큐리티에서 로그인 처리
+        return new User(member.getUserId(), member.getPasswd(), authorities); //시큐리티에서 로그인 처리
     }
 }
