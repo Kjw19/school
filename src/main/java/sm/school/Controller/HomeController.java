@@ -11,4 +11,9 @@ public class HomeController {
 
         return "index";
     }
+    @GetMapping("/accessBlock")
+    public String adminBlock() {
+
+        return "accessBlock";
+    }
 }
