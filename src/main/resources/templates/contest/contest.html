@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<a th:href="@{/contest/create}">콘테스트 생성</a>
+
+<div sec:authorize="hasRole('ADMIN')">
+    <a th:href="@{/admin}">관리자 페이지</a>
+</div>
+</body>
+</html>

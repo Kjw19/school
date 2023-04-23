@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>콘테스트 생성</title>
+</head>
+<body>
+<h1>콘테스트 생성</h1>
+
+<form th:object="${contestDTO}" th:action="@{/contest/create}" method="post">
+    <div>
+        <label for="conName">대회 이름</label>
+        <input type="text" id="conName" name="conName" th:field="*{conName}"/>
+        <p th:if="${#fields.hasErrors('conName')}" th:errors="*{conName}"></p>
+    </div>
+
+    <div>
+        <label for="conInf">대회 정보</label>
+        <input type="text" id="conInf" name="conInf" th:field="*{conInf}"/>
+        <p th:if="${#fields.hasErrors('conInf')}" th:errors="*{conInf}"></p>
+    </div>
+
+
+    <div>
+        <select th:field="*{contestType}" >
+            <option value="">대회 종류</option>
+            <option th:each=
+                            "contestType : ${T(sm.school.domain.enumType.ContestType).values()}"
+                    th:value="${contestType}"
+                    th:text="${contestType}">
+            </option>
+        </select>
+    </div>
+
+    <div>
+        <select th:field="*{locationType}" >
+            <option value="">개최 지역</option>
+            <option th:each=
+                            "location : ${T(sm.school.domain.enumType.LocationType).values()}"
+                    th:value="${location}"
+                    th:text="${location}">
+            </option>
+        </select>
+    </div>
+
+
+
+    <div>
+        <label for="location">개최 상세 주소</label>
+        <input type="text" id="location" name="locationType" th:field="*{location}"/>
+        <p th:if="${#fields.hasErrors('location')}" th:errors="*{location}"></p>
+    </div>
+
+
+    <div>
+        <label for="regType">가입 타입</label>
+        <input type="text" id="regType" name="regType" th:field="*{regType}"/>
+        <p th:if="${#fields.hasErrors('regType')}" th:errors="*{regType}"></p>
+    </div>
+    <button type="submit">등록</button>
+
+
+</form>
+</body>
+</html>
