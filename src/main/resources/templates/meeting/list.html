@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>미팅 리스트</title>
+</head>
+<body>
+<h1>미팅 목록</h1>
+<table>
+    <thead>
+        <tr>
+            <th>회원이름</th>
+        </tr>
+    </thead>
+</table>
+<tbody>
+    <tr th:each="meeting : ${meetings}">
+        <td th:text="${meeting.getMember().getUserId()}"></td>
+    </tr>
+</tbody>
+<a th:href="@{/meeting/create}">미팅 만들기</a>
+
+</body>
+</html>

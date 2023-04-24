@@ -8,6 +8,7 @@
 <a th:href="@{/member/signup}">회원가입 이동</a>
 <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/member/login}">로그인</a>
 <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/member/logout}">로그아웃</a>
+<a class="nav-link" th:href="@{/meeting/}">미팅</a>
 <a th:href="@{/contest/home}">콘테스트</a>
 
 <div sec:authorize="hasRole('ADMIN')">

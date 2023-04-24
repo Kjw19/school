@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>미팅 등록 폼</title>
+</head>
+<body>
+<h1>미팅 등록</h1>
+<form th:object="${meetingDTO}" th:action="@{/meeting/create}" method="post">
+    <div>
+        <label for="school">학교</label>
+        <input type="text" id="school" name="school" th:field="*{school}">
+    </div>
+    <div>
+        <label for="major">전공</label>
+        <input type="text" id="major" name="major" th:field="*{major}">
+    </div>
+    <div>
+        <label for="region">지역</label>
+        <input type="text" id="region" name="region" th:field="*{region}">
+    </div>
+    <div>
+        <label for="count">모집인원</label>
+        <input type="text" id="count" name="count" th:field="*{count}">
+        <p th:if="${#fields.hasErrors('count')}" th:errors="*{count}"></p>
+    </div>
+
+    <div>
+        <button type="submit">가입하기</button>
+    </div>
+</form>
+
+</body>
+</html>
