@@ -7,8 +7,8 @@ import lombok.Setter;
 import sm.school.domain.meeting.Meeting;
 import sm.school.domain.member.Member;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
@@ -26,10 +26,9 @@ public class MeetingDTO {
     @NotEmpty
     private String region; //지역
 
-    @NotEmpty
+    @NotNull
     private int count; //미팅인원
 
-    @NotEmpty
     private Member member;//미팅 생성 회원
 
     @Builder
