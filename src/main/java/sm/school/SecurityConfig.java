@@ -21,16 +21,7 @@ import sm.school.domain.member.Member;
 
 @Configuration //스프링의 환경설정 파일임을 명시
 @EnableWebSecurity //모든 요청이 스프링 시큐리티의 제어를 받음
-@RequiredArgsConstructor
 public class SecurityConfig {
-
-    private final MemberSecurityService memberSecurityService;
-
-    //사용자 인증 및 권한 부여 과정에서 사용자 정보를 찾고, 
-    // 비밀번호를 확인할 때 암호화된 비밀번호와 입력된 비밀번호를 비교하는 작업
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(memberSecurityService).passwordEncoder(passwordEncoder());
-    }
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
