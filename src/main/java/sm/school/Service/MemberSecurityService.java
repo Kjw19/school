@@ -35,14 +35,8 @@ public class MemberSecurityService implements UserDetailsService {
         Member member = memberRepository.findByUserId(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("사용자 ID를 찾을 수 없습니다."));//람다식 사용 예외처리
 
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        if ("admin".equals(userId)) { //ID가 admin일 때 관리자 권한을 부여
-            authorities.add(new SimpleGrantedAuthority(MemRole.ADMIN.getValue()));
-        } else {
-            authorities.add(new SimpleGrantedAuthority(MemRole.USER.getValue()));
-        }
 
         log.debug("userId,passwd {} {}", userId, member.getPasswd()); //디버그 userid passwd
-        return new User(member.getUserId(), member.getPasswd(), authorities); //시큐리티에서 로그인 처리
+        return new MemberDetailsService(member); //시큐리티에서 로그인 처리
     }
 }
