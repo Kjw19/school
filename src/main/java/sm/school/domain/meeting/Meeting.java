@@ -4,10 +4,12 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 import sm.school.domain.member.Member;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -34,6 +36,10 @@ public class Meeting {
     @Column(nullable = false)
     private int count; //미팅인원
 
+    @Column(name = "meetReg")
+    @CreationTimestamp
+    private Date date; //가입일자
+
     @ManyToOne(fetch = FetchType.LAZY) //지연로딩 방식
     @JoinColumn(name = "mem_id", nullable = false)
     private Member member;//미팅 생성 회원
@@ -41,13 +47,14 @@ public class Meeting {
 
     //미팅 등록
     @Builder
-    public Meeting(Long id,String title, String school, String major, String region, int count, Member member) {
+    public Meeting(Long id,String title, String school, String major, String region, int count, Date date, Member member) {
         this.id = id;
         this.title = title;
         this.school = school;
         this.major = major;
         this.region = region;
         this.count = count;
+        this.date = date;
         this.member = member;
     }
 

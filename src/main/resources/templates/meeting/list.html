@@ -14,6 +14,7 @@
             <th>지역</th>
             <th>인원 수</th>
             <th>파티장</th>
+            <th>생성일</th>
         </tr>
     </thead>
     <tbody>
@@ -23,6 +24,7 @@
             <td th:text="${meeting.getRegion()}"/>
             <td th:text="${meeting.getCount()}"/>
             <td th:text="${meeting.getMember().getUserId()}"/>
+            <td th:text="${#dates.format(meeting.getDate(), 'yyyy년 MM월 DD일')}"/>
         </tr>
     </tbody>
 </table>

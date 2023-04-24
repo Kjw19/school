@@ -11,6 +11,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -36,16 +37,19 @@ public class MeetingDTO {
     @Max(value = 6, message = "최대 6명까지 가능합니다.")
     private int count = 2; //미팅인원
 
+    private Date date;
+
     private Member member;//미팅 생성 회원
 
     @Builder
-    public MeetingDTO(Long id, String title, String school, String major, String region, int count, Member member) {
+    public MeetingDTO(Long id, String title, String school, String major, String region, int count, Date date, Member member) {
         this.id = id;
         this.title = title;
         this.school = school;
         this.major = major;
         this.region = region;
         this.count = count;
+        this.date = date;
         this.member = member;
     }
 
@@ -57,6 +61,7 @@ public class MeetingDTO {
                 .major(major)
                 .region(region)
                 .count(count)
+                .date(date)
                 .member(member)
                 .build();
     }
