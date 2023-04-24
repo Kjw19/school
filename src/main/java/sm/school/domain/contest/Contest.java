@@ -29,14 +29,14 @@ public class Contest {
     @JoinColumn(name = "member_id")
     private Member member;//대회 생성한 사람
 
-    @NotBlank
+    @NotEmpty
     @Column(unique = true)
     private String conName;//대회 이름
 
     @NotEmpty
     private String conInf;//대회 정보
 
-    @NotEmpty
+
     @Enumerated(EnumType.STRING)
     private ContestType contestType;//대회 카테고리
 
@@ -46,23 +46,23 @@ public class Contest {
     @NotEmpty
     private String location;//개최 상세 장소
 
-    @NotEmpty
+
     private String conPicture;//대문사진
 
-    @NotEmpty
+
     @CreatedDate
     @Column(name = "contest_reg_date")
     private Date date;//대회 생성 날짜
 
-    @NotEmpty
+
     @Column(name = "contest_role")
     @ColumnDefault("1")
-    private int regType;//1번 즉시가입 2번 승인 후 가입
+    private Integer regType;//1번 즉시가입 2번 승인 후 가입 (int->integer 변경 null값을 담을수 없어서)
 
     //생성자
     @Builder
     public Contest(Long id, Member member, String conName, String conInf, ContestType contestType,
-                   LocationType locationType, String location, String conPicture, Date date, int regType) {
+                   LocationType locationType, String location, String conPicture, Date date, Integer regType) {
         this.id = id;
         this.member = member;
         this.conName = conName;
