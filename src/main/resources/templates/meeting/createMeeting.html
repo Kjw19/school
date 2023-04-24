@@ -8,20 +8,28 @@
 <h1>미팅 등록</h1>
 <form th:object="${meetingDTO}" th:action="@{/meeting/create}" method="post">
     <div>
+        <label for="title">미팅 파티 이름</label>
+        <input type="text" id="title" name="school" th:field="*{title}" required>
+        <p th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></p>
+    </div>
+    <div>
         <label for="school">학교</label>
-        <input type="text" id="school" name="school" th:field="*{school}">
+        <input type="text" id="school" name="school" th:field="*{school}" required>
+        <p th:if="${#fields.hasErrors('school')}" th:errors="*{school}"></p>
     </div>
     <div>
         <label for="major">전공</label>
-        <input type="text" id="major" name="major" th:field="*{major}">
+        <input type="text" id="major" name="major" th:field="*{major}" required>
+        <p th:if="${#fields.hasErrors('major')}" th:errors="*{major}"></p>
     </div>
     <div>
         <label for="region">지역</label>
-        <input type="text" id="region" name="region" th:field="*{region}">
+        <input type="text" id="region" name="region" th:field="*{region}" required>
+        <p th:if="${#fields.hasErrors('region')}" th:errors="*{region}"></p>
     </div>
     <div>
         <label for="count">모집인원</label>
-        <input type="text" id="count" name="count" th:field="*{count}">
+        <input type="text" id="count" name="count" th:field="*{count}" min="2" max="6" required>
         <p th:if="${#fields.hasErrors('count')}" th:errors="*{count}"></p>
     </div>
 
@@ -29,6 +37,14 @@
         <button type="submit">가입하기</button>
     </div>
 </form>
-
+<script type="text/javascript">
+    document.getElementById('count').addEventListener('change', function() {
+        let countValue = parseInt(this.value);
+        if (countValue < 2 || countValue > 6) {
+            alert("최소 2명 최대 6명까지 가능합니다.");
+            this.value = 2; // 값이 유효하지 않을 경우 기본값으로 설정
+        }
+    });
+</script>
 </body>
 </html>
