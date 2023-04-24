@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>미팅 리스트</title>
@@ -9,16 +9,25 @@
 <table>
     <thead>
         <tr>
-            <th>회원이름</th>
+            <th>파티이름</th>
+            <th>학교</th>
+            <th>지역</th>
+            <th>인원 수</th>
+            <th>파티장</th>
         </tr>
     </thead>
+    <tbody>
+        <tr th:each="meeting : ${meetings}">
+            <td th:text="${meeting.getTitle()}"/>
+            <td th:text="${meeting.getSchool()}"/>
+            <td th:text="${meeting.getRegion()}"/>
+            <td th:text="${meeting.getCount()}"/>
+            <td th:text="${meeting.getMember().getUserId()}"/>
+        </tr>
+    </tbody>
 </table>
-<tbody>
-    <tr th:each="meeting : ${meetings}">
-        <td th:text="${meeting.getMember().getUserId()}"></td>
-    </tr>
-</tbody>
-<a th:href="@{/meeting/create}">미팅 만들기</a>
+<a sec:authorize="isAuthenticated()" th:href="@{/meeting/create}">미팅 만들기</a>
+<a th:href="@{/}">홈으로</a>
 
 </body>
 </html>
