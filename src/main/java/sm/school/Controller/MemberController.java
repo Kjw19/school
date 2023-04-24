@@ -48,6 +48,9 @@ public class MemberController {
         return "redirect:/";
     }
 
+    //ResponseEntity는 HTTP응답을 생성하기 위해 사용되는 클래스이며, 반환할 값과
+    //HTTP 응답 상태 코드를 포함할 수 있다.
+    //ResponseEntity.ok를 사용하여 HTTP응답 상태 코드를 200 OK로 설정한다.
     @GetMapping("/{userId}/exists")
     public ResponseEntity<Boolean> checkUserIdDuplicate(@PathVariable String userId) {
         return ResponseEntity.ok(memberService.checkUserIdDuplicate(userId));
