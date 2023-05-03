@@ -25,4 +25,12 @@ public class BoardService {
 
         return boardList;
     }
+
+    public BoardDTO selectBoard(long id) {
+        Board board = boardRepository.findBoardById(id);
+
+        BoardDTO boardDTO = board.toBoardDTO();
+
+        return boardDTO;
+    }
 }
