@@ -14,7 +14,7 @@
     </div>
     <div>
         <label for="content">내용</label>
-        <input type="text" id="content" name="content" th:field="*{content}" required>
+        <textarea id="content" name="content" th:field="*{content}" required></textarea>
         <p th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></p>
     </div>
     <div>

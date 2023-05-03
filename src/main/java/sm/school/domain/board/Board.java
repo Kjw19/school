@@ -60,15 +60,6 @@ public class Board {
         this.picture = picture;
     }
 
-    //게시글 수정 메서드
-    public void ModifyBoard(String title, String content,
-                            Date modify_date, String picture) {
-        this.title = title;
-        this.content = content;
-        this.modify_date = modify_date;
-        this.picture = picture;
-    }
-
     public BoardDTO toBoardDTO() {
         return BoardDTO.builder()
                 .id(id)
