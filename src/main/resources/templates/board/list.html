@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>게시글 목록</title>
+</head>
+<body>
+    <h1>게시글 목록</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>작성시간</th>
+                <th>조회수</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="board : ${boards}">
+                <td th:text="${board.getTitle()}"/>
+                <td th:text="${board.getMember().getUserId()}"/>
+                <div th:if="${board.getModify_date()} == null">
+                    <td th:text="${#dates.format(board.getDate(), 'yyyy-MM-dd')}"/>
+                </div>
+                <div th:if="${board.getModify_date()} != null">
+                    <td th:text="${#dates.format(board.getModify_date(), 'yyyy-MM-dd')}"/>
+                </div>
+                <td>조회수 추가 필요</td>
+            </tr>
+        </tbody>
+        <a sec:authorize="isAuthenticated()" th:href="@{/board/create}">게시글 작성</a>
+        <a th:href="@{/}">홈으로</a>
+    </table>
+
+</body>
+</html>
