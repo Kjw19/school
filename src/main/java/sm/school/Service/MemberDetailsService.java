@@ -18,7 +18,7 @@ public class MemberDetailsService implements UserDetails {
 
     private final Member member;
 
-    
+
     //권한정보 처리
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

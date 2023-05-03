@@ -37,8 +37,10 @@ public class MeetingController {
     }
 
     @GetMapping("/create")
-    public String CreateMeet(@ModelAttribute("meetingDTO") MeetingDTO meetingDTO) {
-
+    public String CreateMeetForm(@ModelAttribute("meetingDTO") MeetingDTO meetingDTO, Authentication authentication) {
+        if (authentication == null) {
+            return "redirect:/member/login";
+        }
 
         return "meeting/createMeeting";
     }
