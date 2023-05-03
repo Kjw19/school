@@ -7,14 +7,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import sm.school.Service.BoardService;
 import sm.school.Service.MemberDetailsService;
-import sm.school.domain.board.Board;
-import sm.school.domain.member.Member;
 import sm.school.dto.BoardDTO;
 
 import javax.validation.Valid;
@@ -30,9 +25,8 @@ public class BoardController {
 
     @GetMapping("/")
     public String BoardList(Model model) {
-        List<Board> boardList = boardService.findBoard();
 
-        model.addAttribute("boards", boardList);
+        model.addAttribute("boards", boardService.findBoard());
 
         return "board/list";
     }
@@ -42,7 +36,6 @@ public class BoardController {
         if (authentication == null) {
             return "redirect:/member/login";
         }
-
         return "board/createBoard";
     }
 
@@ -53,12 +46,19 @@ public class BoardController {
         }
 
         //사용자 정보를 받아 memberDetails에 저장
-        MemberDetailsService memberDetails = (MemberDetailsService) authentication.getPrincipal();
-        Member member = memberDetails.getMember();
-        boardDTO.setMember(member);
+        boardDTO.setMember(((MemberDetailsService) authentication.getPrincipal()).getMember()); //코드 간소화
 
         boardService.createBoard(boardDTO);
 
         return "redirect:/board/";
+    }
+
+    @GetMapping("/detail")
+    public String boardDetail(@RequestParam("id") long id, Model model) {
+
+        model.addAttribute("board", boardService.selectBoard(id));
+
+        return "board/boardDetail";
+
     }
 }

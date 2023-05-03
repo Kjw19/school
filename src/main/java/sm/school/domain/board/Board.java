@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import sm.school.domain.member.Member;
+import sm.school.dto.BoardDTO;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -66,6 +67,18 @@ public class Board {
         this.content = content;
         this.modify_date = modify_date;
         this.picture = picture;
+    }
+
+    public BoardDTO toBoardDTO() {
+        return BoardDTO.builder()
+                .id(id)
+                .title(title)
+                .content(content)
+                .member(member)
+                .date(date)
+                .modify_date(modify_date)
+                .picture(picture)
+                .build();
     }
 }
 
