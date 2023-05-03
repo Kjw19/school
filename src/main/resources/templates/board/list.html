@@ -9,6 +9,7 @@
     <table>
         <thead>
             <tr>
+                <th>번호</th>
                 <th>제목</th>
                 <th>작성자</th>
                 <th>작성시간</th>
@@ -17,7 +18,10 @@
         </thead>
         <tbody>
             <tr th:each="board : ${boards}">
-                <td th:text="${board.getTitle()}"/>
+                <td th:text="${board.id}"></td>
+                <td>
+                    <a th:href="@{/board/detail(id=${board.id})}" th:text="${board.getTitle()}"></a>
+                </td>
                 <td th:text="${board.getMember().getUserId()}"/>
                 <div th:if="${board.getModify_date()} == null">
                     <td th:text="${#dates.format(board.getDate(), 'yyyy-MM-dd')}"/>
