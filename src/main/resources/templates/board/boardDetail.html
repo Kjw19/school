@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>게시글 상세</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-<h1>게시글 상세보기</h1>
+<h1>게시글 상세</h1>
 <table>
     <tr>
         <th>번호</th>
@@ -21,11 +22,11 @@
     </tr>
     <tr>
         <th>작성시간</th>
-        <td th:text="${#dates.format(board.date, 'yyyy-MM-dd')}"></td>
+        <td th:text="${#dates.format(board.date, 'yy년 MM월 dd일 HH시 mm분')}"></td>
     </tr>
-    <tr th:if="${board.modify_date != null}">
+    <tr th:if="${board.modify_date != board.date}">
         <th>수정시간</th>
-        <td th:text="${#dates.format(board.modify_date, 'yyyy-MM-dd')}"></td>
+        <td th:text="${#dates.format(board.modify_date, 'yy년 MM월 dd일 HH시 mm분')}"></td>
     </tr>
     <tr>
         <th>조회수</th>
@@ -40,7 +41,20 @@
 <!-- 로그인한 사용자와 작성자를 비교-->
 <div th:if="${board.member.userId} eq ${#authentication.name}">
     <a th:href="@{/board/update(id=${board.id})}">수정</a>
-    <a th:href="@{/board/delete(id=${board.id})}">삭제</a>
+    <form th:action="@{/board/delete}" th:object="${board}" method="post" style="display:inline;">
+        <input type="hidden" th:name="id" th:value="${board.id}" />
+        <button type="button" id="deleteBtn">삭제</button>
+    </form>
 </div>
+
+<script>
+    $(document).ready(function () {
+        $('#deleteBtn').click(function() {
+            if (confirm("삭제하시겠습니까?")){
+                $('form').submit();
+            }
+        });
+    });
+</script>
 </body>
 </html>

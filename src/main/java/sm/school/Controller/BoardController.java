@@ -56,9 +56,40 @@ public class BoardController {
     @GetMapping("/detail")
     public String boardDetail(@RequestParam("id") long id, Model model) {
 
+
         model.addAttribute("board", boardService.selectBoard(id));
 
         return "board/boardDetail";
+    }
 
+    @GetMapping("/update")
+    public String boardUpdateForm(@RequestParam long id, Model model,
+                              Authentication authentication) {
+        if (authentication == null) {
+            return "redirect:/member/login";
+        }
+        BoardDTO boardDTO = boardService.selectBoard(id);
+        model.addAttribute("boardDTO", boardDTO);
+
+        return "board/boardUpdate";
+    }
+    @PostMapping("/update")
+    public String boardUpdate(@ModelAttribute("boardDTO") BoardDTO boardDTO,
+                              Authentication authentication) {
+        if (authentication == null) {
+            return "redirect:/member/login";
+        }
+
+        boardService.updateBoard(boardDTO);
+
+        return "redirect:/board/";
+    }
+
+    @RequestMapping("/delete")
+    public String boardDelete(@RequestParam("id") Long id) {
+
+        boardService.deleteBoard(id);
+
+        return "redirect:/board/";
     }
 }
