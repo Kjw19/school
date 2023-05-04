@@ -3,6 +3,7 @@ package sm.school.domain.member;
 import lombok.*;
 
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -12,13 +13,13 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class PersonalInf {
 
-    @NotEmpty(message = "이름은 필수입니다.")
+    @Column(nullable = false)
     private String name;
 
-    @NotEmpty(message = "생년월일은 필수입니다.")
+    @Column(nullable = false)
     private String birth;
 
-    @NotEmpty(message = "전화번호는 필수입니다.")
+    @Column(nullable = false)
     private String phone;
 
     //개인정보 생성자

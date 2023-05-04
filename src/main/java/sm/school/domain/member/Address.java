@@ -2,6 +2,7 @@ package sm.school.domain.member;
 
 import lombok.*;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotEmpty;
 
@@ -9,11 +10,11 @@ import javax.validation.constraints.NotEmpty;
 @Getter
 @NoArgsConstructor
 public class Address {
-    @NotEmpty //해당 필드의 값이 null이 아니고, 비어있지 않아야 함
+    @Column(nullable = false)
     private String zipcode;
-    @NotEmpty
+    @Column(nullable = false)
     private String address1;
-    @NotEmpty
+    @Column(nullable = false)
     private String address2;
 
     //address 생성자

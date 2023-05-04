@@ -20,19 +20,21 @@ public class Member {
     @Column(name = "memId")
     private Long id;//기본값
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String userId;//유저 아이디
 
 
+    @Column(nullable = false)
     private String passwd;//비밀번호
 
+    @Column(nullable = false)
     private String school;//학교
 
     private String major;//전공
     private String mem_profile;//회원 이미지
 
 
-    @Column(name = "memRole")
+    @Column(name = "memRole",nullable = false)
     @ColumnDefault("1")//1: 일반회원, 2:정지회원, 3:탈퇴회원
     private Integer role;
 
@@ -55,7 +57,7 @@ public class Member {
         this.passwd = passwd;
         this.school = school;
         this.major = major;
-        this.role = role;
+        this.role = (role == null) ? 1 : role;
         this.date = date;
         this.mem_profile = mem_profile;
         this.personalInf = personalInf;
