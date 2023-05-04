@@ -24,14 +24,10 @@ public class BoardService {
     }
 
     public void updateBoard(BoardDTO boardDTO) {
+
         Board board = boardRepository.findBoardById(boardDTO.getId());
 
-        boardDTO.setMember(board.getMember());
-        boardDTO.setDate(board.getDate());
-
-        board = boardDTO.toBoard();
-
-        boardRepository.save(board);
+        board.updateBoard(boardDTO.getTitle(), boardDTO.getContent(), boardDTO.getPicture());
     }
 
     public List<Board> findBoard() {

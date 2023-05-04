@@ -70,5 +70,12 @@ public class Board {
                 .picture(picture)
                 .build();
     }
+
+    //게시판 수정 메서드
+    public void updateBoard(String title, String content, String picture) {
+        this.title = title;
+        this.content = content;
+        this.picture = picture;
+    }
 }
 
