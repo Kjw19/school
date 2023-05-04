@@ -24,10 +24,9 @@ public class Board {
     @Column(name = "board_id")
     private Long id; //기본 값
 
-    @NotEmpty //해당 필드의 값이 null이 아니고, 비어있지 않아야 함
     private String title; //제목
 
-    @NotEmpty
+
     @Column(columnDefinition = "TEXT")
     private String content; //내용
 
