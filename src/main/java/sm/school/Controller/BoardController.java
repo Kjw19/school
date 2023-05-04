@@ -88,8 +88,12 @@ public class BoardController {
     @RequestMapping("/delete")
     public String boardDelete(@RequestParam("id") Long id) {
 
-        boardService.deleteBoard(id);
+        Boolean deleteBoard = boardService.deleteBoard(id);
 
-        return "redirect:/board/";
+        if (deleteBoard){
+            return "redirect:/board/";
+        }else {
+            return "redirect:/errorPage";
+        }
     }
 }

@@ -45,15 +45,13 @@ public class BoardService {
     }
 
     public Boolean deleteBoard(Long id) {
-        boolean check;
         try {
             boardRepository.deleteById(id);
-            check = true;
+            return true;
         } catch (EmptyResultDataAccessException e) {
             //삭제하려는 게시글이 이미 존재하지 않을 때 나타냄
-            check = false;
+            return false;
         }
-
-        return check;
     }
 }
+
