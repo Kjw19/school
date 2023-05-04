@@ -43,8 +43,15 @@
     <tr>
       <th>미팅장</th>
       <td th:text="${meeting.member.userId}"></td>
-
     </tr>
   </table>
+  <a th:href="@{/meeting/}">목록</a>
+  <div th:if="${meeting.member.userId} eq ${#authentication.name}">
+    <a th:href="@{/meeting/update(id=${meeting.id})}">수정</a>
+    <form th:action="@{/meeting/delete}" th:object="${meeting}" method="post" style="display: inline">
+      <input type="hidden" th:name="id" th:value="${meeting.id}">
+      <button type="button" id="deleteBtn">삭제</button>
+    </form>
+  </div>
 </body>
 </html>
