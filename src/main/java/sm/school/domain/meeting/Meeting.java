@@ -25,6 +25,9 @@ public class Meeting {
     private String title;
 
     @Column(nullable = false)
+    private String introduction; //소개 글
+
+    @Column(nullable = false)
     private String school; //학교
 
     @Column(nullable = false)
@@ -47,9 +50,10 @@ public class Meeting {
 
     //미팅 등록
     @Builder
-    public Meeting(Long id,String title, String school, String major, String region, int count, Date date, Member member) {
+    public Meeting(Long id,String title, String introduction, String school, String major, String region, int count, Date date, Member member) {
         this.id = id;
         this.title = title;
+        this.introduction = introduction;
         this.school = school;
         this.major = major;
         this.region = region;
@@ -58,12 +62,4 @@ public class Meeting {
         this.member = member;
     }
 
-    //미팅 정보 수정
-    public void ModifyMeeting(String title, String school, String major, String region, int count) {
-        this.title = title;
-        this.school = school;
-        this.major = major;
-        this.region = region;
-        this.count = count;
-    }
 }
