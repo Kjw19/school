@@ -1,6 +1,7 @@
 package sm.school.Service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sm.school.Repository.MeetingRepository;
@@ -24,6 +25,15 @@ public class MeetingService {
 
     }
 
+    public void updateMeeting(MeetingDTO meetingDTO) {
+
+        Meeting meeting = meetingRepository.findMeetingById(meetingDTO.getId());
+
+        meeting.modifyMeeting(meetingDTO.getTitle(), meetingDTO.getIntroduction(),
+                meetingDTO.getSchool(), meetingDTO.getMajor(), meetingDTO.getRegion(),
+                meetingDTO.getCount());
+    }
+
     public List<Meeting> findMeeting() {
 
         List<Meeting> meetingList = meetingRepository.findAll();
@@ -39,5 +49,16 @@ public class MeetingService {
         MeetingDTO meetingDTO = meeting.toMeetingDTO();
 
         return meetingDTO;
+    }
+
+    public Boolean DeleteMeeting(Long id) {
+
+        try {
+            meetingRepository.deleteById(id);
+            return true;
+        } catch (EmptyResultDataAccessException e) {
+            //삭제하려는 미팅이 이미 존재하지 않을 때
+            return false;
+        }
     }
 }

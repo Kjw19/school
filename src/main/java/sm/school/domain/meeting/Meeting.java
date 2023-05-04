@@ -62,6 +62,7 @@ public class Meeting {
         this.member = member;
     }
 
+    //meeting -> meetingDTO
     public MeetingDTO toMeetingDTO() {
         return MeetingDTO.builder()
                 .id(id)
@@ -74,6 +75,17 @@ public class Meeting {
                 .date(date)
                 .member(member)
                 .build();
+    }
+
+    public void modifyMeeting(String title, String introduction, String school,
+                              String major, String region, int count) {
+        this.title = title;
+        this.introduction = introduction;
+        this.school = school;
+        this.major = major;
+        this.region = region;
+        this.count = count;
+
     }
 
 }
