@@ -6,9 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import sm.school.domain.member.Member;
+import sm.school.dto.MeetingDTO;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import java.util.Date;
 
 @Entity
@@ -60,6 +60,20 @@ public class Meeting {
         this.count = count;
         this.date = date;
         this.member = member;
+    }
+
+    public MeetingDTO toMeetingDTO() {
+        return MeetingDTO.builder()
+                .id(id)
+                .title(title)
+                .introduction(introduction)
+                .school(school)
+                .major(major)
+                .region(region)
+                .count(count)
+                .date(date)
+                .member(member)
+                .build();
     }
 
 }

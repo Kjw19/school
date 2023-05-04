@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>미팅 상세 정보</title>
+</head>
+<body>
+  <h1>미팅 상세</h1>
+  <table>
+    <tr>
+      <th>미팅 명</th>
+      <td th:text="${meeting.title}"></td>
+    </tr>
+    <tr>
+      <th>소개 글</th>
+      <td th:text="${meeting.introduction}"></td>
+    </tr>
+    <tr>
+      <th>학교</th>
+      <td th:text="${meeting.school}"></td>
+
+    </tr>
+    <tr>
+      <th>전공</th>
+      <td th:text="${meeting.major}"></td>
+
+    </tr>
+    <tr>
+      <th>지역</th>
+      <td th:text="${meeting.region}"></td>
+
+    </tr>
+    <tr>
+      <th>인원</th>
+      <td th:text="${meeting.count}"></td>
+
+    </tr>
+    <tr>
+      <th>생성 일자</th>
+      <td th:text="${#dates.format(meeting.date, 'yyyy년 MM월 dd일 HH시 mm분')}"></td>
+
+    </tr>
+    <tr>
+      <th>미팅장</th>
+      <td th:text="${meeting.member.userId}"></td>
+
+    </tr>
+  </table>
+</body>
+</html>

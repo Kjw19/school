@@ -9,19 +9,21 @@
 <table>
     <thead>
         <tr>
-            <th>파티이름</th>
+            <th>미팅명</th>
             <th>학교</th>
             <th>지역</th>
             <th>인원 수</th>
-            <th>파티장</th>
+            <th>미팅장</th>
             <th>생성일</th>
         </tr>
     </thead>
     <tbody>
         <tr th:each="meeting : ${meetings}">
-            <td th:text="${meeting.getTitle()}"/>
+            <td>
+                <a th:href="@{/meeting/detail(id=${meeting.id})}" th:text="${meeting.getTitle()}"></a>
+            </td>
             <td th:text="${meeting.getSchool()}"/>
-            <td th:text="${meeting.getRegion()}"/>
+            <td th:text="${meeting.getRegion()}"/>)
             <td th:text="${meeting.getCount()}"/>
             <td th:text="${meeting.getMember().getUserId()}"/>
             <td th:text="${#dates.format(meeting.getDate(), 'yyyy년 MM월 DD일')}"/>
