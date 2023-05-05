@@ -2,6 +2,7 @@ package sm.school.Controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -64,5 +65,33 @@ public class MeetingController {
         model.addAttribute("meeting", meetingService.selectMeeting(id));
 
         return "meeting/detail";
+    }
+
+    @GetMapping("/update")
+    public String updateMeetingFrom(@RequestParam("id") Long id, Model model) {
+
+        MeetingDTO meetingDTO = meetingService.selectMeeting(id);
+        model.addAttribute("meetingDTO", meetingDTO);
+
+        return "meeting/updateMeeting";
+    }
+
+    @PostMapping("/update")
+    public String updateMeeting(@ModelAttribute("meetingDTO") MeetingDTO meetingDTO) {
+
+        meetingService.updateMeeting(meetingDTO);
+
+        return "redirect:/meeting/";
+    }
+
+    @RequestMapping("/delete")
+    public String deleteMeeting(@RequestParam("id") Long id) {
+
+        Boolean deleteMeeting = meetingService.DeleteMeeting(id);
+        if (deleteMeeting) {
+            return "redirect:/meeting/";
+        } else {
+            return "redirect:/main";
+        }
     }
 }
