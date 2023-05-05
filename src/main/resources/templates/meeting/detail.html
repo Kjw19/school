@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>미팅 상세 정보</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
   <h1>미팅 상세</h1>
@@ -53,5 +54,14 @@
       <button type="button" id="deleteBtn">삭제</button>
     </form>
   </div>
+  <script>
+    $(document).ready(function () {
+      $('#deleteBtn').click(function() {
+        if (confirm("삭제하시겠습니까?")){
+          $('form').submit();
+        }
+      });
+    });
+  </script>
 </body>
 </html>
