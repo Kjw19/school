@@ -13,7 +13,7 @@
         <p th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></p>
     </div>
     <div>
-        <label for="introduction">미팅 파티 이름</label>
+        <label for="introduction">미팅 소개글</label>
         <input type="text" id="introduction" name="introduction" th:field="*{introduction}" required>
         <p th:if="${#fields.hasErrors('introduction')}" th:errors="*{introduction}"></p>
     </div>
