@@ -14,7 +14,6 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional
-@Slf4j
 public class MeetingService {
 
     private final MeetingRepository meetingRepository;
@@ -30,8 +29,6 @@ public class MeetingService {
     public void updateMeeting(MeetingDTO meetingDTO) {
 
         Meeting meeting = meetingRepository.findMeetingById(meetingDTO.getId());
-        log.info("meetingDTO {}", meetingDTO);
-        log.info("meeting {}" ,meeting);
 
         meeting.modifyMeeting(meetingDTO.getTitle(), meetingDTO.getIntroduction(),
                 meetingDTO.getSchool(), meetingDTO.getMajor(), meetingDTO.getRegion(),
