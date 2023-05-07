@@ -1,7 +1,6 @@
 package sm.school.Controller;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +12,7 @@ import sm.school.dto.MeetingDTO;
 import sm.school.dto.MeetingProposerDTO;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequestMapping("/meetingPro")
@@ -26,9 +26,20 @@ public class MeetingProposerController {
 
     @GetMapping("/detail")
     public String MeetingProposerList(@RequestParam Long id, Model model, Authentication authentication) {
+        //검증로직 시작
+        if (authentication == null) {
+            return "redirect:/member/login";
+        }
+        MeetingDTO meetingDTO = meetingService.selectMeeting(id);
+        if (authentication.getName() != meetingDTO.getMember().getUserId()){
+            return "redirect:/accessBlock";
+        }
+        //검증로직 끝
 
-        model.addAttribute("lists",  meetingProposerService.selectMeetingProposer(id));
-        model.addAttribute("meeting",  meetingService.selectMeeting(id));
+        List<MeetingProposerDTO> proposerDTOS = meetingProposerService.selectMeetingProposer(id);
+
+        model.addAttribute("lists",  proposerDTOS);
+        model.addAttribute("meeting",  meetingDTO);
 
         return "meeting/proposer";
     }
@@ -46,11 +57,11 @@ public class MeetingProposerController {
     @PostMapping("/create")
     public String createMeetingProposer(@RequestParam("id") Long id, @Valid MeetingProposerDTO meetingProposerDTO,
                                         Authentication authentication) {
+        //검증로직 시작
         if (authentication == null) {
-
-
             return "redirect:/member/login";
         }
+        //검증로직 끝
 
         MemberDetailsService memberDetails = (MemberDetailsService) authentication.getPrincipal();
         meetingProposerDTO.setMember(memberDetails.getMember());
@@ -65,20 +76,40 @@ public class MeetingProposerController {
     }
 
     @RequestMapping("/select")
-    public String proposerSelect(@RequestParam Long id, @RequestParam Long meetId) {
+    public String proposerSelect(@RequestParam Long id, @RequestParam Long meetId, Authentication authentication) {
+        //검증로직 시작
+        if (authentication == null) {
+            return "redirect:/member/login";
+        }
+        MeetingDTO selectMeeting = meetingService.selectMeeting(meetId);
+
+        if (authentication.getName() != selectMeeting.getMember().getUserId()) {
+            return "redirect:/accessBlock";
+        }
+        //검증로직 끝
 
         meetingProposerService.selectProposer(id);
+        meetingService.completeMeeting(meetId);
         meetingProposerService.afterDeleteToSelect(meetId);
 
         return "redirect:/meetingPro/detail?id=" + meetId;
     }
     @RequestMapping("/delete")
-    public String proposerDelete(@RequestParam Long id) {
+    public String proposerDelete(@RequestParam Long id, @RequestParam Long meetId, Authentication authentication) {
+        //검증로직 시작
+        if (authentication == null) {
+            return "redirect:/member/login";
+        }
+        MeetingDTO selectMeeting = meetingService.selectMeeting(meetId);
 
+        if (authentication.getName() != selectMeeting.getMember().getUserId()) {
+            return "redirect:/accessBlock";
+        }
+        //검증로직 끝
         Boolean deleteProposer = meetingProposerService.deleteProposer(id);
 
         if (deleteProposer) {
-            return "redirect:/meeting/";
+            return "redirect:/meeting/list";
         } else {
             return "redirect:/accessBlock";
         }

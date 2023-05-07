@@ -27,7 +27,7 @@ public class MeetingController {
     private final MeetingProposerService meetingProposerService;
 
 
-    @GetMapping("/")
+    @GetMapping("/list")
     public String MeetingList(Model model) {
 
         List<Meeting> meeting = meetingService.findMeeting();
@@ -35,6 +35,16 @@ public class MeetingController {
         model.addAttribute("meetings", meeting);
 
         return "meeting/list";
+    }
+
+    @GetMapping("/completeList")
+    public String MeetingCompleteList(Model model) {
+
+        List<Meeting> meeting = meetingService.findMeeting();
+
+        model.addAttribute("meetings", meeting);
+
+        return "meeting/completeList";
     }
 
     @GetMapping("/create")
@@ -59,7 +69,7 @@ public class MeetingController {
 
         meetingService.createMeeting(meetingDTO);
 
-        return "redirect:/";
+        return "redirect:/meeting/list";
     }
 
     @GetMapping("/detail")
@@ -72,7 +82,11 @@ public class MeetingController {
     }
 
     @GetMapping("/update")
-    public String updateMeetingFrom(@RequestParam("id") Long id, Model model) {
+    public String updateMeetingFrom(@RequestParam("id") Long id, Model model, Authentication authentication) {
+
+        if (authentication == null) {
+            return "redirect:/member/login";
+        }
 
         MeetingDTO meetingDTO = meetingService.selectMeeting(id);
         model.addAttribute("meetingDTO", meetingDTO);
@@ -81,19 +95,26 @@ public class MeetingController {
     }
 
     @PostMapping("/update")
-    public String updateMeeting(@ModelAttribute("meetingDTO") MeetingDTO meetingDTO) {
+    public String updateMeeting(@ModelAttribute("meetingDTO") MeetingDTO meetingDTO, Authentication authentication) {
+        if (authentication == null) {
+            return "redirect:/member/login";
+        }
 
         meetingService.updateMeeting(meetingDTO);
 
-        return "redirect:/meeting/";
+        return "redirect:/meeting/list";
     }
 
     @RequestMapping("/delete")
-    public String deleteMeeting(@RequestParam("id") Long id) {
+    public String deleteMeeting(@RequestParam("id") Long id, Authentication authentication) {
+
+        if (authentication == null) {
+            return "redirect:/member/login";
+        }
 
         Boolean deleteMeeting = meetingService.DeleteMeeting(id);
         if (deleteMeeting) {
-            return "redirect:/meeting/";
+            return "redirect:/meeting/list";
         } else {
             return "redirect:/main";
         }

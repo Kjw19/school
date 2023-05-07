@@ -1,10 +1,10 @@
 package sm.school.Service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sm.school.Repository.MeetingProposerRepository;
 import sm.school.Repository.MeetingRepository;
 import sm.school.domain.meeting.Meeting;
 import sm.school.dto.MeetingDTO;
@@ -17,6 +17,7 @@ import java.util.List;
 public class MeetingService {
 
     private final MeetingRepository meetingRepository;
+    private final MeetingProposerRepository meetingProposerRepository;
 
     public Meeting createMeeting(MeetingDTO meetingDTO) {
 
@@ -61,5 +62,11 @@ public class MeetingService {
             //삭제하려는 미팅이 이미 존재하지 않을 때
             return false;
         }
+    }
+
+    //미팅 완료상태 변경
+    public void completeMeeting(Long meetId) {
+        Meeting meeting = meetingRepository.findMeetingById(meetId);
+        meeting.changeStatus(1);
     }
 }

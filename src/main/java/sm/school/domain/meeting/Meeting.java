@@ -39,6 +39,9 @@ public class Meeting {
     @Column(nullable = false)
     private int count; //미팅인원
 
+    @Column(nullable = false)
+    private int status; //모집여부 0: 모집중, 1:모집완료
+
     @Column(name = "meetReg")
     @CreationTimestamp
     private Date date; //가입일자
@@ -50,7 +53,8 @@ public class Meeting {
 
     //미팅 등록
     @Builder
-    public Meeting(Long id,String title, String introduction, String school, String major, String region, int count, Date date, Member member) {
+    public Meeting(Long id,String title, String introduction, String school, String major,
+                   String region, int count, int status, Date date, Member member) {
         this.id = id;
         this.title = title;
         this.introduction = introduction;
@@ -58,6 +62,7 @@ public class Meeting {
         this.major = major;
         this.region = region;
         this.count = count;
+        this.status = status;
         this.date = date;
         this.member = member;
     }
@@ -72,6 +77,7 @@ public class Meeting {
                 .major(major)
                 .region(region)
                 .count(count)
+                .status(status)
                 .date(date)
                 .member(member)
                 .build();
@@ -86,6 +92,11 @@ public class Meeting {
         this.region = region;
         this.count = count;
 
+    }
+
+    //완료상태 변경 코드
+    public void changeStatus(int status) {
+        this.status = status;
     }
 
 }
