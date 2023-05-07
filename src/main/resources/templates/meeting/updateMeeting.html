@@ -2,12 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>미팅 등록 폼</title>
+    <title>미팅 수정 폼</title>
 </head>
 <body>
-<h1>미팅 등록</h1>
-<form th:object="${meetingDTO}" th:action="@{/meeting/create}" method="post">
+<form th:object="${meetingDTO}" th:action="@{/meeting/update}" method="post">
     <div>
+        <input type="hidden" th:field="*{id}">
         <label for="title">미팅 파티 이름</label>
         <input type="text" id="title" name="school" th:field="*{title}" required>
         <p th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></p>
@@ -39,17 +39,9 @@
     </div>
 
     <div>
-        <button type="submit">가입하기</button>
+        <button type="submit">수정하기</button>
     </div>
 </form>
-<script type="text/javascript">
-    document.getElementById('count').addEventListener('change', function() {
-        let countValue = parseInt(this.value);
-        if (countValue < 2 || countValue > 6) {
-            alert("최소 2명 최대 6명까지 가능합니다.");
-            this.value = 2; // 값이 유효하지 않을 경우 기본값으로 설정
-        }
-    });
-</script>
+
 </body>
 </html>

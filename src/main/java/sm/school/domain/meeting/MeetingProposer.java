@@ -6,23 +6,22 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import sm.school.domain.member.Member;
-import sm.school.dto.MeetingDTO;
+import sm.school.dto.MeetingProposerDTO;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Meeting {
+public class MeetingProposer {
 
     @Id//기본값
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "meet_id")
+    @Column(name = "room_id")
     private Long id;
-
-    @Column(nullable = false)
-    private String title;
 
     @Column(nullable = false)
     private String introduction; //소개 글
@@ -40,23 +39,26 @@ public class Meeting {
     private int count; //미팅인원
 
     @Column(nullable = false)
-    private int status; //모집여부 0: 모집중, 1:모집완료
+    private int status;
 
-    @Column(name = "meetReg")
+    @Column(name = "create_meeting")
     @CreationTimestamp
-    private Date date; //가입일자
+    private Date date;
 
-    @ManyToOne(fetch = FetchType.LAZY) //지연로딩 방식
-    @JoinColumn(name = "mem_id", nullable = false)
-    private Member member;//미팅 생성 회원
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "meet_id") //참여하는 미팅
+    private Meeting meetings;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "mem_id")
+    private Member member;
 
 
-    //미팅 등록
     @Builder
-    public Meeting(Long id,String title, String introduction, String school, String major,
-                   String region, int count, int status, Date date, Member member) {
+    public MeetingProposer(Long id, String introduction, String school, String major,
+                           String region, int count, int status, Date date,
+                           Meeting meetings, Member member) {
         this.id = id;
-        this.title = title;
         this.introduction = introduction;
         this.school = school;
         this.major = major;
@@ -64,39 +66,28 @@ public class Meeting {
         this.count = count;
         this.status = status;
         this.date = date;
+        this.meetings = meetings;
         this.member = member;
     }
 
-    //meeting -> meetingDTO
-    public MeetingDTO toMeetingDTO() {
-        return MeetingDTO.builder()
+    public MeetingProposerDTO toMeetingProposerDTO() {
+        return MeetingProposerDTO.builder()
                 .id(id)
-                .title(title)
                 .introduction(introduction)
                 .school(school)
                 .major(major)
                 .region(region)
                 .count(count)
-                .status(status)
                 .date(date)
+                .status(status)
+                .meetings(meetings)
                 .member(member)
                 .build();
     }
 
-    public void modifyMeeting(String title, String introduction, String school,
-                              String major, String region, int count) {
-        this.title = title;
-        this.introduction = introduction;
-        this.school = school;
-        this.major = major;
-        this.region = region;
-        this.count = count;
-
-    }
-
-    //완료상태 변경 코드
     public void changeStatus(int status) {
         this.status = status;
     }
-
 }
+
+

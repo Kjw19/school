@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import sm.school.domain.meeting.Meeting;
+import sm.school.domain.meeting.MeetingProposer;
 import sm.school.domain.member.Member;
 
 import javax.validation.constraints.Max;
@@ -16,15 +17,12 @@ import java.util.Date;
 @Getter
 @Setter
 @NoArgsConstructor
-public class MeetingDTO {
+public class MeetingProposerDTO {
 
     private Long id;
 
-    @NotEmpty(message = "미팅 파티 이름을 입력하세요")
-    private String title;
-
     @NotEmpty(message = "소개 글을 간략하게 입력하세요")
-    private String introduction;
+    private String introduction; //소개 글
 
     @NotEmpty(message = "학교를 입력하세요")
     private String school; //학교
@@ -40,17 +38,20 @@ public class MeetingDTO {
     @Max(value = 6, message = "최대 6명까지 가능합니다.")
     private int count = 2; //미팅인원
 
-    private int status = 0;
+    private int status = 0; //0이면 신청대기 1이면 매칭성공
 
     private Date date;
 
-    private Member member;//미팅 생성 회원
+    private Meeting meetings;
+
+    private Member member;
+
 
     @Builder
-    public MeetingDTO(Long id, String title, String introduction, String school,
-                      String major, String region, int count, int status, Date date,Member member) {
+    public MeetingProposerDTO(Long id, String introduction, String school, String major,
+                              String region, int count, int status, Date date,
+                              Meeting meetings, Member member) {
         this.id = id;
-        this.title = title;
         this.introduction = introduction;
         this.school = school;
         this.major = major;
@@ -58,13 +59,13 @@ public class MeetingDTO {
         this.count = count;
         this.status = status;
         this.date = date;
+        this.meetings = meetings;
         this.member = member;
     }
 
-    public Meeting toMeetingEntity() {
-        return Meeting.builder()
+    public MeetingProposer toMeetingProposer() {
+        return MeetingProposer.builder()
                 .id(id)
-                .title(title)
                 .introduction(introduction)
                 .school(school)
                 .major(major)
@@ -72,6 +73,7 @@ public class MeetingDTO {
                 .count(count)
                 .status(status)
                 .date(date)
+                .meetings(meetings)
                 .member(member)
                 .build();
     }

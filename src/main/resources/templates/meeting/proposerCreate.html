@@ -2,18 +2,14 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>미팅 등록 폼</title>
+    <title>미팅 신청</title>
 </head>
 <body>
 <h1>미팅 등록</h1>
-<form th:object="${meetingDTO}" th:action="@{/meeting/create}" method="post">
+<form th:object="${meetingProposerDTO}" th:action="@{/meetingPro/create}" method="post">
     <div>
-        <label for="title">미팅 파티 이름</label>
-        <input type="text" id="title" name="school" th:field="*{title}" required>
-        <p th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></p>
-    </div>
-    <div>
-        <label for="introduction">미팅 소개글</label>
+        <input type="hidden" th:field="*{id}">
+        <label for="introduction">신청파티 소개글</label>
         <input type="text" id="introduction" name="introduction" th:field="*{introduction}" required>
         <p th:if="${#fields.hasErrors('introduction')}" th:errors="*{introduction}"></p>
     </div>
