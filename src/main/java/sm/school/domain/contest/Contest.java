@@ -50,7 +50,7 @@ public class Contest {
     private String conPicture;//대문사진
 
 
-    @CreatedDate
+    @CreationTimestamp
     @Column(name = "contest_reg_date")
     private Date date;//대회 생성 날짜
 
@@ -73,6 +73,20 @@ public class Contest {
         this.conPicture = conPicture;
         this.date = date;
         this.regType = regType;
+    }
+    public ContestDTO toContestDTO(){
+        return ContestDTO.builder()
+                .id(id)
+                .member(member)
+                .conName(conName)
+                .conInf(conInf)
+                .contestType(contestType)
+                .locationType(locationType)
+                .location(location)
+                .conPicture(conPicture)
+                .date(date)
+                .regType(regType)
+                .build();
     }
 
 

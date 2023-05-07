@@ -10,7 +10,7 @@
 <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/member/logout}">로그아웃</a>
 <a class="nav-link" th:href="@{/meeting/list}">미팅</a>
 <a class="nav-link" th:href="@{/board/}">게시판</a>
-<a th:href="@{/contest/home}">콘테스트</a>
+<a th:href="@{/contest/}">콘테스트</a>
 
 <div sec:authorize="hasRole('ADMIN')">
     <a th:href="@{/admin}">관리자 페이지</a>

@@ -5,5 +5,9 @@ import org.springframework.stereotype.Repository;
 import sm.school.domain.contest.Contest;
 @Repository
 public interface ContestRepository extends JpaRepository<Contest,Long> {
+    Contest findContestById(Long id);
+
+
+
 
 }

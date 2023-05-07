@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>게시글 수정</title>
+</head>
+<body>
+<h1>게시글 수정</h1>
+<form th:object="${contestDTO}" th:action="@{/contest/update}" method="post">
+    <div>
+        <input type="hidden" th:field="*{id}">
+        <label for="conName">대회 이름</label>
+        <input type="text" id="conName" name="conName" th:field="*{conName}" required>
+        <p th:if="${#fields.hasErrors('conName')}" th:errors="*{conName}"></p>
+    </div>
+    <div>
+        <label for="conInf">내용</label>
+        <textarea id="conInf" name="conInf" th:field="*{conInf}" required></textarea>
+        <p th:if="${#fields.hasErrors('conInf')}" th:errors="*{conInf}"></p>
+    </div>
+    <div>
+        <label for="regType">가입 타입</label>
+        <input type="text" id="regType" name="regType" th:field="*{regType}"/>
+        <p th:if="${#fields.hasErrors('regType')}" th:errors="*{regType}"></p>
+    </div>
+
+    <div>
+        <button type="submit">작성 하기</button>
+    </div>
+
+
+</form>
+</body>
+</html>

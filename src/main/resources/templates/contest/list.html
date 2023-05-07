@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>대회 목록</title>
+</head>
+<body>
+
+<h1>대회 목록</h1>
+<table>
+    <thead>
+    <tr>
+        <th>번호</th>
+        <th>제목</th>
+        <th>작성자</th>
+        <th>대회 타입</th>
+        <th>대회 주소</th>
+        <th>조회수</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="contest : ${contests}">
+        <td th:text="${contest.id}"></td>
+        <td>
+            <a th:href="@{/contest/detail(id=${contest.id})}" th:text="${contest.getConName()}"></a>
+        </td>
+        <td th:text="${contest.getMember().getUserId()}"/>
+        <td th:text="${contest.getContestType()}"></td>
+        <td th:text="${contest.getLocationType()}"></td>
+
+        <td>조회수 추가 필요</td>
+    </tr>
+    </tbody>
+    <a sec:authorize="isAuthenticated()" th:href="@{/contest/create}">콘테스트 생성</a>
+    <a th:href="@{/}">홈으로</a>
+</table>
+
+</body>
+</html>
