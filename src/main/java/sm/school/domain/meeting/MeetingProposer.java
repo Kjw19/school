@@ -79,9 +79,14 @@ public class MeetingProposer {
                 .region(region)
                 .count(count)
                 .date(date)
+                .status(status)
                 .meetings(meetings)
                 .member(member)
                 .build();
+    }
+
+    public void changeStatus(int status) {
+        this.status = status;
     }
 }
 

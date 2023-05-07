@@ -1,20 +1,18 @@
 package sm.school.Controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import sm.school.Service.MeetingProposerService;
 import sm.school.Service.MeetingService;
 import sm.school.Service.MemberDetailsService;
-import sm.school.domain.meeting.MeetingProposer;
 import sm.school.dto.MeetingDTO;
 import sm.school.dto.MeetingProposerDTO;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @Controller
 @RequestMapping("/meetingPro")
@@ -27,11 +25,10 @@ public class MeetingProposerController {
 
 
     @GetMapping("/detail")
-    public String MeetingProposerList(@RequestParam Long id, Model model) {
+    public String MeetingProposerList(@RequestParam Long id, Model model, Authentication authentication) {
 
-        List<MeetingProposerDTO> proposerList = meetingProposerService.selectMeetingProposer(id);
-
-        model.addAttribute("lists", proposerList);
+        model.addAttribute("lists",  meetingProposerService.selectMeetingProposer(id));
+        model.addAttribute("meeting",  meetingService.selectMeeting(id));
 
         return "meeting/proposer";
     }
@@ -67,6 +64,14 @@ public class MeetingProposerController {
         return "redirect:/meeting/detail?id=" + id;
     }
 
+    @RequestMapping("/select")
+    public String proposerSelect(@RequestParam Long id, @RequestParam Long meetId) {
+
+        meetingProposerService.selectProposer(id);
+        meetingProposerService.afterDeleteToSelect(meetId);
+
+        return "redirect:/meetingPro/detail?id=" + meetId;
+    }
     @RequestMapping("/delete")
     public String proposerDelete(@RequestParam Long id) {
 
@@ -77,8 +82,5 @@ public class MeetingProposerController {
         } else {
             return "redirect:/accessBlock";
         }
-
-
-
     }
 }

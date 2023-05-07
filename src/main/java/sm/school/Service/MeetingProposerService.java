@@ -1,6 +1,7 @@
 package sm.school.Service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,12 +26,6 @@ public class MeetingProposerService {
         return meetingProposerRepository.save(meetingProposer);
     }
 
-    public List<MeetingProposer> findAllMeetingProposer() {
-        List<MeetingProposer> meetingProposerList = meetingProposerRepository.findAll();
-
-        return meetingProposerList;
-    }
-
     //meetings의 id값을 통해 MeetingProposer값을 찾는다.
     public List<MeetingProposer> getMeetingProposersByMeetingId(Long id) {
         return meetingProposerRepository.findByMeetingsId(id);
@@ -45,6 +40,21 @@ public class MeetingProposerService {
             meetingProposerDTOList.add(meetingProposer.toMeetingProposerDTO());
         }
         return meetingProposerDTOList;
+    }
+
+    public void selectProposer(Long id) {
+
+        MeetingProposer meetingProposer = meetingProposerRepository.findMeetingProposerById(id);
+        meetingProposer.changeStatus(1);
+    }
+
+    public void afterDeleteToSelect(Long meetId) {
+        List<MeetingProposer> byMeetingsIds = meetingProposerRepository.findByMeetingsId(meetId);
+        for (MeetingProposer byMeetingsId: byMeetingsIds) {
+            if (byMeetingsId.getStatus() == 0) {
+                meetingProposerRepository.deleteById(byMeetingsId.getId());
+            }
+        }
     }
 
     public Boolean deleteProposer(Long id) {
