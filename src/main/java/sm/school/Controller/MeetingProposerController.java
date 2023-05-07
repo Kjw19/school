@@ -5,6 +5,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import sm.school.Service.MeetingProposerService;
 import sm.school.Service.MeetingService;
 import sm.school.Service.MemberDetailsService;
@@ -25,12 +26,12 @@ public class MeetingProposerController {
     private final MeetingService meetingService;
 
 
-    @GetMapping("/")
-    public String MeetingProposerList(Model model) {
+    @GetMapping("/detail")
+    public String MeetingProposerList(@RequestParam Long id, Model model) {
 
-        List<MeetingProposer> proposerList = meetingProposerService.findAllMeetingProposer();
+        List<MeetingProposerDTO> proposerList = meetingProposerService.selectMeetingProposer(id);
 
-        model.addAttribute("Lists", proposerList);
+        model.addAttribute("lists", proposerList);
 
         return "meeting/proposer";
     }
@@ -66,4 +67,18 @@ public class MeetingProposerController {
         return "redirect:/meeting/detail?id=" + id;
     }
 
+    @RequestMapping("/delete")
+    public String proposerDelete(@RequestParam Long id) {
+
+        Boolean deleteProposer = meetingProposerService.deleteProposer(id);
+
+        if (deleteProposer) {
+            return "redirect:/meeting/";
+        } else {
+            return "redirect:/accessBlock";
+        }
+
+
+
+    }
 }

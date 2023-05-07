@@ -8,6 +8,10 @@ import sm.school.domain.meeting.Meeting;
 import sm.school.domain.meeting.MeetingProposer;
 import sm.school.domain.member.Member;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Getter
@@ -17,15 +21,22 @@ public class MeetingProposerDTO {
 
     private Long id;
 
+    @NotEmpty(message = "소개 글을 간략하게 입력하세요")
     private String introduction; //소개 글
 
+    @NotEmpty(message = "학교를 입력하세요")
     private String school; //학교
 
+    @NotEmpty(message = "전공을 입력하세요")
     private String major; // 전공
 
+    @NotEmpty(message = "지역을 입력하세요")
     private String region; //지역
 
-    private int count; //미팅인원
+    @NotNull(message = "미팅인원을 입력하세요")
+    @Min(value = 2, message = "2명이상 이어야 합니다.")
+    @Max(value = 6, message = "최대 6명까지 가능합니다.")
+    private int count = 2; //미팅인원
 
     private int status = 0; //0이면 신청대기 1이면 매칭성공
 

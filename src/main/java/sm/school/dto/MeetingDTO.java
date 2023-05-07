@@ -26,7 +26,7 @@ public class MeetingDTO {
     @NotEmpty(message = "소개 글을 간략하게 입력하세요")
     private String introduction;
 
-    @NotEmpty(message = "학교를 입력하세요")//해당 필드의 값이 null이 아니고, 비어있지 않아야 함
+    @NotEmpty(message = "학교를 입력하세요")
     private String school; //학교
 
     @NotEmpty(message = "전공을 입력하세요")
