@@ -2,11 +2,11 @@ package sm.school.Controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import sm.school.Service.MeetingProposerService;
 import sm.school.Service.MeetingService;
 import sm.school.Service.MemberDetailsService;
 import sm.school.domain.meeting.Meeting;
@@ -23,6 +23,9 @@ import java.util.List;
 public class MeetingController {
 
     private final MeetingService meetingService;
+
+    private final MeetingProposerService meetingProposerService;
+
 
     @GetMapping("/")
     public String MeetingList(Model model) {
@@ -63,6 +66,7 @@ public class MeetingController {
     public String meetingDetail(@RequestParam("id") Long id, Model model) {
 
         model.addAttribute("meeting", meetingService.selectMeeting(id));
+        model.addAttribute("meetingPro", meetingProposerService.getMeetingProposersByMeetingId(id));
 
         return "meeting/detail";
     }

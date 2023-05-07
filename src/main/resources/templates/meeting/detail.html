@@ -47,12 +47,32 @@
     </tr>
   </table>
   <a th:href="@{/meeting/}">목록</a>
+
   <div th:if="${meeting.member.userId} eq ${#authentication.name}">
     <a th:href="@{/meeting/update(id=${meeting.id})}">수정</a>
     <form th:action="@{/meeting/delete}" th:object="${meeting}" method="post" style="display: inline">
       <input type="hidden" th:name="id" th:value="${meeting.id}">
       <button type="button" id="deleteBtn">삭제</button>
     </form>
+  </div>
+
+  <div th:if="${meeting.member.userId} != ${#authentication.name}">
+    <div th:if="${#lists.isEmpty(meetingPro)}">
+      <a th:href="@{/meetingPro/create(id=${meeting.id})}">가입신청</a>
+    </div>
+      <div th:each="proposer : ${meetingPro}">
+        <div th:if="${proposer.member.userId} != ${#authentication.name}">
+          <a th:href="@{/meetingPro/create(id=${meeting.id})}">가입신청</a>
+        </div>
+        <div th:if="${proposer.member.userId} eq ${#authentication.name}">
+          <div th:if="${proposer.status} == 0">
+            <p>가입 대기</p>
+          </div>
+          <div th:if="${proposer.status} == 1">
+            <a th:href="@{/meeting/room}">가입완료</a>
+          </div>
+      </div>
+    </div>
   </div>
   <script>
     $(document).ready(function () {
