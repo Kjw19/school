@@ -56,8 +56,8 @@ public class Study {
     public StudyDTO toStudyDTO() {
         return StudyDTO.builder()
                 .id(id)
-                .study_name(name)
-                .study_content(content)
+                .name(name)
+                .content(content)
                 .date(date)
                 .member(member)
                 .reg_type(reg_type)
