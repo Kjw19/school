@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.One;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import sm.school.domain.member.Member;
+import sm.school.dto.StudyDTO;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -23,15 +24,13 @@ public class Study {
     @Column(name = "study_id")
     private Long id;//기본값
 
-    @NotEmpty //해당 필드의 값이 null이 아니고, 비어있지 않아야 함
-    @Column(unique = true)
-    private String study_name; // 스터디이름
+    @Column(name = "study_name" ,unique = true, nullable = false)
+    private String name; // 스터디이름
 
-    @NotEmpty
-    private String study_content; // 스터디 설명
+    @Column(name = "study_content", nullable = false)
+    private String content; // 스터디 설명
 
-    @NotEmpty
-    @Column(name = "create_study_date")
+    @Column(nullable = false)
     @CreationTimestamp
     private Date date; //스터디 생성일자
 
@@ -39,26 +38,36 @@ public class Study {
     @JoinColumn(name = "mem_id")
     private Member member; //스터디 생성한사람
 
-    @NotEmpty //해당 필드의 값이 null이 아니고, 비어있지 않아야 함
-    @Column(name = "study_reg_type")
-    @ColumnDefault("0")
+    @Column(name = "study_reg_type", nullable = false)
     private int reg_type; // 가입 방식(즉시가입(0), 승인 후 가입(1))
 
     //스터디 생성
     @Builder
-    public Study(Long id, String study_name, String study_content, Date date, Member member, int reg_type) {
+    public Study(Long id, String name, String content, Date date, Member member, int reg_type) {
         this.id = id;
-        this.study_name = study_name;
-        this.study_content = study_content;
+        this.name = name;
+        this.content = content;
         this.date = date;
         this.member = member;
         this.reg_type = reg_type;
     }
 
+    //DTO -> StudyDTO로 변경
+    public StudyDTO toStudyDTO() {
+        return StudyDTO.builder()
+                .id(id)
+                .study_name(name)
+                .study_content(content)
+                .date(date)
+                .member(member)
+                .reg_type(reg_type)
+                .build();
+    }
+
     //스터디 정보 수정
-    public void ModifyStudy(String study_name, String study_content, int reg_type) {
-        this.study_name = study_name;
-        this.study_content = study_content;
+    public void ModifyStudy(String name, String content, int reg_type) {
+        this.name = name;
+        this.content = content;
         this.reg_type = reg_type;
     }
 }

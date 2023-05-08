@@ -35,9 +35,7 @@ public class StudyMember {
     @CreationTimestamp
     private Date date; // 가입일자
 
-    @NotEmpty //해당 필드의 값이 null이 아니고, 비어있지 않아야 함
-    @Column(name = "study_mem_role")
-    @ColumnDefault("1") // 1:기본 회원, 2: 차단 회원
+    @Column(name = "study_mem_role", nullable = false)
     private int role; // 권한
 
     //스터디 회원 가입
