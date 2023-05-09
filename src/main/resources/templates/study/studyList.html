@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>스터디 리스트</title>
+</head>
+<body>
+<h1>미팅 목록</h1>
+<a th:href="@{/study/completeList}">성사된 미팅</a>
+<table>
+    <thead>
+    <tr>
+        <th>스터디 명</th>
+        <th>지역</th>
+        <th>스터디장</th>
+        <th>생성일</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="study : ${Lists}">
+        <div th:if="${study.status == 0}">
+            <td>
+                <a th:href="@{/study/detail(id=${study.id})}" th:text="${study.getName()}"></a>
+            </td>
+            <td th:text="${study.getRegion()}"/>
+            <td th:text="${study.getMember().getUserId()}"/>
+            <td th:text="${#dates.format(study.getDate(), 'yyyy년 MM월 dd일')}"/>
+        </div>
+    </tr>
+    </tbody>
+</table>
+<a sec:authorize="isAuthenticated()" th:href="@{/study/create}">스터디 만들기</a>
+<a th:href="@{/}">홈으로</a>
+
+</body>
+</html>
