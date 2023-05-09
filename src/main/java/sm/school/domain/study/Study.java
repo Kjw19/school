@@ -27,6 +27,10 @@ public class Study {
     @Column(name = "study_name" ,unique = true, nullable = false)
     private String name; // 스터디이름
 
+    private String region; //스터디 지역
+
+    private int status; //현재 모집중인지 상태 (0: 모집중, 1: 마감)
+
     @Column(name = "study_content", nullable = false)
     private String content; // 스터디 설명
 
@@ -39,17 +43,20 @@ public class Study {
     private Member member; //스터디 생성한사람
 
     @Column(name = "study_reg_type", nullable = false)
-    private int reg_type; // 가입 방식(즉시가입(0), 승인 후 가입(1))
+    private int regType; // 가입 방식(즉시가입(0), 승인 후 가입(1))
 
     //스터디 생성
     @Builder
-    public Study(Long id, String name, String content, Date date, Member member, int reg_type) {
+    public Study(Long id, String name, String content, String region, int status,
+                 Date date, Member member, int regType) {
         this.id = id;
         this.name = name;
         this.content = content;
+        this.region = region;
+        this.status = status;
         this.date = date;
         this.member = member;
-        this.reg_type = reg_type;
+        this.regType = regType;
     }
 
     //DTO -> StudyDTO로 변경
@@ -58,16 +65,23 @@ public class Study {
                 .id(id)
                 .name(name)
                 .content(content)
+                .region(region)
+                .status(status)
                 .date(date)
                 .member(member)
-                .reg_type(reg_type)
+                .regType(regType)
                 .build();
     }
 
     //스터디 정보 수정
-    public void ModifyStudy(String name, String content, int reg_type) {
+    public void ModifyStudy(String name, String content, int regType) {
         this.name = name;
         this.content = content;
-        this.reg_type = reg_type;
+        this.regType = regType;
+    }
+
+    //완료로 변경
+    public void ChangeStatus(int status) {
+        this.status = status;
     }
 }
