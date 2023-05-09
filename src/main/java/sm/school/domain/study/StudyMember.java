@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import sm.school.domain.member.Member;
+import sm.school.dto.StudyMemberDTO;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -36,7 +37,7 @@ public class StudyMember {
     private Date date; // 가입일자
 
     @Column(name = "study_mem_role", nullable = false)
-    private int role; // 권한
+    private int role; // 권한 (0: 대기회원, 1: 일반회원)
 
     //스터디 회원 가입
     @Builder
@@ -46,6 +47,17 @@ public class StudyMember {
         this.member = member;
         this.date = date;
         this.role = role;
+    }
+
+    //StudyMember -> StudyMemberDTO
+    public StudyMemberDTO toStudyMemberDTO() {
+        return StudyMemberDTO.builder()
+                .id(id)
+                .study(study)
+                .member(member)
+                .date(date)
+                .role(role)
+                .build();
     }
 
     //스터디 회원 권한 수정
