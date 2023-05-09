@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>스터디 생성</title>
+</head>
+<body>
+<form th:object="${studyDTO}" th:action="@{/study/update}" method="post">
+    <div>
+        <input type="hidden"  id="id" name="id" th:field="*{id}">
+    </div>
+    <div>
+        <label for="name">스터디 이름</label>
+        <input type="text" id="name" name="name" th:field="*{name}" required>
+        <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+    </div>
+    <div>
+        <label for="content">내용</label>
+        <textarea id="content" name="content" th:field="*{content}" required></textarea>
+        <p th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></p>
+    </div>
+    <div>
+        <label for="region">지역</label>
+        <input type="text" id="region" name="region" th:field="*{region}" required>
+        <p th:if="${#fields.hasErrors('region')}" th:errors="*{region}"></p>
+    </div>
+
+    <div>
+        <label for="regType">가입방식</label>
+        <select id="regType" name="regType" th:field="*{regType}" required>
+            <option value="0">즉시가입</option>
+            <option value="1">승인 후 가입</option>
+        </select>
+        <p th:if="${#fields.hasErrors('regType')}" th:errors="*{regType}"></p>
+    </div>
+    <div>
+        <button type="submit">작성 하기</button>
+    </div>
+
+
+</form>
+
+
+</body>
+</html>

@@ -42,6 +42,12 @@ public class StudyService{
         return selectedStudyDTO;
     }
 
+    public void updateStudy(StudyDTO studyDTO) {
+        Study study = studyRepository.findStudyById(studyDTO.getId());
+
+        study.UpdateStudy(studyDTO.getName(), studyDTO.getContent(),studyDTO.getRegion(), studyDTO.getRegType());
+    }
+
     public Boolean deleteStudy(Long id) {
         try {
             studyRepository.deleteById(id);

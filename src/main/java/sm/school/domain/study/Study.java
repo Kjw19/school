@@ -74,9 +74,10 @@ public class Study {
     }
 
     //스터디 정보 수정
-    public void ModifyStudy(String name, String content, int regType) {
+    public void UpdateStudy(String name, String content,String region, int regType) {
         this.name = name;
         this.content = content;
+        this.region = region;
         this.regType = regType;
     }
 
