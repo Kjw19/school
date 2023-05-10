@@ -28,6 +28,11 @@
         <th>대회 장소</th>
         <td th:text="${contest.location}"></td>
     </tr>
+    <tr>
+        <th>가입 방식</th>
+        <td th:if="${contest.regType == 0}">즉시가입</td>
+        <td th:if="${contest.regType == 1}">승인 후 가입</td>
+    </tr>
 
 
     <tr>
@@ -38,8 +43,10 @@
         <th>내용</th>
         <td th:text="${contest.conInf}"></td>
     </tr>
+
 </table>
-<a th:href="@{/board/}">목록으로</a>
+
+<a th:href="@{/contest/}">목록으로</a>
 <!-- 로그인한 사용자와 작성자를 비교-->
 <div th:if="${contest.member.userId} eq ${#authentication.name}">
     <a th:href="@{/contest/update(id=${contest.id})}">수정</a>
@@ -48,7 +55,24 @@
         <button type="button" id="deleteBtn">삭제</button>
     </form>
 </div>
+<a th:href="@{/contestPro/member(id=${contest.getId()})}">성공화면</a>
+<div th:if="${contest.member.userId} != ${#authentication.name}">
+    <div th:if="${#lists.isEmpty(contestPro)}">
+        <a th:href="@{/contestPro/create(id=${contest.id})}">가입신청</a>
+    </div>
+    <div th:each="conMember : ${contestPro}">
+        <div th:if="${conMember.member.userId} != ${#authentication.name}">
+            <a th:href="@{/contestPro/create(id=${contest.id})}">가입신청</a>
+        </div>
+        <div th:if="${conMember.member.userId} eq ${#authentication.name}">
+            <div th:if="${conMember.regType} == 0">
+                <p>가입 대기</p>
+            </div>
 
+        </div>
+
+    </div>
+</div>
 <script>
     $(document).ready(function () {
         $('#deleteBtn').click(function() {

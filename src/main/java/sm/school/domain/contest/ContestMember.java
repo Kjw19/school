@@ -33,18 +33,27 @@ public class ContestMember {
     private Date date;//참여 날짜
 
     @Column(name = "contest_mem_type")
-    @ColumnDefault("1")//1.기본회원 2.차단회원
-    private int regType;//권한
+    @ColumnDefault("1")//1.기본회원 2.차단회원 3.방장
+    private Integer regType;//권한
 
     @Builder
-    public ContestMember(Long id, Contest contest, Member member, Date date, int regType) {
+    public ContestMember(Long id, Contest contest, Member member, Date date, Integer regType) {
         this.id = id;
         this.contest = contest;
         this.member = member;
         this.date = date;
         this.regType = regType;
     }
-    public void Modify_Conmem(int regType){
+    public ContestMemberDTO toContestMemberDTO(){
+        return ContestMemberDTO.builder()
+                .id(id)
+                .contest(contest)
+                .member(member)
+                .date(date)
+                .regType(regType)
+                .build();
+    }
+    public void Modify_Conmem(Integer regType){
         this.regType=regType;
     }
 }

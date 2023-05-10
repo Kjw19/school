@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>미팅 신청</title>
+</head>
+<body>
+<h1>미팅 등록</h1>
+<form th:object="${contestMemberDTO}" th:action="@{/contestPro/create}" method="post">
+
+    <div>
+        <input type="hidden" th:field="*{id}">
+
+    </div>
+
+
+    <div>
+        <button type="submit">가입하기</button>
+    </div>
+</form>
+</body>
+</html>

@@ -53,8 +53,11 @@
 
 
     <div>
-        <label for="regType">가입 타입</label>
-        <input type="text" id="regType" name="regType" th:field="*{regType}"/>
+        <label for="regType">가입방식</label>
+        <select id="regType" name="regType" th:field="*{regType}" required>
+            <option value="0">즉시가입</option>
+            <option value="1">승인 후 가입</option>
+        </select>
 
     </div>
     <button type="submit">등록</button>

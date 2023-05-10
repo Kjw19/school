@@ -10,7 +10,7 @@ import java.util.Date;
 
 @Getter
 @Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 public class ContestDTO {
 
     private Long id;
@@ -22,10 +22,11 @@ public class ContestDTO {
     private String location;
     private String conPicture;
     private Date date;
-    private Integer regType;
+
+    private int regType = 0;
     @Builder
     public ContestDTO(Long id,Member member, String conName, String conInf, ContestType contestType
-            , LocationType locationType, String location, String conPicture,Date date, Integer regType) {
+            , LocationType locationType, String location, String conPicture,Date date, int regType) {
         this.id=id;
         this.member = member;
         this.conName = conName;

@@ -19,8 +19,11 @@
         <p th:if="${#fields.hasErrors('conInf')}" th:errors="*{conInf}"></p>
     </div>
     <div>
-        <label for="regType">가입 타입</label>
-        <input type="text" id="regType" name="regType" th:field="*{regType}"/>
+        <label for="regType">가입방식</label>
+        <select id="regType" name="regType" th:field="*{regType}" required>
+            <option value="0">즉시가입</option>
+            <option value="1">승인 후 가입</option>
+        </select>
         <p th:if="${#fields.hasErrors('regType')}" th:errors="*{regType}"></p>
     </div>
 

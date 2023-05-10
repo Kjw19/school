@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import sm.school.Service.Contest.ContestMemberService;
 import sm.school.Service.Contest.ContestService;
 import sm.school.Service.MemberDetailsService;
 import sm.school.Service.MemberService;
@@ -22,6 +23,8 @@ import javax.validation.Valid;
 @Slf4j
 public class ContestController {
     private final ContestService contestService;
+
+    private final ContestMemberService contestMemberService;
 
 
     @GetMapping("/")
@@ -54,15 +57,16 @@ public class ContestController {
     }
 
     @GetMapping("/detail")
-    public String contestDetail(@RequestParam long id, Model model) {
+    public String contestDetail(@RequestParam("id") Long id, Model model) {
 
 
         model.addAttribute("contest", contestService.selectContest(id));
+        model.addAttribute("contestPro", contestMemberService.findContestMemberByConId(id));
 
         return "contest/contestDetail";
     }
     @GetMapping("/update")
-    public String contestUpdateForm(@RequestParam Long id,Model model,Authentication authentication){
+    public String contestUpdateForm(@RequestParam("id") Long id,Model model,Authentication authentication){
         if (authentication==null){
             return "redirect:/";
         }
