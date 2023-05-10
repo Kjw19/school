@@ -90,9 +90,14 @@ public class MeetingProposerController {
 
         meetingProposerService.selectProposer(id);
         meetingService.completeMeeting(meetId);
-        meetingProposerService.afterDeleteToSelect(meetId);
+        Boolean afterDeleteToSelect = meetingProposerService.afterDeleteToSelect(meetId);
+        if (afterDeleteToSelect) {
+            return "redirect:/meetingPro/detail?id=" + meetId;
+        } else {
+            return "redirect:/errorPage";
+        }
 
-        return "redirect:/meetingPro/detail?id=" + meetId;
+
     }
     @RequestMapping("/delete")
     public String proposerDelete(@RequestParam Long id, @RequestParam Long meetId, Authentication authentication) {
@@ -111,7 +116,7 @@ public class MeetingProposerController {
         if (deleteProposer) {
             return "redirect:/meeting/list";
         } else {
-            return "redirect:/accessBlock";
+            return "redirect:/errorPage";
         }
     }
 }

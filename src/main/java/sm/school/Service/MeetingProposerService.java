@@ -28,7 +28,13 @@ public class MeetingProposerService {
 
     //meetings의 id값을 통해 MeetingProposer값을 찾는다.
     public List<MeetingProposer> getMeetingProposersByMeetingId(Long id) {
-        return meetingProposerRepository.findByMeetingsId(id);
+        List<MeetingProposer> meetingProposerList = meetingProposerRepository.findByMeetingsId(id);
+        List<MeetingProposerDTO> meetingProposerDTOList = new ArrayList<>();
+
+        for (MeetingProposer meetingProposer: meetingProposerList) {
+            meetingProposerDTOList.add(meetingProposer.toMeetingProposerDTO());
+        }
+        return meetingProposerList;
     }
 
     public List<MeetingProposerDTO> selectMeetingProposer(Long id) {
@@ -48,12 +54,17 @@ public class MeetingProposerService {
         meetingProposer.changeStatus(1);
     }
 
-    public void afterDeleteToSelect(Long meetId) {
+    public Boolean afterDeleteToSelect(Long meetId) {
         List<MeetingProposer> byMeetingsIds = meetingProposerRepository.findByMeetingsId(meetId);
-        for (MeetingProposer byMeetingsId: byMeetingsIds) {
-            if (byMeetingsId.getStatus() == 0) {
-                meetingProposerRepository.deleteById(byMeetingsId.getId());
+        try {
+            for (MeetingProposer byMeetingsId : byMeetingsIds) {
+                if (byMeetingsId.getStatus() == 0) {
+                    meetingProposerRepository.deleteById(byMeetingsId.getId());
+                }
             }
+            return true;
+        } catch (EmptyResultDataAccessException e) {
+            return false;
         }
     }
 
