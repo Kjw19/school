@@ -9,6 +9,7 @@
 <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/member/login}">로그인</a>
 <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/member/logout}">로그아웃</a>
 <a class="nav-link" th:href="@{/meeting/list}">미팅</a>
+<a class="nav-link" th:href="@{/study/list}">스터디</a>
 <a class="nav-link" th:href="@{/board/}">게시판</a>
 <a th:href="@{/contest/}">콘테스트</a>
 

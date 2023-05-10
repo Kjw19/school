@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import sm.school.domain.member.Member;
+import sm.school.dto.StudyMemberDTO;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -23,6 +24,10 @@ public class StudyMember {
     @Column(name = "study_mem_id")
     private Long id;//기본값
 
+    @Column(nullable = false)
+    private String introduce; //자기소개
+
+
     @ManyToOne(fetch = FetchType.LAZY) // 지연 로딩 방식
     @JoinColumn(name = "study_id")
     private Study study; //스터디 번호
@@ -35,19 +40,30 @@ public class StudyMember {
     @CreationTimestamp
     private Date date; // 가입일자
 
-    @NotEmpty //해당 필드의 값이 null이 아니고, 비어있지 않아야 함
-    @Column(name = "study_mem_role")
-    @ColumnDefault("1") // 1:기본 회원, 2: 차단 회원
-    private int role; // 권한
+    @Column(name = "study_mem_role", nullable = false)
+    private int role; // 권한 (0: 대기회원, 1: 일반회원)
 
     //스터디 회원 가입
     @Builder
-    public StudyMember(Long id, Study study, Member member, Date date, int role) {
+    public StudyMember(Long id, String introduce ,Study study, Member member, Date date, int role) {
         this.id = id;
+        this.introduce = introduce;
         this.study = study;
         this.member = member;
         this.date = date;
         this.role = role;
+    }
+
+    //StudyMember -> StudyMemberDTO
+    public StudyMemberDTO toStudyMemberDTO() {
+        return StudyMemberDTO.builder()
+                .id(id)
+                .introduce(introduce)
+                .study(study)
+                .member(member)
+                .date(date)
+                .role(role)
+                .build();
     }
 
     //스터디 회원 권한 수정
