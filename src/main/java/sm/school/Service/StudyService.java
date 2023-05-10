@@ -4,8 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sm.school.Repository.StudyMemberRepository;
 import sm.school.Repository.StudyRepository;
 import sm.school.domain.study.Study;
+import sm.school.domain.study.StudyMember;
 import sm.school.dto.StudyDTO;
 
 import java.util.ArrayList;
@@ -17,6 +19,8 @@ import java.util.List;
 public class StudyService{
 
     private final StudyRepository studyRepository;
+
+    private final StudyMemberRepository studyMemberRepository;
 
     public Study createStudy(StudyDTO studyDTO) {
 
@@ -50,6 +54,11 @@ public class StudyService{
 
     public Boolean deleteStudy(Long id) {
         try {
+            List<StudyMember> studyMemberList = studyMemberRepository.findByStudyId(id);
+
+            for (StudyMember studyMember : studyMemberList) { //스터디에 포함되어 있는 스터디 회원 삭제
+                studyMemberRepository.deleteById(studyMember.getId());
+            }
             studyRepository.deleteById(id);
             return true;
         } catch (EmptyResultDataAccessException e) {
