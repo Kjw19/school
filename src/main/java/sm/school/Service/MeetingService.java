@@ -7,7 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 import sm.school.Repository.MeetingProposerRepository;
 import sm.school.Repository.MeetingRepository;
 import sm.school.domain.meeting.Meeting;
+import sm.school.domain.meeting.MeetingProposer;
 import sm.school.dto.MeetingDTO;
+import sm.school.dto.MeetingProposerDTO;
 
 import java.util.List;
 
@@ -56,6 +58,14 @@ public class MeetingService {
     public Boolean DeleteMeeting(Long id) {
 
         try {
+            //미팅 회원 목록 가져오기
+            List<MeetingProposer> meetingProposerList = meetingProposerRepository.findByMeetingsId(id);
+
+            //미팅 회원 목록 삭제
+            for (MeetingProposer meetingProposer: meetingProposerList) {
+                meetingProposerRepository.deleteById(meetingProposer.getId());
+            }
+            //미팅 삭제
             meetingRepository.deleteById(id);
             return true;
         } catch (EmptyResultDataAccessException e) {
