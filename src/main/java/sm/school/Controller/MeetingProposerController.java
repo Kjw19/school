@@ -31,7 +31,7 @@ public class MeetingProposerController {
             return "redirect:/member/login";
         }
         MeetingDTO meetingDTO = meetingService.selectMeeting(id);
-        if (authentication.getName() != meetingDTO.getMember().getUserId()){
+        if (!authentication.getName().equals(meetingDTO.getMember().getUserId())){
             return "redirect:/accessBlock";
         }
         //검증로직 끝
@@ -83,7 +83,7 @@ public class MeetingProposerController {
         }
         MeetingDTO selectMeeting = meetingService.selectMeeting(meetId);
 
-        if (authentication.getName() != selectMeeting.getMember().getUserId()) {
+        if (!authentication.getName().equals(selectMeeting.getMember().getUserId())) {
             return "redirect:/accessBlock";
         }
         //검증로직 끝
@@ -102,7 +102,7 @@ public class MeetingProposerController {
         }
         MeetingDTO selectMeeting = meetingService.selectMeeting(meetId);
 
-        if (authentication.getName() != selectMeeting.getMember().getUserId()) {
+        if (!authentication.getName().equals(selectMeeting.getMember().getUserId())) {
             return "redirect:/accessBlock";
         }
         //검증로직 끝
