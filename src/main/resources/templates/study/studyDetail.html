@@ -35,7 +35,8 @@
     </tr>
   </table>
   <a th:href="@{/study/list}">목록</a>
-
+  <a th:href="@{/studyMember/create(id=${studyDTO.getId()})}">가입신청</a>
+  <a th:href="@{/studyMember/member(id=${studyDTO.getId()})}">성공화면</a>
   <div th:if="${studyDTO.member.userId} eq ${#authentication.name}">
     <a th:href="@{/study/update(id=${studyDTO.id})}">수정</a>
     <form th:action="@{/study/delete}" th:object="${studyDTO}" method="post" style="display: inline">

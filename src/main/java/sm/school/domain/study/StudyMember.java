@@ -24,6 +24,10 @@ public class StudyMember {
     @Column(name = "study_mem_id")
     private Long id;//기본값
 
+    @Column(nullable = false)
+    private String introduce; //자기소개
+
+
     @ManyToOne(fetch = FetchType.LAZY) // 지연 로딩 방식
     @JoinColumn(name = "study_id")
     private Study study; //스터디 번호
@@ -41,8 +45,9 @@ public class StudyMember {
 
     //스터디 회원 가입
     @Builder
-    public StudyMember(Long id, Study study, Member member, Date date, int role) {
+    public StudyMember(Long id, String introduce ,Study study, Member member, Date date, int role) {
         this.id = id;
+        this.introduce = introduce;
         this.study = study;
         this.member = member;
         this.date = date;
@@ -53,6 +58,7 @@ public class StudyMember {
     public StudyMemberDTO toStudyMemberDTO() {
         return StudyMemberDTO.builder()
                 .id(id)
+                .introduce(introduce)
                 .study(study)
                 .member(member)
                 .date(date)

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>스터디 가입</title>
+</head>
+<body>
+<form th:object="${studyMemberDTO}" th:action="@{/studyMember/create}" method="post">
+<div>
+    <input type="hidden" id="id" value="id" th:field="*{id}">
+</div>
+<div>
+    <label for="introduce">자기 소개글</label>
+    <input type="text" id="introduce" name="introduce" th:field="*{introduce}" required>
+    <p th:if="${#fields.hasErrors('introduce')}" th:errors="*{introduce}"></p>
+</div>
+
+<div>
+    <button type="submit">가입하기</button>
+</div>
+</form>
+</body>
+</html>
