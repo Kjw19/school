@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+<h1>전체 미팅 목록</h1>
+<table>
+    <thead>
+    <tr>
+        <th>번호</th>
+        <th>제목</th>
+        <th>소개</th>
+        <th>학교</th>
+        <th>전공</th>
+        <th>아이디</th>
+        <th>가입일</th>
+        <th>상태</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="meeting : ${List}">
+        <td th:text="${meeting.id}"></td>
+        <td>
+            <a th:href="@{/meeting/detail(id=${meeting.id})}"  th:text="${meeting.title}"/>
+        </td>
+        <td th:text="${meeting.introduction}"></td>
+        <td th:text="${meeting.school}"></td>
+        <td th:text="${meeting.major}"></td>
+        <td th:text="${meeting.member.userId}">
+        <td th:text="${#dates.format(meeting.getDate(), 'yyyy-MM-dd')}"/>
+        <td th:if="${meeting.status} == 0">모집중</td>
+        <td th:if="${meeting.status} == 1">모집완료</td>
+        <td>
+            <form th:action="@{/admin/deleteMeeting}" method="post" style="display: inline;" id="deleteForm">
+                <input type="hidden" th:name="id" th:value="${meeting.id}">
+                <button type="button" id="changeBtn">삭제</button>
+            </form>
+        </td>
+
+        </td></tr>
+    </tbody>
+    <a th:href="@{/admin/}">관리자페이지</a>
+    <a th:href="@{/}">홈으로</a>
+</table>
+<script>
+    $(document).ready(function () {
+        $('#changeBtn').click(function() {
+            if (confirm("삭제하시겠습니까?")){
+                $('#deleteForm').submit();
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
