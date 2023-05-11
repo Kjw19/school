@@ -1,6 +1,7 @@
 package sm.school.domain.member;
 
 import lombok.*;
+import sm.school.dto.PersonalInfDTO;
 
 
 import javax.persistence.Column;
@@ -28,5 +29,13 @@ public class PersonalInf {
         this.name = name;
         this.birth = birth;
         this.phone = phone;
+    }
+
+    public PersonalInfDTO toPersonalInfDTO() {
+        return PersonalInfDTO.builder()
+                .name(name)
+                .birth(birth)
+                .phone(phone)
+                .build();
     }
 }

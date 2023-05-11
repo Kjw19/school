@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
+import sm.school.dto.MemberDTO;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -35,7 +36,7 @@ public class Member {
 
 
     @Column(name = "memRole",nullable = false)
-    @ColumnDefault("1")//1: 일반회원, 2:정지회원, 3:탈퇴회원
+    @ColumnDefault("1")//0: 정지회원, 1:일반 회원
     private Integer role;
 
     @Column(name = "memReg")
@@ -80,5 +81,24 @@ public class Member {
     //비밀번호 변경 메서드
     public void updatePasswd(String passwd) {
         this.passwd = passwd;
+    }
+
+    public void changeRole(int role) {
+        this.role = role;
+    }
+
+    public MemberDTO toMemberDTO() {
+        return MemberDTO.builder()
+                .id(id)
+                .userId(userId)
+                .passwd(passwd)
+                .school(school)
+                .major(major)
+                .date(date)
+                .role(role)
+                .mem_profile(mem_profile)
+                .personalInfDTO(personalInf.toPersonalInfDTO())
+                .addressDTO(address.toAddressDTO())
+                .build();
     }
 }

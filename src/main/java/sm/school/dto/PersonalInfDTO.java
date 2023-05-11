@@ -22,9 +22,14 @@ public class PersonalInfDTO {
     @NotEmpty(message = "전화번호는 필수입니다.")
     private String phone;
 
+    @Builder
+    public PersonalInfDTO(String name, String birth, String phone) {
+        this.name = name;
+        this.birth = birth;
+        this.phone = phone;
+    }
 
     //PersonalInf를 PersonalInfDTO로 변환하는 생성자
-    @Builder
     public PersonalInfDTO(PersonalInf personalInf) {
         this.name = personalInf.getName();
         this.birth = personalInf.getBirth();
