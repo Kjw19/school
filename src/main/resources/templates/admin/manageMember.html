@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+<h1>전체 회원 목록</h1>
+<table>
+    <thead>
+    <tr>
+        <th>회원 번호</th>
+        <th>아이디</th>
+        <th>이름</th>
+        <th>학교</th>
+        <th>전공</th>
+        <th>전화번호</th>
+        <th>가입일</th>
+        <th>권한</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="member : ${List}">
+        <td th:text="${member.id}"></td>
+        <td th:text="${member.userId}"></td>
+        <td th:text="${member.personalInfDTO.name}"></td>
+        <td th:text="${member.school}"></td>
+        <td th:text="${member.major}"></td>
+        <td th:text="${member.personalInfDTO.phone}">
+        <td th:text="${#dates.format(member.getDate(), 'yyyy-MM-dd')}"/>
+        <td th:if="${member.role} == 1">일반 회원</td>
+        <td th:if="${member.role} == 0">정지 회원</td>
+        <td>
+            <form th:action="@{/admin/changeRole}" method="post" style="display: inline;" id="changeForm">
+                <input type="hidden" th:name="id" th:value="${member.id}">
+                <button type="button" id="changeBtn">권한변경</button>
+            </form>
+        </td>
+
+        </td></tr>
+    </tbody>
+    <a th:href="@{/admin/}">관리자페이지</a>
+    <a th:href="@{/}">홈으로</a>
+</table>
+<script>
+    $(document).ready(function () {
+        $('#changeBtn').click(function() {
+            if (confirm("권한을 변경 하시겠습니까?")){
+                $('#changeForm').submit();
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
