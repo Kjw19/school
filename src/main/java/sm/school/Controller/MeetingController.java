@@ -84,11 +84,8 @@ public class MeetingController {
 
     @RequestMapping("/delete")
     public String deleteMeeting(@RequestParam("id") Long id) {
-        Boolean deleteMeeting = meetingService.deleteMeeting(id);
-        if (deleteMeeting) {
-            return "redirect:/meeting/list";
-        } else {
-            return "redirect:/main";
-        }
+        meetingService.deleteMeeting(id);
+
+        return "redirect:/meeting/list";
     }
 }

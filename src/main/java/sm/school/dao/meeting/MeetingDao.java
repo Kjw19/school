@@ -15,4 +15,6 @@ public interface MeetingDao {
     Meeting findMeetingById(Long id);
 
     void deleteById(Long id);
+
+    Boolean existsById(Long id);
 }

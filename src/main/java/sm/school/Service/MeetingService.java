@@ -1,10 +1,10 @@
 package sm.school.Service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sm.school.Service.commonError.DataNotFoundException;
 import sm.school.Service.commonError.MemberNotExistException;
 import sm.school.dao.meeting.JpaMeetingDao;
 import sm.school.dao.meeting.JpaMeetingProposerDao;
@@ -39,7 +39,6 @@ public class MeetingService {
             throw new AccessDeniedException("권한이 없습니다.");
         }
     }
-
 
     public Meeting createMeeting(MeetingDTO meetingDTO, Authentication authentication) {
 
@@ -77,23 +76,19 @@ public class MeetingService {
     //참여자 삭제 서비스 로직
     public void deleteProposerIfAuthorized(Long proposerId, Long meetId, String userId) throws AccessDeniedException {
 
-        validateUserAccess(meetId, userId);
+        validateUserAccess(meetId, userId);//검증 로직
 
-        Boolean deleteProposer = deleteProposer(proposerId);
-        if (!deleteProposer) {
-            throw new RuntimeException("삭제 실패");
-        }
+        deleteProposer(proposerId);//회원삭제로직
     }
 
 
     //참가자 삭제
-    public Boolean deleteProposer(Long id) {
-        try {
-            jpaMeetingProposerDao.deleteById(id);
-            return true;
-        } catch (EmptyResultDataAccessException e) {
-            return false;
+    public void deleteProposer(Long id) {
+        //데이터가 존재하는지 체크
+        if (!jpaMeetingProposerDao.existsById(id)) {
+            throw new MemberNotExistException();
         }
+        jpaMeetingProposerDao.deleteById(id);
     }
 
 
@@ -125,9 +120,12 @@ public class MeetingService {
     }
 
     //미팅 삭제
-    public Boolean deleteMeeting(Long id) {
+    public void deleteMeeting(Long id) {
 
-        try {
+        //데이터가 존재하는지 체크
+        if (!jpaMeetingDao.existsById(id)) {
+            throw new DataNotFoundException();
+        }
             //미팅 회원 목록 가져오기
             List<MeetingProposer> meetingProposerList = jpaMeetingProposerDao.findByMeetingsId(id);
 
@@ -140,18 +138,13 @@ public class MeetingService {
             }
             //미팅 삭제
             jpaMeetingDao.deleteById(id);
-            return true;
-        } catch (EmptyResultDataAccessException e) {
-            //삭제하려는 미팅이 이미 존재하지 않을 때
-            return false;
-        }
     }
 
     //미팅 완료상태 변경
     public void completeMeeting(Long meetId) {
         Meeting meeting = jpaMeetingDao.findMeetingById(meetId);
 
-        meeting.changeStatus(1);
+        meeting.changeStatus(SELECTED);
     }
 
     //MeetingProposer

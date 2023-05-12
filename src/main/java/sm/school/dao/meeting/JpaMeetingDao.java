@@ -39,4 +39,9 @@ public class JpaMeetingDao implements MeetingDao{
         meetingRepository.deleteById(id);
     }
 
+    @Override
+    public Boolean existsById(Long id) {
+        return meetingRepository.existsById(id);
+    }
+
 }

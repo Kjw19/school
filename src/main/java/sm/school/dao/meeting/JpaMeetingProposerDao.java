@@ -44,4 +44,9 @@ public class JpaMeetingProposerDao implements MeetingProposerDao{
     public List<MeetingProposer> findByMeetingsIdAndStatus(Long id, int status) {
         return meetingProposerRepository.findByMeetingsIdAndStatus(id, status);
     }
+
+    @Override
+    public Boolean existsById(Long id) {
+        return meetingProposerRepository.existsById(id);
+    }
 }

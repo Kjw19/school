@@ -21,16 +21,14 @@ public class MeetingProposerController {
 
 
     @GetMapping("/detail")
-    public String MeetingProposerList(@RequestParam Long id, Model model, Authentication authentication) throws AccessDeniedException {
-        try {
+    public String meetingProposerList(@RequestParam Long id, Model model, Authentication authentication) throws AccessDeniedException {
+
             MeetingProposerDetailDTO meetingProposerDetail = meetingService.getMeetingProposerDetail(id, authentication.getName());
             model.addAttribute("meeting", meetingProposerDetail.getMeetingDTO());
             model.addAttribute("lists", meetingProposerDetail.getMeetingProposerDTOList());
 
             return "meeting/proposer";
-        } catch (AccessDeniedException e) {
-            return "redirect:/accessBlock";
-        }
+
 
     }
 
@@ -50,28 +48,20 @@ public class MeetingProposerController {
     }
 
     @RequestMapping("/select")
-    public String proposerSelect(@RequestParam Long id, @RequestParam Long meetId, Authentication authentication) {
+    public String selectProposer(@RequestParam Long id, @RequestParam Long meetId, Authentication authentication) throws AccessDeniedException {
 
-        try {
-            meetingService.approvalProposer(id, meetId, authentication.getName());
-            return "redirect:/meetingPro/detail?id=" + meetId;
-        } catch (AccessDeniedException e) {
-            return "redirect:/accessBlock";
-        } catch (Exception e) {
-            return "redirect:/errorPage";
-        }
+        meetingService.approvalProposer(id, meetId, authentication.getName());
+
+        return "redirect:/meetingPro/detail?id=" + meetId;
     }
 
+
+
     @RequestMapping("/delete")
-    public String proposerDelete(@RequestParam Long id, @RequestParam Long meetId, Authentication authentication) {
-        try {
+    public String proposerDelete(@RequestParam Long id, @RequestParam Long meetId, Authentication authentication) throws AccessDeniedException {
             meetingService.deleteProposerIfAuthorized(id, meetId, authentication.getName());
+
             return "redirect:/meetingPro/detail?id=" + meetId;
 
-        } catch (AccessDeniedException e) {
-            return "redirect:/accessBlock";
-        } catch (Exception e) {
-            return "redirect:/errorPage";
-        }
     }
 }

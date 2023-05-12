@@ -19,4 +19,5 @@ public interface MeetingProposerDao {
 
     List<MeetingProposer> findByMeetingsIdAndStatus(Long id, int status);
 
+    Boolean existsById(Long id);
 }
