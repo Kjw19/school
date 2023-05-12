@@ -9,7 +9,7 @@ import sm.school.domain.member.Member;
 import javax.persistence.*;
 
 //@Getter
-@Entity
+//@Entity
 
 public abstract class ChatRead {
     @Id
