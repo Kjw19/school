@@ -8,9 +8,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import sm.school.Service.MeetingProposerService;
 import sm.school.Service.MeetingService;
 import sm.school.Service.MemberService;
+import sm.school.Service.StudyService;
 import sm.school.domain.enumType.MemRole;
 import sm.school.dto.MemberDTO;
 
@@ -24,8 +24,7 @@ public class AdminController {
 
     private final MemberService memberService;
     private final MeetingService meetingService;
-    private final MeetingProposerService meetingProposerService;
-
+    private final StudyService studyService;
 
     @GetMapping
 
@@ -114,4 +113,42 @@ public class AdminController {
             return "redirect:/errorPage";
         }
     }
+
+    @GetMapping("/study")
+    public String manageStudy(Model model, Authentication authentication) {
+
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+
+        boolean isAdmin = authorities.stream()
+                .anyMatch(grantedAuthority -> MemRole.ADMIN.getValue().equals(grantedAuthority.getAuthority()));
+
+        if (!isAdmin) {
+            return "accessBlock";
+        }
+
+        model.addAttribute("List", studyService.findAllStudy());
+
+        return "admin/manageStudy";
+    }
+
+    @RequestMapping("deleteStudy")
+    public String deleteStudy(@RequestParam("id") Long id, Authentication authentication) {
+
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+
+        boolean isAdmin = authorities.stream()
+                .anyMatch(grantedAuthority -> MemRole.ADMIN.getValue().equals(grantedAuthority.getAuthority()));
+
+        if (!isAdmin) {
+            return "accessBlock";
+        }
+
+        Boolean deleteStudy = studyService.deleteStudy(id);
+        if (deleteStudy) {
+            return "redirect:/admin/study";
+        } else {
+            return "redirect:/errorPage";
+        }
+    }
+
 }
