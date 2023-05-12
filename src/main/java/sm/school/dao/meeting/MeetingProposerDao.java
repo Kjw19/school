@@ -16,4 +16,7 @@ public interface MeetingProposerDao {
     List<MeetingProposer> findByMeetingsId(Long id);
 
     void deleteById(Long id);
+
+    List<MeetingProposer> findByMeetingsIdAndStatus(Long id, int status);
+
 }
