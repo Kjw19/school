@@ -10,7 +10,6 @@ import java.util.List;
 public interface MeetingProposerRepository extends JpaRepository<MeetingProposer, Long> {
 
 
-    MeetingProposer findMeetingProposerById(Long id);
 
     List<MeetingProposer> findByMeetingsId(Long id);
 }

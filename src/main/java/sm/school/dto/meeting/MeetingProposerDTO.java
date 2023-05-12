@@ -1,4 +1,4 @@
-package sm.school.dto;
+package sm.school.dto.meeting;
 
 import lombok.Builder;
 import lombok.Getter;

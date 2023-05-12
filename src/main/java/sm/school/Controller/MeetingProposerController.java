@@ -5,40 +5,33 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import sm.school.Service.MeetingProposerService;
 import sm.school.Service.MeetingService;
-import sm.school.Service.MemberDetailsService;
-import sm.school.dto.MeetingDTO;
-import sm.school.dto.MeetingProposerDTO;
+import sm.school.dto.meeting.MeetingProposerDTO;
+import sm.school.dto.meeting.MeetingProposerDetailDTO;
 
 import javax.validation.Valid;
-import java.util.List;
+import java.nio.file.AccessDeniedException;
 
 @Controller
 @RequestMapping("/meetingPro")
 @RequiredArgsConstructor
 public class MeetingProposerController {
 
-    private final MeetingProposerService meetingProposerService;
-
     private final MeetingService meetingService;
 
 
     @GetMapping("/detail")
-    public String MeetingProposerList(@RequestParam Long id, Model model, Authentication authentication) {
+    public String MeetingProposerList(@RequestParam Long id, Model model, Authentication authentication) throws AccessDeniedException {
+        try {
+            MeetingProposerDetailDTO meetingProposerDetail = meetingService.getMeetingProposerDetail(id, authentication.getName());
+            model.addAttribute("meeting", meetingProposerDetail.getMeetingDTO());
+            model.addAttribute("lists", meetingProposerDetail.getMeetingProposerDTOList());
 
-        MeetingDTO meetingDTO = meetingService.selectMeeting(id);
-        if (!authentication.getName().equals(meetingDTO.getMember().getUserId())){
+            return "meeting/proposer";
+        } catch (AccessDeniedException e) {
             return "redirect:/accessBlock";
         }
-        //검증로직 끝
 
-        List<MeetingProposerDTO> proposerDTOS = meetingProposerService.selectMeetingProposer(id);
-
-        model.addAttribute("lists",  proposerDTOS);
-        model.addAttribute("meeting",  meetingDTO);
-
-        return "meeting/proposer";
     }
 
     @GetMapping("/create")
@@ -51,7 +44,7 @@ public class MeetingProposerController {
     public String createMeetingProposer(@RequestParam("id") Long id, @Valid MeetingProposerDTO meetingProposerDTO,
                                         Authentication authentication) {
 
-        meetingProposerService.createMeetingProposer(meetingProposerDTO, authentication, id);
+        meetingService.createMeetingProposer(meetingProposerDTO, authentication, id);
 
         return "redirect:/meeting/detail?id=" + id;
     }
@@ -59,36 +52,25 @@ public class MeetingProposerController {
     @RequestMapping("/select")
     public String proposerSelect(@RequestParam Long id, @RequestParam Long meetId, Authentication authentication) {
 
-        MeetingDTO selectMeeting = meetingService.selectMeeting(meetId);
-
-        if (!authentication.getName().equals(selectMeeting.getMember().getUserId())) {
-            return "redirect:/accessBlock";
-        }
-        //검증로직 끝
-
-        meetingProposerService.selectProposer(id);
-        meetingService.completeMeeting(meetId);
-        Boolean afterDeleteToSelect = meetingProposerService.afterDeleteToSelect(meetId);
-        if (afterDeleteToSelect) {
+        try {
+            meetingService.ProposerSelect(id, meetId, authentication.getName());
             return "redirect:/meetingPro/detail?id=" + meetId;
-        } else {
+        } catch (AccessDeniedException e) {
+            return "redirect:/accessBlock";
+        } catch (Exception e) {
             return "redirect:/errorPage";
         }
     }
 
     @RequestMapping("/delete")
     public String proposerDelete(@RequestParam Long id, @RequestParam Long meetId, Authentication authentication) {
-        MeetingDTO selectMeeting = meetingService.selectMeeting(meetId);
+        try {
+            meetingService.ProposerDelete(id, meetId, authentication.getName());
+            return "redirect:/meetingPro/detail?id=" + meetId;
 
-        if (!authentication.getName().equals(selectMeeting.getMember().getUserId())) {
+        } catch (AccessDeniedException e) {
             return "redirect:/accessBlock";
-        }
-        //검증로직 끝
-        Boolean deleteProposer = meetingProposerService.deleteProposer(id);
-
-        if (deleteProposer) {
-            return "redirect:/meeting/list";
-        } else {
+        } catch (Exception e) {
             return "redirect:/errorPage";
         }
     }

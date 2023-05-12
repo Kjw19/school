@@ -46,7 +46,7 @@
       <td th:text="${meeting.member.userId}"></td>
     </tr>
   </table>
-  <a th:href="@{/meeting/}">목록</a>
+  <a th:href="@{/meeting/list}">목록</a>
 
   <div th:if="${meeting.member.userId} eq ${#authentication.name}">
     <a th:href="@{/meeting/update(id=${meeting.id})}">수정</a>

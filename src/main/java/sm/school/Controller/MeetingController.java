@@ -6,12 +6,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import sm.school.Service.MeetingProposerService;
 import sm.school.Service.MeetingService;
-import sm.school.Service.MemberDetailsService;
-import sm.school.domain.meeting.Meeting;
-import sm.school.domain.member.Member;
-import sm.school.dto.MeetingDTO;
+import sm.school.dto.meeting.MeetingDTO;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -24,15 +20,14 @@ public class MeetingController {
 
     private final MeetingService meetingService;
 
-    private final MeetingProposerService meetingProposerService;
 
 
     @GetMapping("/list")
     public String MeetingList(Model model) {
 
-        List<Meeting> meeting = meetingService.findMeeting();
+        List<MeetingDTO> meetingDTOList = meetingService.findMeeting();
 
-        model.addAttribute("meetings", meeting);
+        model.addAttribute("meetings", meetingDTOList);
 
         return "meeting/list";
     }
@@ -40,9 +35,9 @@ public class MeetingController {
     @GetMapping("/completeList")
     public String MeetingCompleteList(Model model) {
 
-        List<Meeting> meeting = meetingService.findMeeting();
+        List<MeetingDTO> meetingDTOList = meetingService.findMeeting();
 
-        model.addAttribute("meetings", meeting);
+        model.addAttribute("meetings", meetingDTOList);
 
         return "meeting/completeList";
     }
@@ -64,8 +59,8 @@ public class MeetingController {
     @GetMapping("/detail")
     public String meetingDetail(@RequestParam("id") Long id, Model model) {
 
-        model.addAttribute("meeting", meetingService.selectMeeting(id));
-        model.addAttribute("meetingPro", meetingProposerService.getMeetingProposersByMeetingId(id));
+        model.addAttribute("meeting", meetingService.detailMeeting(id));
+        model.addAttribute("meetingPro", meetingService.selectMeetingProposer(id));
 
         return "meeting/detail";
     }
@@ -74,9 +69,8 @@ public class MeetingController {
     public String updateMeetingFrom(@RequestParam("id") Long id, Model model) {
 
 
-        MeetingDTO meetingDTO = meetingService.selectMeeting(id);
-        model.addAttribute("meetingDTO",  meetingService.selectMeeting(id));
-
+        MeetingDTO meetingDTO = meetingService.detailMeeting(id);
+        model.addAttribute("meetingDTO", meetingDTO);
         return "meeting/updateMeeting";
     }
 
@@ -88,7 +82,7 @@ public class MeetingController {
         return "redirect:/meeting/list";
     }
 
-    @RequestMapping("/delete")
+    @DeleteMapping("/delete")
     public String deleteMeeting(@RequestParam("id") Long id) {
         Boolean deleteMeeting = meetingService.DeleteMeeting(id);
         if (deleteMeeting) {

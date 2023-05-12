@@ -21,7 +21,7 @@ import java.util.List;
 @RequestMapping("/admin")
 @RequiredArgsConstructor
 public class AdminController {
-
+/*
     private final MemberService memberService;
     private final MeetingService meetingService;
     private final StudyService studyService;
@@ -88,5 +88,7 @@ public class AdminController {
             return "redirect:/errorPage";
         }
     }
+
+ */
 
 }

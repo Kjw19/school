@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import sm.school.domain.member.Member;
-import sm.school.dto.MeetingDTO;
+import sm.school.dto.meeting.MeetingDTO;
 
 import javax.persistence.*;
 import java.util.Date;

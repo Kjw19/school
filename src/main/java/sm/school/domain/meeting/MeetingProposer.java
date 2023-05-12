@@ -6,12 +6,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import sm.school.domain.member.Member;
-import sm.school.dto.MeetingProposerDTO;
+import sm.school.dto.meeting.MeetingProposerDTO;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Getter
