@@ -28,7 +28,6 @@
         <td th:text="${list.count}"/>
         <td th:text="${list.member.userId}"/>
         <td th:text="${#dates.format(list.date, 'yyyy년 MM월 dd일')}"/>
-        <td th:utext="${list.status}"></td>
         <td th:if="${list.status == 1}">승인완료</td>
         <td th:if="${list.status == 0}">대기중</td>
         <td th:if="${list.status == 0}">
@@ -37,7 +36,7 @@
             <input type="hidden" th:name="meetId" th:value="${meeting.id}">
             <button type="button" id="selectBtn">수락</button>
         </form>
-            <form th:action="@{/meetingPro/delete}" th:object="${list}" method="post" style="display:inline;" id="deleteForm">
+        <form th:action="@{/meetingPro/delete}" th:object="${list}" method="post" style="display:inline;" id="deleteForm">
             <input type="hidden" th:name="id" th:value="${list.id}" />
             <input type="hidden" th:name="meetId" th:value="${meeting.id}">
             <button type="button" id="deleteBtn">거절</button>

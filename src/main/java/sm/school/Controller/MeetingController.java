@@ -43,7 +43,7 @@ public class MeetingController {
     }
 
     @GetMapping("/create")
-    public String CreateMeetForm(@ModelAttribute("meetingDTO") MeetingDTO meetingDTO, Authentication authentication) {
+    public String CreateMeetForm(@ModelAttribute("meetingDTO") MeetingDTO meetingDTO) {
 
         return "meeting/createMeeting";
     }
@@ -84,7 +84,7 @@ public class MeetingController {
 
     @RequestMapping("/delete")
     public String deleteMeeting(@RequestParam("id") Long id) {
-        Boolean deleteMeeting = meetingService.DeleteMeeting(id);
+        Boolean deleteMeeting = meetingService.deleteMeeting(id);
         if (deleteMeeting) {
             return "redirect:/meeting/list";
         } else {
