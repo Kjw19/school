@@ -1,7 +1,6 @@
 package sm.school.Controller;
 
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -9,16 +8,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import sm.school.Service.BoardService;
-import sm.school.Service.MemberDetailsService;
 import sm.school.dto.BoardDTO;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @Controller
 @RequestMapping("/board")
 @RequiredArgsConstructor
-@Slf4j
 public class BoardController {
 
     private final BoardService boardService;
@@ -32,26 +28,20 @@ public class BoardController {
     }
 
     @GetMapping("/create")
-    public String CreateBoardForm(@ModelAttribute("boardDTO") BoardDTO boardDTO, Authentication authentication) {
-        if (authentication == null) {
-            return "redirect:/member/login";
-        }
+    public String CreateBoardForm(@ModelAttribute("boardDTO") BoardDTO boardDTO) {
         return "board/createBoard";
     }
 
     @PostMapping("/create")
     public String CreateBoard(@Valid BoardDTO boardDTO, Authentication authentication) {
-        //사용자 정보를 받아 memberDetails에 저장
-        boardDTO.setMember(((MemberDetailsService) authentication.getPrincipal()).getMember()); //코드 간소화
 
-        boardService.createBoard(boardDTO);
+        boardService.createBoard(boardDTO, authentication);
 
         return "redirect:/board/";
     }
 
     @GetMapping("/detail")
     public String boardDetail(@RequestParam("id") long id, Model model) {
-
 
         model.addAttribute("board", boardService.selectBoard(id));
 
@@ -61,8 +51,7 @@ public class BoardController {
     @GetMapping("/update")
     public String boardUpdateForm(@RequestParam long id, Model model) {
 
-        BoardDTO boardDTO = boardService.selectBoard(id);
-        model.addAttribute("boardDTO", boardDTO);
+        model.addAttribute("boardDTO", boardService.selectBoard(id));
 
         return "board/boardUpdate";
     }
@@ -77,12 +66,7 @@ public class BoardController {
     @RequestMapping("/delete")
     public String boardDelete(@RequestParam("id") Long id) {
 
-        Boolean deleteBoard = boardService.deleteBoard(id);
-
-        if (deleteBoard){
-            return "redirect:/board/";
-        }else {
-            return "redirect:/errorPage";
-        }
+       boardService.deleteBoard(id);
+        return "redirect:/board/list";
     }
 }

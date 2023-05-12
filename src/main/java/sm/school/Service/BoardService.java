@@ -1,10 +1,11 @@
 package sm.school.Service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sm.school.Repository.BoardRepository;
+import sm.school.Service.commonError.DataNotFoundException;
+import sm.school.dao.board.JpaBoardDao;
 import sm.school.domain.board.Board;
 import sm.school.dto.BoardDTO;
 
@@ -15,43 +16,43 @@ import java.util.List;
 @Transactional
 public class BoardService {
 
-    private final BoardRepository boardRepository;
+    private final JpaBoardDao jpaBoardDao;
 
-    public Board createBoard(BoardDTO boardDTO) {
+    private final CommonService commonService;
+
+
+    public Board createBoard(BoardDTO boardDTO, Authentication authentication) {
+        boardDTO.setMember(commonService.getMemberFromAuthentication(authentication));
         Board board = boardDTO.toBoard();
-
-        return boardRepository.save(board);
+        return jpaBoardDao.save(board);
     }
 
     public void updateBoard(BoardDTO boardDTO) {
-
-        Board board = boardRepository.findBoardById(boardDTO.getId());
-
+        Board board = jpaBoardDao.findBoardById(boardDTO.getId());
         board.updateBoard(boardDTO.getTitle(), boardDTO.getContent(), boardDTO.getPicture());
     }
 
+    @Transactional(readOnly = true)
     public List<Board> findBoard() {
-        List<Board> boardList = boardRepository.findAll();
+        List<Board> boardList = jpaBoardDao.findAll();
 
         return boardList;
     }
 
+    @Transactional(readOnly = true)
     public BoardDTO selectBoard(Long id) {
-        Board board = boardRepository.findBoardById(id);
 
+        Board board = jpaBoardDao.findBoardById(id);
         BoardDTO boardDTO = board.toBoardDTO();
-
         return boardDTO;
     }
 
-    public Boolean deleteBoard(Long id) {
-        try {
-            boardRepository.deleteById(id);
-            return true;
-        } catch (EmptyResultDataAccessException e) {
-            //삭제하려는 게시글이 이미 존재하지 않을 때 나타냄
-            return false;
+    public void deleteBoard(Long id) {
+
+        if (!jpaBoardDao.existsById(id)) {
+            throw new DataNotFoundException();
         }
+        jpaBoardDao.deleteById(id);
     }
 }
 
