@@ -7,7 +7,7 @@ import sm.school.domain.board.Board;
 
 import javax.persistence.*;
 
-@Entity
+//@Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Board_Reply extends Reply {

@@ -8,7 +8,7 @@ import sm.school.domain.member.Member;
 
 import javax.persistence.*;
 
-@Entity
+//@Entity
 @Getter
 
 public abstract class ChatMember {

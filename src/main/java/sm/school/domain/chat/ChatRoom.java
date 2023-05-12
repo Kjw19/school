@@ -14,7 +14,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.util.Date;
 
-@Entity
+//@Entity
 @Getter
 
 public abstract class ChatRoom {

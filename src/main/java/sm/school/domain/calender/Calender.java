@@ -5,7 +5,7 @@ import sm.school.domain.embeded.CalenderPeriod;
 
 import javax.persistence.*;
 
-@Entity
+//@Entity
 @Getter
 public abstract class Calender {
 
