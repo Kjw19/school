@@ -6,7 +6,6 @@ import sm.school.domain.meeting.MeetingProposer;
 
 import java.util.List;
 
-@Repository
 public interface MeetingProposerRepository extends JpaRepository<MeetingProposer, Long> {
 
 
