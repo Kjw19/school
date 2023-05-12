@@ -82,7 +82,7 @@ public class MeetingController {
         return "redirect:/meeting/list";
     }
 
-    @DeleteMapping("/delete")
+    @RequestMapping("/delete")
     public String deleteMeeting(@RequestParam("id") Long id) {
         Boolean deleteMeeting = meetingService.DeleteMeeting(id);
         if (deleteMeeting) {
