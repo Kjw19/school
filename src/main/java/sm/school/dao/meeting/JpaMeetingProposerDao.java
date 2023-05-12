@@ -39,4 +39,9 @@ public class JpaMeetingProposerDao implements MeetingProposerDao{
     public void deleteById(Long id) {
         meetingProposerRepository.deleteById(id);
     }
+
+    @Override
+    public List<MeetingProposer> findByMeetingsIdAndStatus(Long id, int status) {
+        return meetingProposerRepository.findByMeetingsIdAndStatus(id, status);
+    }
 }
