@@ -5,11 +5,10 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sm.school.Repository.MeetingProposerRepository;
-import sm.school.Repository.MeetingRepository;
+import sm.school.dao.meeting.JpaMeetingDao;
+import sm.school.dao.meeting.MeetingProposerDao;
 import sm.school.domain.meeting.Meeting;
 import sm.school.domain.meeting.MeetingProposer;
-import sm.school.domain.member.Member;
 import sm.school.dto.meeting.MeetingDTO;
 import sm.school.dto.meeting.MeetingProposerDTO;
 import sm.school.dto.meeting.MeetingProposerDetailDTO;
@@ -24,9 +23,19 @@ import java.util.Optional;
 @Transactional
 public class MeetingService {
 
-    private final MeetingRepository meetingRepository;
-    private final MeetingProposerRepository meetingProposerRepository;
+    private final JpaMeetingDao jpaMeetingDao;
+    private final MeetingProposerDao meetingProposerDao;
     private final CommonService commonService;
+
+    //글쓴이 인지 확인하는 검증 로직
+    @Transactional(readOnly = true)
+    public void validateUserAccess(Long meetId, String userId) throws AccessDeniedException {
+        MeetingDTO selectMeeting = detailMeeting(meetId);
+        if (!userId.equals(selectMeeting.getMember().getUserId())) {
+            throw new AccessDeniedException("권한이 없습니다.");
+        }
+    }
+
 
     public Meeting createMeeting(MeetingDTO meetingDTO, Authentication authentication) {
 
@@ -35,7 +44,7 @@ public class MeetingService {
 
         Meeting meeting = meetingDTO.toMeetingEntity();
 
-        return meetingRepository.save(meeting);
+        return jpaMeetingDao.save(meeting);
     }
 
     //meetingDTO와 meetingProposerDTOList값을 반환
@@ -53,7 +62,7 @@ public class MeetingService {
     }
 
     //참여자 선택 서비스 로직
-    public void ProposerSelect(Long proposerId, Long meetId, String userId) throws AccessDeniedException {
+    public void approvalProposer(Long proposerId, Long meetId, String userId) throws AccessDeniedException {
 
         validateUserAccess(meetId, userId);
 
@@ -65,7 +74,7 @@ public class MeetingService {
     }
 
     //참여자 삭제 서비스 로직
-    public void ProposerDelete(Long proposerId, Long meetId, String userId) throws AccessDeniedException {
+    public void deleteProposerIfAuthorized(Long proposerId, Long meetId, String userId) throws AccessDeniedException {
 
         validateUserAccess(meetId, userId);
 
@@ -75,30 +84,31 @@ public class MeetingService {
         }
     }
 
-    //글쓴이 인지 확인하는 검증 로직
-    @Transactional(readOnly = true)
-    public void validateUserAccess(Long meetId, String userId) throws AccessDeniedException {
-        MeetingDTO selectMeeting = detailMeeting(meetId);
-        if (!userId.equals(selectMeeting.getMember().getUserId())) {
-            throw new AccessDeniedException("권한이 없습니다.");
+
+    //참가자 삭제
+    public Boolean deleteProposer(Long id) {
+        try {
+            meetingProposerDao.deleteById(id);
+            return true;
+        } catch (EmptyResultDataAccessException e) {
+            return false;
         }
     }
 
+
     public void updateMeeting(MeetingDTO meetingDTO) {
 
-        Optional<Meeting> meetingOptional = meetingRepository.findMeetingById(meetingDTO.getId());
+      Meeting meeting = jpaMeetingDao.findMeetingById(meetingDTO.getId());
 
-        meetingOptional.ifPresent(meeting -> {
             meeting.modifyMeeting(meetingDTO.getTitle(), meetingDTO.getIntroduction(),
                     meetingDTO.getSchool(), meetingDTO.getMajor(), meetingDTO.getRegion(),
                     meetingDTO.getCount());
-        });
     }
 
     @Transactional(readOnly = true)
     public List<MeetingDTO> findMeeting() {
 
-        List<Meeting> meetingList = meetingRepository.findAll();
+        List<Meeting> meetingList = jpaMeetingDao.findAll();
         List<MeetingDTO> meetingDTOList = new ArrayList<>();
         for (Meeting meeting: meetingList) {
             meetingDTOList.add(meeting.toMeetingDTO());
@@ -109,7 +119,7 @@ public class MeetingService {
     @Transactional(readOnly = true)
     public MeetingDTO detailMeeting(Long id) {
 
-        Optional<Meeting> meetingOptional = meetingRepository.findMeetingById(id);
+        Optional<Meeting> meetingOptional = jpaMeetingDao.findById(id);
         MeetingDTO meetingDTO = null;
         if (meetingOptional.isPresent()) {
             Meeting meeting = meetingOptional.get();
@@ -121,18 +131,19 @@ public class MeetingService {
         return meetingDTO;
     }
 
+    //미팅 삭제
     public Boolean DeleteMeeting(Long id) {
 
         try {
             //미팅 회원 목록 가져오기
-            List<MeetingProposer> meetingProposerList = meetingProposerRepository.findByMeetingsId(id);
+            List<MeetingProposer> meetingProposerList = meetingProposerDao.findByMeetingsId(id);
 
             //미팅 회원 목록 삭제
             for (MeetingProposer meetingProposer: meetingProposerList) {
-                meetingProposerRepository.deleteById(meetingProposer.getId());
+                meetingProposerDao.deleteById(meetingProposer.getId());
             }
             //미팅 삭제
-            meetingRepository.deleteById(id);
+            jpaMeetingDao.deleteById(id);
             return true;
         } catch (EmptyResultDataAccessException e) {
             //삭제하려는 미팅이 이미 존재하지 않을 때
@@ -142,14 +153,9 @@ public class MeetingService {
 
     //미팅 완료상태 변경
     public void completeMeeting(Long meetId) {
-        Optional<Meeting> meetingOptional = meetingRepository.findMeetingById(meetId);
-        Meeting meeting = null;
-        if (meetingOptional.isPresent()) {
-            meeting = meetingOptional.get();
+        Meeting meeting = jpaMeetingDao.findMeetingById(meetId);
+
             meeting.changeStatus(1);
-        } else {
-            throw new RuntimeException("미팅이 존재하지 않습니다");
-        }
     }
 
     //MeetingProposer
@@ -165,13 +171,13 @@ public class MeetingService {
 
         MeetingProposer meetingProposer = meetingProposerDTO.toMeetingProposer();
 
-        return meetingProposerRepository.save(meetingProposer);
+        return meetingProposerDao.save(meetingProposer);
     }
 
     @Transactional(readOnly = true)
     public List<MeetingProposerDTO> selectMeetingProposer(Long id) {
 
-        List<MeetingProposer> meetingProposerList = meetingProposerRepository.findByMeetingsId(id);
+        List<MeetingProposer> meetingProposerList = meetingProposerDao.findByMeetingsId(id);
         List<MeetingProposerDTO> meetingProposerDTOList = new ArrayList<>();
 
         for (MeetingProposer meetingProposer: meetingProposerList) {
@@ -183,7 +189,7 @@ public class MeetingService {
     //참가자 선택
     public void selectProposer(Long id, Long meetId) {
 
-        Optional<MeetingProposer> meetingProposerOptional = meetingProposerRepository.findById(id);
+        Optional<MeetingProposer> meetingProposerOptional = meetingProposerDao.findById(id);
         MeetingProposer meetingProposer = null;
 
         if (meetingProposerOptional.isPresent()) {
@@ -196,11 +202,11 @@ public class MeetingService {
 
     //선택후 나머지 선택받지 못한 참가자 삭제
     public Boolean afterDeleteToSelect(Long meetId) {
-        List<MeetingProposer> byMeetingsIds = meetingProposerRepository.findByMeetingsId(meetId);
+        List<MeetingProposer> byMeetingsIds = meetingProposerDao.findByMeetingsId(meetId);
         try {
             for (MeetingProposer byMeetingsId : byMeetingsIds) {
                 if (byMeetingsId.getStatus() == 0) {
-                    meetingProposerRepository.deleteById(byMeetingsId.getId());
+                    meetingProposerDao.deleteById(byMeetingsId.getId());
                 }
             }
             return true;
@@ -209,13 +215,4 @@ public class MeetingService {
         }
     }
 
-    //참가자 삭제
-    public Boolean deleteProposer(Long id) {
-        try {
-            meetingProposerRepository.deleteById(id);
-            return true;
-        } catch (EmptyResultDataAccessException e) {
-            return false;
-        }
-    }
 }

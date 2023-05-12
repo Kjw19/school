@@ -53,7 +53,7 @@ public class MeetingProposerController {
     public String proposerSelect(@RequestParam Long id, @RequestParam Long meetId, Authentication authentication) {
 
         try {
-            meetingService.ProposerSelect(id, meetId, authentication.getName());
+            meetingService.approvalProposer(id, meetId, authentication.getName());
             return "redirect:/meetingPro/detail?id=" + meetId;
         } catch (AccessDeniedException e) {
             return "redirect:/accessBlock";
@@ -65,7 +65,7 @@ public class MeetingProposerController {
     @RequestMapping("/delete")
     public String proposerDelete(@RequestParam Long id, @RequestParam Long meetId, Authentication authentication) {
         try {
-            meetingService.ProposerDelete(id, meetId, authentication.getName());
+            meetingService.deleteProposerIfAuthorized(id, meetId, authentication.getName());
             return "redirect:/meetingPro/detail?id=" + meetId;
 
         } catch (AccessDeniedException e) {
