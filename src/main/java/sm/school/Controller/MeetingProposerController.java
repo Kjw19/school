@@ -26,10 +26,7 @@ public class MeetingProposerController {
 
     @GetMapping("/detail")
     public String MeetingProposerList(@RequestParam Long id, Model model, Authentication authentication) {
-        //검증로직 시작
-        if (authentication == null) {
-            return "redirect:/member/login";
-        }
+
         MeetingDTO meetingDTO = meetingService.selectMeeting(id);
         if (!authentication.getName().equals(meetingDTO.getMember().getUserId())){
             return "redirect:/accessBlock";
@@ -45,42 +42,23 @@ public class MeetingProposerController {
     }
 
     @GetMapping("/create")
-    public String createMeetingProposerForm(@RequestParam("id") Long id, @ModelAttribute("meetingProposerDTO") MeetingProposerDTO meetingProposerDTO,
-                                            Authentication authentication) {
-
-        if (authentication == null) {
-            return "redirect:/member/login";
-        }
+    public String createMeetingProposerForm(@RequestParam("id") Long id,
+                                            @ModelAttribute("meetingProposerDTO") MeetingProposerDTO meetingProposerDTO) {
         return "meeting/proposerCreate";
     }
 
     @PostMapping("/create")
     public String createMeetingProposer(@RequestParam("id") Long id, @Valid MeetingProposerDTO meetingProposerDTO,
                                         Authentication authentication) {
-        //검증로직 시작
-        if (authentication == null) {
-            return "redirect:/member/login";
-        }
-        //검증로직 끝
 
-        MemberDetailsService memberDetails = (MemberDetailsService) authentication.getPrincipal();
-        meetingProposerDTO.setMember(memberDetails.getMember());
-
-        MeetingDTO meetingDTO = meetingService.selectMeeting(id);
-
-        meetingProposerDTO.setMeetings(meetingDTO.toMeetingEntity());
-
-        meetingProposerService.createMeetingProposer(meetingProposerDTO);
+        meetingProposerService.createMeetingProposer(meetingProposerDTO, authentication, id);
 
         return "redirect:/meeting/detail?id=" + id;
     }
 
     @RequestMapping("/select")
     public String proposerSelect(@RequestParam Long id, @RequestParam Long meetId, Authentication authentication) {
-        //검증로직 시작
-        if (authentication == null) {
-            return "redirect:/member/login";
-        }
+
         MeetingDTO selectMeeting = meetingService.selectMeeting(meetId);
 
         if (!authentication.getName().equals(selectMeeting.getMember().getUserId())) {
@@ -96,15 +74,10 @@ public class MeetingProposerController {
         } else {
             return "redirect:/errorPage";
         }
-
-
     }
+
     @RequestMapping("/delete")
     public String proposerDelete(@RequestParam Long id, @RequestParam Long meetId, Authentication authentication) {
-        //검증로직 시작
-        if (authentication == null) {
-            return "redirect:/member/login";
-        }
         MeetingDTO selectMeeting = meetingService.selectMeeting(meetId);
 
         if (!authentication.getName().equals(selectMeeting.getMember().getUserId())) {

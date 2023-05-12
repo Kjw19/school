@@ -2,14 +2,15 @@ package sm.school.Service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sm.school.Repository.MeetingProposerRepository;
 import sm.school.Repository.MeetingRepository;
 import sm.school.domain.meeting.Meeting;
 import sm.school.domain.meeting.MeetingProposer;
+import sm.school.domain.member.Member;
 import sm.school.dto.MeetingDTO;
-import sm.school.dto.MeetingProposerDTO;
 
 import java.util.List;
 
@@ -21,7 +22,12 @@ public class MeetingService {
     private final MeetingRepository meetingRepository;
     private final MeetingProposerRepository meetingProposerRepository;
 
-    public Meeting createMeeting(MeetingDTO meetingDTO) {
+    public Meeting createMeeting(MeetingDTO meetingDTO, Authentication authentication) {
+
+        //사용자 정보를 받아 memberDetails로 저장
+        MemberDetailsService memberDetails = (MemberDetailsService) authentication.getPrincipal();
+        Member member = memberDetails.getMember();
+        meetingDTO.setMember(member);
 
         Meeting meeting = meetingDTO.toMeetingEntity();
 

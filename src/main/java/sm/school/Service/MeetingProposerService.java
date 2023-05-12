@@ -1,12 +1,13 @@
 package sm.school.Service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sm.school.Repository.MeetingProposerRepository;
 import sm.school.domain.meeting.MeetingProposer;
+import sm.school.dto.MeetingDTO;
 import sm.school.dto.MeetingProposerDTO;
 
 import java.util.ArrayList;
@@ -18,8 +19,18 @@ import java.util.List;
 public class MeetingProposerService {
 
     private final MeetingProposerRepository meetingProposerRepository;
+    private final MeetingService meetingService;
 
-    public MeetingProposer createMeetingProposer(MeetingProposerDTO meetingProposerDTO) {
+    public MeetingProposer createMeetingProposer(MeetingProposerDTO meetingProposerDTO,
+                                                 Authentication authentication, Long id) {
+
+        MemberDetailsService memberDetails = (MemberDetailsService) authentication.getPrincipal();
+        meetingProposerDTO.setMember(memberDetails.getMember());
+
+        MeetingDTO meetingDTO = meetingService.selectMeeting(id);
+
+        meetingProposerDTO.setMeetings(meetingDTO.toMeetingEntity());
+
 
         MeetingProposer meetingProposer = meetingProposerDTO.toMeetingProposer();
 
