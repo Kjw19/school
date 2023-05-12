@@ -29,8 +29,9 @@ public class SecurityConfig {
         //인증 설정
         http.authorizeRequests()
                 .antMatchers("/study/list", "/study/detail",
-                        "/meeting/list", "/meeting/detail", "/meeting/completeList").permitAll()
-                .antMatchers("/study/**","/studyMember/**", "/meeting/**", "/meetingPro/**").hasAnyRole("ADMIN", "USER")
+                        "/meeting/list", "/meeting/detail", "/meeting/completeList",
+                        "/board/list", "/board/detail").permitAll()
+                .antMatchers("/study/**","/studyMember/**", "/meeting/**", "/meetingPro/**","/board/**").hasAnyRole("ADMIN", "USER")
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().permitAll()
                 .and()

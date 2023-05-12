@@ -41,10 +41,6 @@ public class BoardController {
 
     @PostMapping("/create")
     public String CreateBoard(@Valid BoardDTO boardDTO, Authentication authentication) {
-        if (authentication == null) {
-            return "redirect:/member/login";
-        }
-
         //사용자 정보를 받아 memberDetails에 저장
         boardDTO.setMember(((MemberDetailsService) authentication.getPrincipal()).getMember()); //코드 간소화
 
@@ -63,22 +59,15 @@ public class BoardController {
     }
 
     @GetMapping("/update")
-    public String boardUpdateForm(@RequestParam long id, Model model,
-                              Authentication authentication) {
-        if (authentication == null) {
-            return "redirect:/member/login";
-        }
+    public String boardUpdateForm(@RequestParam long id, Model model) {
+
         BoardDTO boardDTO = boardService.selectBoard(id);
         model.addAttribute("boardDTO", boardDTO);
 
         return "board/boardUpdate";
     }
     @PostMapping("/update")
-    public String boardUpdate(@ModelAttribute("boardDTO") BoardDTO boardDTO,
-                              Authentication authentication) {
-        if (authentication == null) {
-            return "redirect:/member/login";
-        }
+    public String boardUpdate(@ModelAttribute("boardDTO") BoardDTO boardDTO) {
 
         boardService.updateBoard(boardDTO);
 
