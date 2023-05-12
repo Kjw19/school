@@ -28,31 +28,13 @@ public class AdminController {
 
     @GetMapping
 
-    public String admin(Authentication authentication) {
-
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-
-        boolean isAdmin = authorities.stream()
-                .anyMatch(grantedAuthority -> MemRole.ADMIN.getValue().equals(grantedAuthority.getAuthority()));
-
-        if (!isAdmin) {
-            return "accessBlock";
-        }
+    public String admin() {
 
         return "admin/adminPage";
     }
 
     @GetMapping("/member")
-    public String manageMember(Model model, Authentication authentication) {
-
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-
-        boolean isAdmin = authorities.stream()
-                .anyMatch(grantedAuthority -> MemRole.ADMIN.getValue().equals(grantedAuthority.getAuthority()));
-
-        if (!isAdmin) {
-            return "accessBlock";
-        }
+    public String manageMember(Model model) {
 
         List<MemberDTO> memberDTOList = memberService.memberList();
 
@@ -62,16 +44,7 @@ public class AdminController {
     }
 
     @RequestMapping("changeRole")
-    public String changeRole(@RequestParam("id") Long id, Authentication authentication) {
-
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-
-        boolean isAdmin = authorities.stream()
-                .anyMatch(grantedAuthority -> MemRole.ADMIN.getValue().equals(grantedAuthority.getAuthority()));
-
-        if (!isAdmin) {
-            return "accessBlock";
-        }
+    public String changeRole(@RequestParam("id") Long id) {
 
         memberService.changeRole(id);
 
@@ -79,32 +52,15 @@ public class AdminController {
     }
 
     @GetMapping("/meeting")
-    public String manageMeeting(Model model, Authentication authentication) {
-
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-
-        boolean isAdmin = authorities.stream()
-                .anyMatch(grantedAuthority -> MemRole.ADMIN.getValue().equals(grantedAuthority.getAuthority()));
-
-        if (!isAdmin) {
-            return "accessBlock";
-        }
+    public String manageMeeting(Model model) {
         model.addAttribute("List", meetingService.findMeeting());
 
         return "/admin/manageMeeting";
     }
 
     @RequestMapping("deleteMeeting")
-    public String deleteMeeting(@RequestParam("id") Long id, Authentication authentication) {
+    public String deleteMeeting(@RequestParam("id") Long id) {
 
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-
-        boolean isAdmin = authorities.stream()
-                .anyMatch(grantedAuthority -> MemRole.ADMIN.getValue().equals(grantedAuthority.getAuthority()));
-
-        if (!isAdmin) {
-            return "accessBlock";
-        }
 
         Boolean deleteMeeting = meetingService.DeleteMeeting(id);
         if (deleteMeeting) {
@@ -115,16 +71,7 @@ public class AdminController {
     }
 
     @GetMapping("/study")
-    public String manageStudy(Model model, Authentication authentication) {
-
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-
-        boolean isAdmin = authorities.stream()
-                .anyMatch(grantedAuthority -> MemRole.ADMIN.getValue().equals(grantedAuthority.getAuthority()));
-
-        if (!isAdmin) {
-            return "accessBlock";
-        }
+    public String manageStudy(Model model) {
 
         model.addAttribute("List", studyService.findAllStudy());
 
@@ -132,16 +79,7 @@ public class AdminController {
     }
 
     @RequestMapping("deleteStudy")
-    public String deleteStudy(@RequestParam("id") Long id, Authentication authentication) {
-
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-
-        boolean isAdmin = authorities.stream()
-                .anyMatch(grantedAuthority -> MemRole.ADMIN.getValue().equals(grantedAuthority.getAuthority()));
-
-        if (!isAdmin) {
-            return "accessBlock";
-        }
+    public String deleteStudy(@RequestParam("id") Long id) {
 
         Boolean deleteStudy = studyService.deleteStudy(id);
         if (deleteStudy) {

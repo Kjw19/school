@@ -28,22 +28,20 @@ public class SecurityConfig {
 
         //인증 설정
         http.authorizeRequests()
-                .antMatchers("/admin/**").hasRole("ADMIN")//관리자 권한이 있을시 /admin및 하위경로 접근 제한
-                .anyRequest().permitAll()//보안설정 되지 않은 모든 경로 인증없이 접근허용
-                .and()//anyMatchers로 먼저 제한할 페이지 설정후 anyRequest 설정해야 오류안남
-                .formLogin()//로그인 설정
-                .loginPage("/member/login")//로그인 URL경로
-                .defaultSuccessUrl("/")//로그인 성공시 이동경로
-                .permitAll()//모든 사용자에게 접근 허용
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .anyRequest().permitAll()
                 .and()
-                .logout()//로그아웃 설정 시작
-                .logoutRequestMatcher(new AntPathRequestMatcher("/member/logout")) //로그아웃 경로
-                .logoutSuccessUrl("/") //로그아웃성공시 이동 URL
-                .invalidateHttpSession(true)//로그아웃시 세션 무효화
+                .formLogin()
+                .loginPage("/member/login")
+                .defaultSuccessUrl("/")
+                .permitAll()
                 .and()
-                .exceptionHandling().accessDeniedPage("/accessBlock");//권한 없는 페이지 접근시 이동경로
-
-
+                .logout()
+                .logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))
+                .logoutSuccessUrl("/")
+                .invalidateHttpSession(true)
+                .and()
+                .exceptionHandling().accessDeniedHandler(new CustomAccessDeniedHandler());
         return http.build();
     }
 
