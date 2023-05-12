@@ -31,18 +31,12 @@ public class StudyController {
     }
 
     @GetMapping("/create")
-    public String CreateStudyForm(@ModelAttribute("studyDTO") StudyDTO studyDTO, Authentication authentication) {
-        if (authentication == null) {
-            return "member/login";
-        }
+    public String CreateStudyForm(@ModelAttribute("studyDTO") StudyDTO studyDTO) {
         return "study/studyCreate";
     }
 
     @PostMapping("/create")
     public String CreateStudy(@Valid StudyDTO studyDTO, Authentication authentication) {
-        if (authentication == null) {
-            return "member/login";
-        }
 
         studyDTO.setMember(((MemberDetailsService) authentication.getPrincipal()).getMember());
 
@@ -60,11 +54,7 @@ public class StudyController {
 
 
     @GetMapping("/update")
-    public String studyUpdateForm(@RequestParam Long id, Model model, Authentication authentication) {
-
-        if (authentication == null) {
-            return "redirect:/member/login";
-        }
+    public String studyUpdateForm(@RequestParam Long id, Model model) {
 
         StudyDTO studyDTO = studyService.selectStudy(id);
         model.addAttribute("studyDTO", studyDTO);
@@ -73,10 +63,7 @@ public class StudyController {
     }
 
     @PostMapping("/update")
-    public String studyUpdate(@ModelAttribute("studyDTO") StudyDTO studyDTO, Authentication authentication) {
-        if (authentication == null) {
-            return "redirect:/member/login";
-        }
+    public String studyUpdate(@ModelAttribute("studyDTO") StudyDTO studyDTO){
         studyService.updateStudy(studyDTO);
 
         return "redirect:/study/detail?id=" + studyDTO.getId();
