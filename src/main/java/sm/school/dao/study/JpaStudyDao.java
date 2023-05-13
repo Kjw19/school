@@ -30,6 +30,11 @@ public class JpaStudyDao implements StudyDao {
     }
 
     @Override
+    public Study findStudyById(Long id) {
+        return studyRepository.findStudyById(id);
+    }
+
+    @Override
     public void deleteById(Long id) {
         studyRepository.deleteById(id);
     }

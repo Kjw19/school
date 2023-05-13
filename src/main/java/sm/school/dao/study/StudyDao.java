@@ -13,6 +13,8 @@ public interface StudyDao {
 
     Optional<Study> findById(Long id);
 
+    Study findStudyById(Long id);
+
     void deleteById(Long id);
 
     Boolean existsById(Long id);
