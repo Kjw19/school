@@ -37,17 +37,14 @@ public class StudyController {
 
     @PostMapping("/create")
     public String CreateStudy(@Valid StudyDTO studyDTO, Authentication authentication) {
-
-        studyDTO.setMember(((MemberDetailsService) authentication.getPrincipal()).getMember());
-
-        studyService.createStudy(studyDTO);
-
+        studyService.createStudy(studyDTO,authentication);
         return "redirect:/study/list";
     }
 
     @GetMapping("/detail")
     public String studyDetail(@RequestParam("id") long id, Model model) {
-        model.addAttribute("studyDTO", studyService.selectStudy(id));
+
+        model.addAttribute("studyDTO", studyService.detailStudy(id));
 
         return "study/studyDetail";
     }
@@ -56,8 +53,7 @@ public class StudyController {
     @GetMapping("/update")
     public String studyUpdateForm(@RequestParam Long id, Model model) {
 
-        StudyDTO studyDTO = studyService.selectStudy(id);
-        model.addAttribute("studyDTO", studyDTO);
+        model.addAttribute("studyDTO", studyService.detailStudy(id));
 
         return "study/studyUpdate";
     }
@@ -71,12 +67,7 @@ public class StudyController {
 
     @RequestMapping("/delete")
     public String studyDelete(@RequestParam("id") Long id) {
-        Boolean deleteStudy = studyService.deleteStudy(id);
-
-        if (deleteStudy) {
-            return "redirect:/study/list";
-        } else {
-            return "redirect:/errorPage";
-        }
+        studyService.deleteStudy(id);
+        return "redirect:/study/list";
     }
 }
