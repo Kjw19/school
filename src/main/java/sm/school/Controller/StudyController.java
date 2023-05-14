@@ -11,6 +11,7 @@ import sm.school.Service.StudyService;
 import sm.school.dto.StudyDTO;
 
 import javax.validation.Valid;
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @Controller
@@ -59,15 +60,16 @@ public class StudyController {
     }
 
     @PostMapping("/update")
-    public String studyUpdate(@ModelAttribute("studyDTO") StudyDTO studyDTO){
-        studyService.updateStudy(studyDTO);
+    public String studyUpdate(@ModelAttribute("studyDTO") StudyDTO studyDTO,
+                              Authentication authentication) throws AccessDeniedException {
+        studyService.updateStudy(studyDTO, authentication.getName());
 
         return "redirect:/study/detail?id=" + studyDTO.getId();
     }
 
     @RequestMapping("/delete")
-    public String studyDelete(@RequestParam("id") Long id) {
-        studyService.deleteStudy(id);
+    public String studyDelete(@RequestParam("id") Long id, Authentication authentication) throws AccessDeniedException {
+        studyService.deleteStudy(id, authentication.getName());
         return "redirect:/study/list";
     }
 }

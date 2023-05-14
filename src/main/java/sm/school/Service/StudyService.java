@@ -13,8 +13,11 @@ import sm.school.domain.study.StudyMember;
 import sm.school.dto.StudyDTO;
 import sm.school.dto.StudyMemberDTO;
 
+import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import static sm.school.Service.commonConst.Status.SELECTED;
 
 
@@ -28,6 +31,15 @@ public class StudyService{
 
     private final CommonService commonService;
 
+
+    @Transactional(readOnly = true)
+    public void validateUserAccess(Long studyId, String userId) throws AccessDeniedException {
+        StudyDTO studyDTO = detailStudy(studyId);
+        if (!userId.equals(studyDTO.getMember().getUserId())) {
+            throw new AccessDeniedException("권한이 없습니다.");
+        }
+    }
+
     public Study createStudy(StudyDTO studyDTO, Authentication authentication) {
 
         studyDTO.setMember(commonService.getMemberFromAuthentication(authentication));
@@ -38,39 +50,38 @@ public class StudyService{
     }
 
     public List<StudyDTO> findAllStudy() {
-        List<Study> studyList = jpaStudyDao.findAll();
-        List<StudyDTO> studyDTOList = new ArrayList<>();
-
-        for (Study study : studyList) {
-            studyDTOList.add(study.toStudyDTO());
-        }
-        return studyDTOList;
+        return jpaStudyDao.findAll().stream()
+                .map(Study :: toStudyDTO)
+                .collect(Collectors.toList());
     }
 
-    public StudyDTO detailStudy(Long id) {
-        Study selectedStudy = jpaStudyDao.findStudyById(id);
+    public StudyDTO detailStudy(Long studyId) {
+        Study selectedStudy = jpaStudyDao.findStudyById(studyId);
         StudyDTO selectedStudyDTO = selectedStudy.toStudyDTO();
 
         return selectedStudyDTO;
     }
 
-    public void updateStudy(StudyDTO studyDTO) {
+    public void updateStudy(StudyDTO studyDTO, String userId) throws AccessDeniedException {
+        validateUserAccess(studyDTO.getId(), userId);
         Study study = jpaStudyDao.findStudyById(studyDTO.getId());
 
         study.UpdateStudy(studyDTO.getName(), studyDTO.getContent(),studyDTO.getRegion(), studyDTO.getRegType());
     }
 
-    public void deleteStudy(Long id) {
+    public void deleteStudy(Long studyId, String userId) throws AccessDeniedException {
 
-        if (!jpaStudyDao.existsById(id)) {
+        validateUserAccess(studyId, userId);
+
+        if (!jpaStudyDao.existsById(studyId)) {
             throw new DataNotFoundException();
         }
-        List<StudyMember> studyMemberList = jpaStudyMemberDao.findByStudyId(id);
+        List<StudyMember> studyMemberList = jpaStudyMemberDao.findByStudyId(studyId);
 
         for (StudyMember studyMember: studyMemberList) {
             jpaStudyMemberDao.deleteById(studyMember.getId());
         }
-        jpaStudyDao.deleteById(id);
+        jpaStudyDao.deleteById(studyId);
     }
 
     //스터디 회원
@@ -88,31 +99,28 @@ public class StudyService{
         return jpaStudyMemberDao.save(studyMember);
     }
 
-    public List<StudyMemberDTO> selectStudyMember(Long id) {//스터디 멤버 선택
+    public List<StudyMemberDTO> selectStudyMemberList(Long studyId, String userId) throws AccessDeniedException {//스터디 멤버 선택
 
-        List<StudyMember> studyDTOS = jpaStudyMemberDao.findByStudyId(id);
-        List<StudyMemberDTO> studyMemberDTOList = new ArrayList<>();
+        validateUserAccess(studyId, userId);
 
-        for (StudyMember studyMember: studyDTOS) {
-            studyMemberDTOList.add(studyMember.toStudyMemberDTO());
-        }
-
-        return studyMemberDTOList;
+        return jpaStudyMemberDao.findByStudyId(studyId).stream()
+                .map(StudyMember :: toStudyMemberDTO)
+                .collect(Collectors.toList());
     }
 
-    public void accessMember(Long id) {
-        StudyMember studyMemberById = jpaStudyMemberDao.findStudyMemberById(id);
+    public void accessMember(Long studyMemberId, String userId) {
+        StudyMember studyMemberById = jpaStudyMemberDao.findStudyMemberById(studyMemberId);
         studyMemberById.ModifyStudyRole(SELECTED);
     }
 
 
-    public void deleteMember(Long id) {
+    public void deleteMember(Long studyMemberId, Long studyId,  String userId) throws AccessDeniedException {
 
-        if (!jpaStudyMemberDao.existsById(id)) {
+        validateUserAccess(studyId, userId);
+
+        if (!jpaStudyMemberDao.existsById(studyMemberId)) {
             throw new MemberNotExistException();
         }
-        jpaStudyMemberDao.deleteById(id);
+        jpaStudyMemberDao.deleteById(studyMemberId);
     }
-
-
 }

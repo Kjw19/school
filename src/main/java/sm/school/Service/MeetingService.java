@@ -151,11 +151,9 @@ public class MeetingService {
 
     public MeetingProposer createMeetingProposer(MeetingProposerDTO meetingProposerDTO,
                                                  Authentication authentication, Long id) {
-
-        meetingProposerDTO.setMember(commonService.getMemberFromAuthentication(authentication));
-
         MeetingDTO meetingDTO = detailMeeting(id);
 
+        meetingProposerDTO.setMember(commonService.getMemberFromAuthentication(authentication));
         meetingProposerDTO.setMeetings(meetingDTO.toMeetingEntity());
 
         MeetingProposer meetingProposer = meetingProposerDTO.toMeetingProposer();
@@ -171,7 +169,6 @@ public class MeetingService {
         return meetingProposerList.stream()
                 .map(MeetingProposer::toMeetingProposerDTO)
                 .collect(Collectors.toList());
-
     }
 
     //참가자 선택
