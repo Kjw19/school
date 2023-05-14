@@ -38,11 +38,7 @@ public class MemberController {
     @PostMapping("/signup")
     public String signup(@Valid MemberDTO memberDTO, BindingResult bindingResult) {
 
-        if (bindingResult.hasErrors()) {
-            return "member/signup";
-        }
-
-        memberService.signUp(memberDTO);
+        memberService.signUp(memberDTO, bindingResult);
 
 
         return "redirect:/";
