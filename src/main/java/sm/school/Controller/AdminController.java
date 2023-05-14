@@ -14,6 +14,7 @@ import sm.school.Service.StudyService;
 import sm.school.domain.enumType.MemRole;
 import sm.school.dto.MemberDTO;
 
+import java.nio.file.AccessDeniedException;
 import java.util.Collection;
 import java.util.List;
 
@@ -21,7 +22,7 @@ import java.util.List;
 @RequestMapping("/admin")
 @RequiredArgsConstructor
 public class AdminController {
-/*
+
     private final MemberService memberService;
     private final MeetingService meetingService;
     private final StudyService studyService;
@@ -35,10 +36,7 @@ public class AdminController {
 
     @GetMapping("/member")
     public String manageMember(Model model) {
-
-        List<MemberDTO> memberDTOList = memberService.memberList();
-
-        model.addAttribute("List", memberDTOList);
+        model.addAttribute("List", memberService.memberList());
 
         return "admin/manageMember";
     }
@@ -59,15 +57,12 @@ public class AdminController {
     }
 
     @RequestMapping("deleteMeeting")
-    public String deleteMeeting(@RequestParam("id") Long id) {
+    public String deleteMeeting(@RequestParam("id") Long id, Authentication authentication) throws AccessDeniedException {
 
 
-        Boolean deleteMeeting = meetingService.DeleteMeeting(id);
-        if (deleteMeeting) {
+        meetingService.deleteMeeting(id, authentication.getName());
             return "redirect:/admin/meeting";
-        } else {
-            return "redirect:/errorPage";
-        }
+
     }
 
     @GetMapping("/study")
@@ -79,16 +74,11 @@ public class AdminController {
     }
 
     @RequestMapping("deleteStudy")
-    public String deleteStudy(@RequestParam("id") Long id) {
+    public String deleteStudy(@RequestParam("id") Long id, Authentication authentication) throws AccessDeniedException {
 
-        Boolean deleteStudy = studyService.deleteStudy(id);
-        if (deleteStudy) {
+        studyService.deleteStudy(id, authentication.getName());
             return "redirect:/admin/study";
-        } else {
-            return "redirect:/errorPage";
-        }
     }
 
- */
 
 }

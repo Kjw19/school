@@ -10,6 +10,7 @@ import sm.school.Service.MeetingService;
 import sm.school.dto.meeting.MeetingDTO;
 
 import javax.validation.Valid;
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @Controller
@@ -83,8 +84,8 @@ public class MeetingController {
     }
 
     @RequestMapping("/delete")
-    public String deleteMeeting(@RequestParam("id") Long id) {
-        meetingService.deleteMeeting(id);
+    public String deleteMeeting(@RequestParam("id") Long id, Authentication authentication) throws AccessDeniedException {
+        meetingService.deleteMeeting(id, authentication.getName());
 
         return "redirect:/meeting/list";
     }

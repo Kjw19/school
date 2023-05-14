@@ -120,7 +120,9 @@ public class MeetingService {
     }
 
     //미팅 삭제
-    public void deleteMeeting(Long id) {
+    public void deleteMeeting(Long id, String userId) throws AccessDeniedException {
+
+        validateUserAccess(id, userId); //검증
 
         //데이터가 존재하는지 체크
         if (!jpaMeetingDao.existsById(id)) {
