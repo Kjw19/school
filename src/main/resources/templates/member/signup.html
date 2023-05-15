@@ -211,9 +211,16 @@
                 event.preventDefault();
                 alert('아이디 중복 체크를 필수!');
             }
+            let size = $('#profileImg')[0].files[0].size;
+        });
+        $('#profileImg').on('change', function() {
+            let size = this.files[0].size;
+            if (size > 5000000) { // 5MB
+                alert("5MB 이하의 사진만 가능합니다.");
+                $(this).val("");
+            }
         });
     });
-
 </script>
 
 </body>
