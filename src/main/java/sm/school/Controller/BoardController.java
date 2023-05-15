@@ -7,6 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import sm.school.Service.BoardService;
 import sm.school.dto.BoardDTO;
 
@@ -33,9 +34,10 @@ public class BoardController {
     }
 
     @PostMapping("/create")
-    public String CreateBoard(@Valid BoardDTO boardDTO, Authentication authentication) {
+    public String CreateBoard(@Valid BoardDTO boardDTO, @RequestParam("image") MultipartFile multipartFile,
+                              Authentication authentication) {
 
-        boardService.createBoard(boardDTO, authentication);
+        boardService.createBoard(boardDTO, multipartFile,authentication);
 
         return "redirect:/board/";
     }

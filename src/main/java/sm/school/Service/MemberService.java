@@ -38,6 +38,9 @@ public class MemberService {
     private final MemberSecurityService memberSecurityService;
 
     private final PasswordEncoder passwordEncoder;
+
+    private final CommonService commonService;
+
     private final S3Client s3Client;
 
 
@@ -53,7 +56,7 @@ public class MemberService {
             if (profileImage.getSize() > 5000000){//5MB
                 throw new FileSizeException();
             }
-            String profileImageUrl = uploadFileToS3(profileImage);
+            String profileImageUrl = commonService.uploadFileToS3(profileImage);
             memberDTO.setProfile(profileImageUrl);
         }
 
@@ -82,35 +85,5 @@ public class MemberService {
         } else {
             member.changeRole(SELECTED);
         }
-    }
-
-    private String uploadFileToS3(MultipartFile file) {
-        String bucketName = "schoolpro-s3-bucket";
-        String key = file.getOriginalFilename();
-
-        try{
-            InputStream inputStream = file.getInputStream();
-
-            PutObjectRequest putObjectRequest = PutObjectRequest.builder()
-                    .bucket(bucketName)
-                    .key(key)
-                    .build();
-
-            s3Client.putObject(putObjectRequest, RequestBody.fromInputStream(inputStream, file.getSize()));
-
-            return s3Client.utilities().getUrl(builder -> builder.bucket(bucketName).key(key)).toString();
-
-        }catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public String updateProfileImage(Long id, MultipartFile file) {
-        Member member = memberRepository.findById(id)
-                .orElseThrow(() -> new MemberNotExistException());
-
-        String imageUrl = uploadFileToS3(file);
-
-        return imageUrl;
     }
 }
