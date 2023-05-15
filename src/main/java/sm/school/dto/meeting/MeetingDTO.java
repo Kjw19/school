@@ -26,6 +26,8 @@ public class MeetingDTO {
     @NotEmpty(message = "소개 글을 간략하게 입력하세요")
     private String introduction;
 
+    private String profile;
+
     @NotEmpty(message = "학교를 입력하세요")
     private String school; //학교
 
@@ -47,11 +49,12 @@ public class MeetingDTO {
     private Member member;//미팅 생성 회원
 
     @Builder
-    public MeetingDTO(Long id, String title, String introduction, String school,
+    public MeetingDTO(Long id, String title,  String profile,String introduction, String school,
                       String major, String region, int count, int status, Date date,Member member) {
         this.id = id;
         this.title = title;
         this.introduction = introduction;
+        this.profile = profile;
         this.school = school;
         this.major = major;
         this.region = region;
@@ -66,6 +69,7 @@ public class MeetingDTO {
                 .id(id)
                 .title(title)
                 .introduction(introduction)
+                .profile(profile)
                 .school(school)
                 .major(major)
                 .region(region)

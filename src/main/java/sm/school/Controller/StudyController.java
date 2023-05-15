@@ -6,6 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import sm.school.Service.MemberDetailsService;
 import sm.school.Service.StudyService;
 import sm.school.dto.StudyDTO;
@@ -37,8 +38,8 @@ public class StudyController {
     }
 
     @PostMapping("/create")
-    public String CreateStudy(@Valid StudyDTO studyDTO, Authentication authentication) {
-        studyService.createStudy(studyDTO,authentication);
+    public String CreateStudy(@Valid StudyDTO studyDTO, @RequestParam("profileImg") MultipartFile multipartFile, Authentication authentication) {
+        studyService.createStudy(studyDTO,multipartFile,authentication);
         return "redirect:/study/list";
     }
 

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import sm.school.Service.commonError.DataNotFoundException;
 import sm.school.Service.commonError.MemberNotExistException;
 import sm.school.dao.meeting.JpaMeetingDao;
@@ -40,8 +41,14 @@ public class MeetingService {
         }
     }
 
-    public Meeting createMeeting(MeetingDTO meetingDTO, Authentication authentication) {
+    public Meeting createMeeting(MeetingDTO meetingDTO, MultipartFile imageFile, Authentication authentication) {
 
+        if (!imageFile.isEmpty()) {
+            if (imageFile.getSize() > 5000000) {
+                String profileImageUrl = commonService.uploadFileToS3(imageFile);
+                meetingDTO.setProfile(profileImageUrl);
+            }
+        }
         //사용자 정보를 받아 memberDetails로 저장
         meetingDTO.setMember(commonService.getMemberFromAuthentication(authentication));
 
@@ -97,7 +104,7 @@ public class MeetingService {
       Meeting meeting = jpaMeetingDao.findMeetingById(meetingDTO.getId());
 
             meeting.modifyMeeting(meetingDTO.getTitle(), meetingDTO.getIntroduction(),
-                    meetingDTO.getSchool(), meetingDTO.getMajor(), meetingDTO.getRegion(),
+                    meetingDTO.getProfile(), meetingDTO.getSchool(), meetingDTO.getMajor(), meetingDTO.getRegion(),
                     meetingDTO.getCount());
     }
 

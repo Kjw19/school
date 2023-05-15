@@ -9,6 +9,10 @@
   <h1>미팅 상세</h1>
   <table>
     <tr>
+      <th>미팅 이미지</th>
+      <td><img th:src="${meeting.profile}" alt="미팅 프로필 이미지"></td>
+    </tr>
+    <tr>
       <th>미팅 명</th>
       <td th:text="${meeting.title}"></td>
     </tr>

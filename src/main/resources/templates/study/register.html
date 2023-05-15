@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>스터디 가입</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 <form th:object="${studyMemberDTO}" th:action="@{/studyMember/create}" method="post">
@@ -14,10 +15,24 @@
     <input type="text" id="introduce" name="introduce" th:field="*{introduce}" required>
     <p th:if="${#fields.hasErrors('introduce')}" th:errors="*{introduce}"></p>
 </div>
-
+<div>
+    <label for="profileImg">프로필 이미지</label>
+    <input type="file" id="profileImg" name="profileImg" accept="image/*"/>
+</div>
 <div>
     <button type="submit">가입하기</button>
 </div>
 </form>
+<script>
+    $(document).ready(function() {
+        $('#image').on('change', function() {
+            let size = this.files[0].size;
+            if (size > 5000000) { // 5MB
+                alert("5MB 이하의 사진만 가능합니다.");
+                $(this).val("");
+            }
+        });
+    });
+</script>
 </body>
 </html>

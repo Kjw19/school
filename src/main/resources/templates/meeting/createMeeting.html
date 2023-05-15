@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>미팅 등록 폼</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 <h1>미팅 등록</h1>
@@ -16,6 +17,10 @@
         <label for="introduction">미팅 소개글</label>
         <input type="text" id="introduction" name="introduction" th:field="*{introduction}" required>
         <p th:if="${#fields.hasErrors('introduction')}" th:errors="*{introduction}"></p>
+    </div>
+    <div>
+        <label for="profileImg">미팅 이미지</label>
+        <input type="file" id="profileImg" name="profileImg" accept="image/*"/>
     </div>
     <div>
         <label for="school">학교</label>
@@ -49,6 +54,18 @@
             alert("최소 2명 최대 6명까지 가능합니다.");
             this.value = 2; // 값이 유효하지 않을 경우 기본값으로 설정
         }
+    });
+
+</script>
+<script>
+    $(document).ready(function() {
+        $('#image').on('change', function() {
+            let size = this.files[0].size;
+            if (size > 5000000) { // 5MB
+                alert("5MB 이하의 사진만 가능합니다.");
+                $(this).val("");
+            }
+        });
     });
 </script>
 </body>

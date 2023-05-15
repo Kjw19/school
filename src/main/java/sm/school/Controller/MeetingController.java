@@ -6,6 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import sm.school.Service.MeetingService;
 import sm.school.dto.meeting.MeetingDTO;
 
@@ -50,9 +51,10 @@ public class MeetingController {
     }
 
     @PostMapping("/create") //authentication으로 정보를 받아옴
-    public String CreateMeet(@Valid MeetingDTO meetingDTO, Authentication authentication) {
+    public String CreateMeet(@Valid MeetingDTO meetingDTO, @RequestParam("profileImg") MultipartFile multipartFile,
+                             Authentication authentication) {
 
-        meetingService.createMeeting(meetingDTO, authentication);
+        meetingService.createMeeting(meetingDTO, multipartFile,authentication);
 
         return "redirect:/meeting/list";
     }

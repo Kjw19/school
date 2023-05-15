@@ -27,6 +27,9 @@ public class Meeting {
     @Column(nullable = false)
     private String introduction; //소개 글
 
+    private String profile;//회원 이미지
+
+
     @Column(nullable = false)
     private String school; //학교
 
@@ -53,11 +56,12 @@ public class Meeting {
 
     //미팅 등록
     @Builder
-    public Meeting(Long id,String title, String introduction, String school, String major,
+    public Meeting(Long id,String title, String introduction,String profile, String school, String major,
                    String region, int count, int status, Date date, Member member) {
         this.id = id;
         this.title = title;
         this.introduction = introduction;
+        this.profile = profile;
         this.school = school;
         this.major = major;
         this.region = region;
@@ -73,6 +77,7 @@ public class Meeting {
                 .id(id)
                 .title(title)
                 .introduction(introduction)
+                .profile(profile)
                 .school(school)
                 .major(major)
                 .region(region)
@@ -83,10 +88,11 @@ public class Meeting {
                 .build();
     }
 
-    public void modifyMeeting(String title, String introduction, String school,
+    public void modifyMeeting(String title, String introduction,String profile, String school,
                               String major, String region, int count) {
         this.title = title;
         this.introduction = introduction;
+        this.profile = profile;
         this.school = school;
         this.major = major;
         this.region = region;

@@ -28,6 +28,7 @@ public class Study {
     private String name; // 스터디이름
 
     private String region; //스터디 지역
+    private String profile;//스터디 이미지
 
     private int status; //현재 모집중인지 상태 (0: 모집중, 1: 마감)
 
@@ -38,6 +39,7 @@ public class Study {
     @CreationTimestamp
     private Date date; //스터디 생성일자
 
+
     @ManyToOne(fetch = FetchType.LAZY) //지연 로딩 방식
     @JoinColumn(name = "mem_id")
     private Member member; //스터디 생성한사람
@@ -47,12 +49,13 @@ public class Study {
 
     //스터디 생성
     @Builder
-    public Study(Long id, String name, String content, String region, int status,
+    public Study(Long id, String name, String content, String region, String profile, int status,
                  Date date, Member member, int regType) {
         this.id = id;
         this.name = name;
         this.content = content;
         this.region = region;
+        this.profile = profile;
         this.status = status;
         this.date = date;
         this.member = member;
@@ -66,6 +69,7 @@ public class Study {
                 .name(name)
                 .content(content)
                 .region(region)
+                .profile(profile)
                 .status(status)
                 .date(date)
                 .member(member)
@@ -74,7 +78,7 @@ public class Study {
     }
 
     //스터디 정보 수정
-    public void UpdateStudy(String name, String content,String region, int regType) {
+    public void UpdateStudy(String name, String content,String region, String profile, int regType) {
         this.name = name;
         this.content = content;
         this.region = region;

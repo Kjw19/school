@@ -27,6 +27,8 @@ public class StudyDTO {
     @NotEmpty(message = "스터디 지역을 작성해 주세요.")
     private String region; //스터디 지역
 
+    private String profile; //스터디 이미지
+
     private int status = 0; //현재 모집중인지 상태 (0: 모집중, 1: 마감)
 
 
@@ -39,12 +41,13 @@ public class StudyDTO {
     private int regType = 0; // 가입 방식(즉시가입(0), 승인 후 가입(1))
 
     @Builder
-    public StudyDTO(Long id, String name, String content, String region,
+    public StudyDTO(Long id, String name, String content, String region, String profile,
                     int status, Date date, Member member, int regType) {
         this.id = id;
         this.name = name;
         this.content = content;
         this.region = region;
+        this.profile = profile;
         this.status = status;
         this.date = date;
         this.member = member;
@@ -57,6 +60,7 @@ public class StudyDTO {
                 .name(name)
                 .content(content)
                 .region(region)
+                .profile(profile)
                 .status(status)
                 .date(date)
                 .member(member)
