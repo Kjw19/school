@@ -21,6 +21,10 @@
         <td th:text="${board.member.userId}"></td>
     </tr>
     <tr>
+        <th>프로필</th>
+        <td><img th:src="${board.member.profile}" alt="프로필 이미지"></td>
+    </tr>
+    <tr>
         <th>작성시간</th>
         <td th:text="${#dates.format(board.date, 'yy년 MM월 dd일 HH시 mm분')}"></td>
     </tr>

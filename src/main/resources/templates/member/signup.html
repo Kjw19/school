@@ -8,7 +8,7 @@
 <body>
 <h1>회원가입</h1>
 
-<form th:object="${memberDTO}" th:action="@{/member/signup}" method="post">
+<form th:object="${memberDTO}" th:action="@{/member/signup}" method="post" enctype="multipart/form-data">
     <div><!-- 아이디 중복 체크 기능 필요 -->
         <label for="userId">아이디</label>
         <input type="text" id="userId" name="userId" th:field="*{userId}"/>
@@ -33,12 +33,10 @@
         <label for="major">전공</label>
         <input type="text" id="major" name="major" th:field="*{major}"/>
     </div>
-<!-- 사진 추가 기능 필요
     <div>
-        <label for="mem_profile">회원 이미지</label>
-        <input type="text" id="mem_profile" name="mem_profile" th:field="*{mem_profile}" />
+        <label for="profileImg">회원 이미지</label>
+        <input type="file" id="profileImg" name="profileImg" accept="image/*"/>
     </div>
-    -->
 
     <div>
         <label for="personalInfDTO.name">이름</label>

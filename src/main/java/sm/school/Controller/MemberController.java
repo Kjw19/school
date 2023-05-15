@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import sm.school.Service.MemberService;
 import sm.school.dto.MemberDTO;
 
@@ -36,9 +37,10 @@ public class MemberController {
 
 
     @PostMapping("/signup")
-    public String signup(@Valid MemberDTO memberDTO, BindingResult bindingResult) {
+    public String signup(@Valid MemberDTO memberDTO, @RequestParam("profileImg") MultipartFile multipartFile,
+                         BindingResult bindingResult) {
 
-        memberService.signUp(memberDTO, bindingResult);
+        memberService.signUp(memberDTO, multipartFile,bindingResult);
 
 
         return "redirect:/";

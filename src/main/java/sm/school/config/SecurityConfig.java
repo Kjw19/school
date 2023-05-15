@@ -1,4 +1,4 @@
-package sm.school;
+package sm.school.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import sm.school.CustomAccessDeniedHandler;
 import sm.school.Repository.member.MemberRepository;
 import sm.school.Service.MemberSecurityService;
 import sm.school.domain.member.Member;
@@ -30,7 +31,7 @@ public class SecurityConfig {
         http.authorizeRequests()
                 .antMatchers("/study/list", "/study/detail",
                         "/meeting/list", "/meeting/detail", "/meeting/completeList",
-                        "/board/list", "/board/detail").permitAll()
+                        "/board/", "/board/detail").permitAll()
                 .antMatchers("/study/**","/studyMember/**", "/meeting/**", "/meetingPro/**","/board/**").hasAnyRole("ADMIN", "USER")
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().permitAll()

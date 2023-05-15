@@ -24,7 +24,7 @@ public class MemberDTO {
     private String school;
     private String major;
 
-    private String mem_profile;
+    private String profile;
     private Integer role = 1;
     private Date date;
 
@@ -37,14 +37,14 @@ public class MemberDTO {
 
     @Builder
     public MemberDTO(Long id, String userId, String passwd, String school,
-                     String major, String mem_profile, Integer role, Date date,
+                     String major, String profile, Integer role, Date date,
                      PersonalInfDTO personalInfDTO, AddressDTO addressDTO) {
         this.id = id;
         this.userId = userId;
         this.passwd = passwd;
         this.school = school;
         this.major = major;
-        this.mem_profile = mem_profile;
+        this.profile = profile;
         this.role = role;
         this.date = date;
         this.personalInfDTO = personalInfDTO;
@@ -59,7 +59,7 @@ public class MemberDTO {
                 .passwd(this.passwd)
                 .school(this.school)
                 .major(this.major)
-                .mem_profile(this.mem_profile)
+                .profile(this.profile)
                 .role(this.role)
                 .date(this.date)
                 .personalInf(this.personalInfDTO.toPersonalInf())

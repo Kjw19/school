@@ -32,7 +32,9 @@ public class Member {
     private String school;//학교
 
     private String major;//전공
-    private String mem_profile;//회원 이미지
+
+    @Column(name = "mem_profile")
+    private String profile;//회원 이미지
 
 
     @Column(name = "memRole",nullable = false)
@@ -51,7 +53,7 @@ public class Member {
 
     @Builder //회원가입 생성자
     public Member(Long id, String userId, String passwd, String school,
-                  String major, String mem_profile, Integer role, Date date, PersonalInf personalInf,
+                  String major, String profile, Integer role, Date date, PersonalInf personalInf,
                   Address address) {
         this.id = id;
         this.userId = userId;
@@ -60,19 +62,19 @@ public class Member {
         this.major = major;
         this.role = (role == null) ? 1 : role;
         this.date = date;
-        this.mem_profile = mem_profile;
+        this.profile = profile;
         this.personalInf = personalInf;
         this.address = address;
     }
 
     //회원수정 메서드
     public void updateMember(String userId, String school, String major,
-                  String mem_profile, PersonalInf personalInf,
+                  String profile, PersonalInf personalInf,
                   Address address) {
         this.userId = userId;
         this.school = school;
         this.major = major;
-        this.mem_profile = mem_profile;
+        this.profile = profile;
         this.personalInf = personalInf;
         this.address = address;
     }
@@ -96,7 +98,7 @@ public class Member {
                 .major(major)
                 .date(date)
                 .role(role)
-                .mem_profile(mem_profile)
+                .profile(profile)
                 .personalInfDTO(personalInf.toPersonalInfDTO())
                 .addressDTO(address.toAddressDTO())
                 .build();
