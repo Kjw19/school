@@ -30,6 +30,10 @@
       <td th:if="${studyDTO.regType == 1}">승인 후 가입</td>
     </tr>
     <tr>
+      <th>프로필</th>
+      <td><img th:src="${studyDTO.member.profile}" alt="프로필 이미지"></td>
+    </tr>
+    <tr>
       <th>스터디장</th>
       <td th:text="${studyDTO.member.userId}"></td>
     </tr>

@@ -9,8 +9,9 @@
 <table>
     <thead>
     <tr>
-        <th>소개글</th>
+        <th>프로필</th>
         <th>아이디</th>
+        <th>소개글</th>
         <th>이름</th>
         <th>학교</th>
         <th>전공</th>
@@ -21,6 +22,7 @@
     </thead>
     <tbody>
     <tr th:each="list : ${List}">
+        <td><img th:src="${list.member.profile}" alt="프로필 이미지"></td>
         <td th:text="${list.introduce}"/>
         <td th:text="${list.member.userId}"/>
         <td th:text="${list.member.personalInf.name}"/>

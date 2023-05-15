@@ -7,10 +7,8 @@
 <body>
 <a sec:authorize="isAnonymous()" th:href="@{/member/signup}">회원가입</a>
 <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/member/login}">로그인</a>
-<p class="nav-link" sec:authorize="isAuthenticated()" th:value="${member.getUserId()}"></p>
-<img th:src="${member.getProfile()}" alt="프로필 이미지">
+<p class="nav-link" sec:authorize="isAuthenticated()" th:value="${#authentication.name}"></p>
 <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/member/myPage}">마이페이지</a>
-
 <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/member/logout}">로그아웃</a>
 <a class="nav-link" th:href="@{/meeting/list}">미팅</a>
 <a class="nav-link" th:href="@{/study/list}">스터디</a>

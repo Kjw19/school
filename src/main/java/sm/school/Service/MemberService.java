@@ -2,12 +2,14 @@ package sm.school.Service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 import sm.school.Repository.member.MemberRepository;
+import sm.school.Service.commonConst.DefaultProfileUrl;
 import sm.school.Service.commonError.DataNotFoundException;
 import sm.school.Service.commonError.MemberNotExistException;
 import sm.school.domain.member.Member;
@@ -19,6 +21,7 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static sm.school.Service.commonConst.Status.SELECTED;
@@ -44,20 +47,17 @@ public class MemberService {
         if (bindingResult.hasErrors()) {
             throw new DataNotFoundException();
         }
-        String profileImageUrl = uploadFileToS3(profileImage);
-        memberDTO.setProfile(profileImageUrl);
+        if (profileImage.isEmpty()) {
+            memberDTO.setProfile(DefaultProfileUrl.Url);
+        } else {
+            String profileImageUrl = uploadFileToS3(profileImage);
+            memberDTO.setProfile(profileImageUrl);
+        }
 
         memberDTO.setPasswd(passwordEncoder.encode(memberDTO.getPasswd()));//패스워드 인코딩진행
         Member memberSave = memberDTO.toMemberEntity();//MemberDTO -> 엔티티로 변환
 
         return memberRepository.save(memberSave);
-    }
-
-    public MemberDTO findMember(String userId) {
-        Member member = memberRepository.findMemberByUserId(userId);
-        MemberDTO memberDTO = member.toMemberDTO();
-
-        return memberDTO;
     }
 
     public boolean checkUserIdDuplicate(String userId) {

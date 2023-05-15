@@ -45,6 +45,10 @@
       <th>미팅장</th>
       <td th:text="${meeting.member.userId}"></td>
     </tr>
+    <tr>
+      <th>프로필</th>
+      <td><img th:src="${meeting.member.profile}" alt="프로필 이미지"></td>
+    </tr>
   </table>
   <a th:href="@{/meeting/list}">목록</a>
 

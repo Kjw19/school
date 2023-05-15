@@ -10,11 +10,12 @@
 <table>
     <thead>
     <tr>
-        <th>학교</th>
+        <th>프로필</th>
+        <th>이름</th>
         <th>소개글</th>
+        <th>학교</th>
         <th>지역</th>
         <th>인원 수</th>
-        <th>미팅장</th>
         <th>생성일</th>
         <th>상태</th>
         <th>승인/거절</th>
@@ -22,11 +23,12 @@
     </thead>
     <tbody>
     <tr th:each="list : ${lists}">
-        <td th:text="${list.school}"/>
+        <td><img th:src="${list.member.profile}" alt="프로필 이미지"></td>
+        <td th:text="${list.member.userId}"/>
         <td th:text="${list.introduction}"/>
+        <td th:text="${list.school}"/>
         <td th:text="${list.region}"/>
         <td th:text="${list.count}"/>
-        <td th:text="${list.member.userId}"/>
         <td th:text="${#dates.format(list.date, 'yyyy년 MM월 dd일')}"/>
         <td th:if="${list.status == 1}">승인완료</td>
         <td th:if="${list.status == 0}">대기중</td>
