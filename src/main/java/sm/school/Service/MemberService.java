@@ -19,7 +19,6 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static sm.school.Service.commonConst.Status.SELECTED;
@@ -33,6 +32,8 @@ import static sm.school.Service.commonConst.Status.NOT_SELECTED;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+
+    private final MemberSecurityService memberSecurityService;
 
     private final PasswordEncoder passwordEncoder;
     private final S3Client s3Client;
@@ -50,6 +51,13 @@ public class MemberService {
         Member memberSave = memberDTO.toMemberEntity();//MemberDTO -> 엔티티로 변환
 
         return memberRepository.save(memberSave);
+    }
+
+    public MemberDTO findMember(String userId) {
+        Member member = memberRepository.findMemberByUserId(userId);
+        MemberDTO memberDTO = member.toMemberDTO();
+
+        return memberDTO;
     }
 
     public boolean checkUserIdDuplicate(String userId) {
