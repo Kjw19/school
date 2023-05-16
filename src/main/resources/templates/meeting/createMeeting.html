@@ -7,7 +7,7 @@
 </head>
 <body>
 <h1>미팅 등록</h1>
-<form th:object="${meetingDTO}" th:action="@{/meeting/create}" method="post">
+<form th:object="${meetingDTO}" th:action="@{/meeting/create}" method="post"  enctype="multipart/form-data">
     <div>
         <label for="title">미팅 파티 이름</label>
         <input type="text" id="title" name="school" th:field="*{title}" required>

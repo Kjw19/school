@@ -7,7 +7,7 @@
 </head>
 <body>
 <h1>게시글 작성</h1>
-<form th:object="${boardDTO}" th:action="@{/board/create}" method="post">
+<form th:object="${boardDTO}" th:action="@{/board/create}" method="post"  enctype="multipart/form-data">
     <div>
         <label for="title">게시글 제목</label>
         <input type="text" id="title" name="title" th:field="*{title}" required>
@@ -25,6 +25,7 @@
 
     <div>
         <button type="submit">작성 하기</button>
+        <a th:href="@{/board/list}">목록으로</a>
     </div>
 
 

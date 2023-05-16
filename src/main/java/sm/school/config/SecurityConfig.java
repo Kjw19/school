@@ -31,7 +31,7 @@ public class SecurityConfig {
         http.authorizeRequests()
                 .antMatchers("/study/list", "/study/detail",
                         "/meeting/list", "/meeting/detail", "/meeting/completeList",
-                        "/board/", "/board/detail").permitAll()
+                        "/board/list", "/board/detail").permitAll()
                 .antMatchers("/study/**","/studyMember/**", "/meeting/**", "/meetingPro/**","/board/**").hasAnyRole("ADMIN", "USER")
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().permitAll()

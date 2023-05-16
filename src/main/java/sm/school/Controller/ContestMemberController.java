@@ -10,10 +10,6 @@ import sm.school.Service.Contest.ContestService;
 import sm.school.Service.MemberDetailsService;
 import sm.school.domain.contest.ContestDTO;
 import sm.school.domain.contest.ContestMemberDTO;
-import sm.school.dto.MeetingDTO;
-import sm.school.dto.MeetingProposerDTO;
-import sm.school.dto.StudyDTO;
-import sm.school.dto.StudyMemberDTO;
 
 import javax.validation.Valid;
 import java.util.List;

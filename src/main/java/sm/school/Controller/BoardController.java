@@ -20,7 +20,7 @@ public class BoardController {
 
     private final BoardService boardService;
 
-    @GetMapping("/")
+    @GetMapping("/list")
     public String BoardList(Model model) {
 
         model.addAttribute("boards", boardService.findBoard());
@@ -39,7 +39,7 @@ public class BoardController {
 
         boardService.createBoard(boardDTO, multipartFile,authentication);
 
-        return "redirect:/board/";
+        return "redirect:/board/list";
     }
 
     @GetMapping("/detail")
@@ -62,7 +62,7 @@ public class BoardController {
 
         boardService.updateBoard(boardDTO);
 
-        return "redirect:/board/";
+        return "redirect:/board/list";
     }
 
     @RequestMapping("/delete")
