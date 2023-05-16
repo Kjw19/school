@@ -15,6 +15,7 @@ import sm.school.dto.BoardDTO;
 import software.amazon.awssdk.services.s3.S3Client;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -46,10 +47,10 @@ public class BoardService {
     }
 
     @Transactional(readOnly = true)
-    public List<Board> findBoard() {
-        List<Board> boardList = jpaBoardDao.findAll();
-
-        return boardList;
+    public List<BoardDTO> findBoard() {
+        return jpaBoardDao.findAll().stream()
+                .map(Board::toBoardDTO)
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
