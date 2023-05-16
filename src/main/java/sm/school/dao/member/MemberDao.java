@@ -15,9 +15,10 @@ public interface MemberDao {
     void deleteById(Long id);
 
     Boolean existsById(Long id);
+    Boolean existsByUserId(String userId);
 
     Member findMemberById(Long id);
     Optional<Member> findByUserId(String userId);
 
-
+    Member findMemberByUserId(String userId);
 }

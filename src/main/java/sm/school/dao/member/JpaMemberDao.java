@@ -45,7 +45,17 @@ public class JpaMemberDao implements MemberDao{
     }
 
     @Override
+    public Boolean existsByUserId(String userId) {
+        return memberRepository.existsByUserId(userId);
+    }
+
+    @Override
     public Optional<Member> findByUserId(String userId) {
         return memberRepository.findByUserId(userId);
+    }
+
+    @Override
+    public Member findMemberByUserId(String userId) {
+        return memberRepository.findMemberByUserId(userId);
     }
 }

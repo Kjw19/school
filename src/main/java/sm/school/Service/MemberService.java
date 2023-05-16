@@ -13,6 +13,7 @@ import sm.school.Service.commonConst.DefaultProfileUrl;
 import sm.school.Service.commonError.DataNotFoundException;
 import sm.school.Service.commonError.FileSizeException;
 import sm.school.Service.commonError.MemberNotExistException;
+import sm.school.dao.member.JpaMemberDao;
 import sm.school.domain.member.Member;
 import sm.school.dto.member.ExistingUser;
 import sm.school.dto.member.MemberDTO;
@@ -31,7 +32,7 @@ import static sm.school.Service.commonConst.Status.NOT_SELECTED;
 @Transactional
 public class MemberService {
 
-    private final MemberRepository memberRepository;
+    private final JpaMemberDao jpaMemberDao;
 
 
     private final PasswordEncoder passwordEncoder;
@@ -53,7 +54,7 @@ public class MemberService {
         Member memberSave = memberDTO.toMemberEntity();//MemberDTO -> 엔티티로 변환
 
 
-        return memberRepository.save(memberSave);
+        return jpaMemberDao.save(memberSave);
     }
 
     //회원 수정
@@ -62,7 +63,7 @@ public class MemberService {
         if (bindingResult.hasErrors()) {
             throw new DataNotFoundException();
         }
-        Member member = memberRepository.findMemberByUserId(userId);
+        Member member = jpaMemberDao.findMemberByUserId(userId);
 
         updateProfileImg(memberDTO, profileImage);
         member.updateMember(memberDTO.getSchool(), memberDTO.getMajor(), memberDTO.getProfile(),
@@ -70,18 +71,18 @@ public class MemberService {
     }
 
     public boolean checkUserIdDuplicate(String userId) {
-        return memberRepository.existsByUserId(userId);
+        return jpaMemberDao.existsByUserId(userId);
     }
 
     //회원 정보 받아오기
     public List<MemberDTO> memberList() {
-        return memberRepository.findAll().stream()
+        return jpaMemberDao.findAll().stream()
                 .map(Member::toMemberDTO)
                 .collect(Collectors.toList());
     }
 
     public void changeRole(Long id) {
-        Member member = memberRepository.findMemberById(id);
+        Member member = jpaMemberDao.findMemberById(id);
         log.info("memberRole {}",member.getRole());
         if (member.getRole().equals(NOT_SELECTED)) {
             member.changeRole(NOT_SELECTED);
@@ -92,11 +93,11 @@ public class MemberService {
 
     public MemberDTO  findMember(String userId) {
 
-        if (!memberRepository.existsByUserId(userId)) {
+        if (!jpaMemberDao.existsByUserId(userId)) {
             throw new MemberNotExistException();
         }
 
-        Member member = memberRepository.findMemberByUserId(userId);
+        Member member = jpaMemberDao.findMemberByUserId(userId);
         MemberDTO memberDTO = member.toMemberDTO();
 
         return memberDTO;
@@ -117,7 +118,7 @@ public class MemberService {
 
     public String getCurrentProfile(String userId) {
 
-        Member member = memberRepository.findMemberByUserId(userId);
+        Member member = jpaMemberDao.findMemberByUserId(userId);
         MemberDTO memberDTO = member.toMemberDTO();
 
         return memberDTO.getProfile();
