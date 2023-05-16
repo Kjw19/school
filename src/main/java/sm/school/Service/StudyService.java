@@ -39,8 +39,6 @@ public class StudyService{
         StudyDTO studyDTO = detailStudy(studyId);
         if (!userId.equals(studyDTO.getMember().getUserId())) {
             throw new AccessDeniedException("권한이 없습니다.");
-        }else if (!userId.equals("admin")) {
-            throw new AccessDeniedException("권한이 없습니다.");
         }
     }
 

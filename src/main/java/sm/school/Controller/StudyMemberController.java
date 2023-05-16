@@ -60,6 +60,6 @@ public class StudyMemberController {
     public String deleteMember(@RequestParam Long id, @RequestParam Long studyId, Authentication authentication) throws AccessDeniedException {
 
         studyService.deleteMember(id,studyId, authentication.getName());
-        return "redirect:/study/studyDetail/id=" + studyId;
+        return "redirect:/studyMember/member/id=" + studyId;
     }
 }
