@@ -3,6 +3,7 @@ package sm.school.Controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +13,8 @@ import sm.school.Service.BoardService;
 import sm.school.dto.BoardDTO;
 
 import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/board")
@@ -37,7 +40,7 @@ public class BoardController {
     public String CreateBoard(@Valid BoardDTO boardDTO, @RequestParam("image") MultipartFile multipartFile,
                               Authentication authentication) {
 
-        boardService.createBoard(boardDTO, multipartFile,authentication);
+        boardService.createBoard(boardDTO, multipartFile, authentication);
 
         return "redirect:/board/list";
     }
@@ -57,18 +60,30 @@ public class BoardController {
 
         return "board/boardUpdate";
     }
+
     @PostMapping("/update")
-    public String boardUpdate(@ModelAttribute("boardDTO") BoardDTO boardDTO) {
+    public String boardUpdate(@ModelAttribute("boardDTO") BoardDTO boardDTO,
+                              @RequestParam("image") MultipartFile multipartFile) {
 
-        boardService.updateBoard(boardDTO);
+        boardService.updateBoard(boardDTO, multipartFile);
 
-        return "redirect:/board/list";
+        return "redirect:/board/detail?id=" + boardDTO.getId();
     }
 
     @RequestMapping("/delete")
     public String boardDelete(@RequestParam("id") Long id) {
 
-       boardService.deleteBoard(id);
+        boardService.deleteBoard(id);
         return "redirect:/board/list";
+    }
+
+    @GetMapping("currentImage")
+    public ResponseEntity<Map<String, String>> currentProfile(@RequestParam("id") Long id, Authentication authentication) {
+        String currentImage = boardService.currentImage(id);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("imageUrl", currentImage);
+
+        return ResponseEntity.ok(response);
     }
 }

@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>게시글 수정</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 <h1>게시글 수정</h1>
-<form th:object="${boardDTO}" th:action="@{/board/update}" method="post">
+<form th:object="${boardDTO}" th:action="@{/board/update}" method="post"  enctype="multipart/form-data">
   <div>
     <input type="hidden" th:field="*{id}">
     <label for="title">게시글 제목</label>
@@ -19,11 +20,41 @@
     <p th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></p>
   </div>
   <div>
+    <label for="image">이미지</label>
+    <img id="current-img" src="#" alt="현재 이미지" th:src="@{''}">
+    <input type="file" id="image" name="image" accept="image/*"/>
+  </div>
+
+  <div>
     <button type="submit">작성 하기</button>
     <a th:href="@{/board/list}">목록으로</a>
   </div>
 
 
 </form>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    let id = $('#id').val();
+    $('#image').on('change', function() {
+      let size = this.files[0].size;
+      if (size > 5000000) { // 5MB
+        alert("5MB 이하의 사진만 가능합니다.");
+        $(this).val("");
+      }
+    });
+    $.ajax({
+      url: '/board/currentImage',
+      data: {id : id},
+      type: 'GET',
+      success: function (data) {
+        $('#current-img').attr('src',data.imageUrl)
+      },
+      error: function () {
+        alert('오류 발생');
+      }
+    });
+  });
+</script>
 </body>
 </html>

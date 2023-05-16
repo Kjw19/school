@@ -6,6 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import sm.school.Service.commonConst.DefaultProfileUrl;
 import sm.school.Service.commonError.DataNotFoundException;
 import sm.school.Service.commonError.FileSizeException;
 import sm.school.dao.board.JpaBoardDao;
@@ -25,26 +26,22 @@ public class BoardService {
 
     private final CommonService commonService;
 
-    private final S3Client s3Client;
-
     public Board createBoard(BoardDTO boardDTO, MultipartFile imageFile, Authentication authentication) {
 
 
-        if (!imageFile.isEmpty()) {
-            if (imageFile.getSize() > 5000000) {
-                throw new FileSizeException();
-            }
-            String profileImageUrl = commonService.uploadFileToS3(imageFile);
-            boardDTO.setPicture(profileImageUrl);
-        }
+        updateImage(boardDTO, imageFile);
 
         boardDTO.setMember(commonService.getMemberFromAuthentication(authentication));
+
         Board board = boardDTO.toBoard();
         return jpaBoardDao.save(board);
     }
 
-    public void updateBoard(BoardDTO boardDTO) {
+    public void updateBoard(BoardDTO boardDTO, MultipartFile imageFile) {
+
         Board board = jpaBoardDao.findBoardById(boardDTO.getId());
+        boardDTO.setPicture(board.getPicture());
+        updateImage(boardDTO, imageFile);
         board.updateBoard(boardDTO.getTitle(), boardDTO.getContent(), boardDTO.getPicture());
     }
 
@@ -69,6 +66,24 @@ public class BoardService {
             throw new DataNotFoundException();
         }
         jpaBoardDao.deleteById(id);
+    }
+
+    public void updateImage(BoardDTO boardDTO, MultipartFile multipartFile) {
+        if (!multipartFile.isEmpty()) {
+            if (multipartFile.getSize() > 5000000) {
+                throw new FileSizeException();
+            }
+            String profileImageUrl = commonService.uploadFileToS3(multipartFile);
+            boardDTO.setPicture(profileImageUrl);
+        }
+    }
+
+    public String currentImage(Long id) {
+
+        Board board = jpaBoardDao.findBoardById(id);
+        BoardDTO boardDTO = board.toBoardDTO();
+
+        return boardDTO.getPicture();
     }
 }
 
