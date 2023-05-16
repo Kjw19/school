@@ -10,8 +10,10 @@ import sm.school.Service.commonError.FileSizeException;
 import sm.school.Service.commonError.MemberNotExistException;
 import sm.school.dao.meeting.JpaMeetingDao;
 import sm.school.dao.meeting.JpaMeetingProposerDao;
+import sm.school.domain.board.Board;
 import sm.school.domain.meeting.Meeting;
 import sm.school.domain.meeting.MeetingProposer;
+import sm.school.dto.BoardDTO;
 import sm.school.dto.meeting.MeetingDTO;
 import sm.school.dto.meeting.MeetingProposerDTO;
 import sm.school.dto.meeting.MeetingProposerDetailDTO;
@@ -44,13 +46,8 @@ public class MeetingService {
 
     public Meeting createMeeting(MeetingDTO meetingDTO, MultipartFile imageFile, Authentication authentication) {
 
-        if (!imageFile.isEmpty()) {
-            if (imageFile.getSize() > 5000000) {
-                throw new FileSizeException();
-            }
-            String profileImageUrl = commonService.uploadFileToS3(imageFile);
-            meetingDTO.setProfile(profileImageUrl);
-        }
+        updateProfile(meetingDTO, imageFile);
+
         //사용자 정보를 받아 memberDetails로 저장
         meetingDTO.setMember(commonService.getMemberFromAuthentication(authentication));
 
@@ -101,14 +98,25 @@ public class MeetingService {
     }
 
 
-    public void updateMeeting(MeetingDTO meetingDTO) {
+    public void updateMeeting(MeetingDTO meetingDTO, MultipartFile profileImg) {
+        Meeting meeting = jpaMeetingDao.findMeetingById(meetingDTO.getId());
 
-      Meeting meeting = jpaMeetingDao.findMeetingById(meetingDTO.getId());
+        meetingDTO.setProfile(meeting.getProfile());
+        updateProfile(meetingDTO, profileImg);
+
 
             meeting.modifyMeeting(meetingDTO.getTitle(), meetingDTO.getIntroduction(),
                     meetingDTO.getProfile(), meetingDTO.getSchool(), meetingDTO.getMajor(), meetingDTO.getRegion(),
                     meetingDTO.getCount());
     }
+
+    public String currentProfile(Long id) {
+        Meeting meeting = jpaMeetingDao.findMeetingById(id);
+        MeetingDTO meetingDTO = meeting.toMeetingDTO();
+
+        return meetingDTO.getProfile();
+    }
+
 
     @Transactional(readOnly = true)
     public List<MeetingDTO> findMeeting() {
@@ -194,6 +202,21 @@ public class MeetingService {
     public void afterDeleteToSelect(Long meetId) {
         List<MeetingProposer> meetingsIdAndStatus = jpaMeetingProposerDao.findByMeetingsIdAndStatus(meetId, 0);
         meetingsIdAndStatus.forEach(meetingProposer -> jpaMeetingProposerDao.deleteById(meetingProposer.getId()));
+    }
+
+    public void updateProfile(MeetingDTO meetingDTO, MultipartFile multipartFile) {
+        String upload = commonService.processUpload(multipartFile);
+        if (upload != null) {
+            meetingDTO.setProfile(upload);
+        }
+    }
+    //현재 이미지 가져오기
+    public String currentImage(Long id) {
+
+        Meeting meeting = jpaMeetingDao.findMeetingById(id);
+        MeetingDTO meetingDTO = meeting.toMeetingDTO();
+
+        return meetingDTO.getProfile();
     }
 
 }

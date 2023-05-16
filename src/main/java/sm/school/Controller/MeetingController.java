@@ -2,6 +2,7 @@ package sm.school.Controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +13,9 @@ import sm.school.dto.meeting.MeetingDTO;
 
 import javax.validation.Valid;
 import java.nio.file.AccessDeniedException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/meeting")
@@ -78,11 +81,12 @@ public class MeetingController {
     }
 
     @PostMapping("/update")
-    public String updateMeeting(@ModelAttribute("meetingDTO") MeetingDTO meetingDTO) {
+    public String updateMeeting(@ModelAttribute("meetingDTO") MeetingDTO meetingDTO,
+                                @RequestParam("profileImg") MultipartFile multipartFile) {
 
-        meetingService.updateMeeting(meetingDTO);
+        meetingService.updateMeeting(meetingDTO, multipartFile);
 
-        return "redirect:/meeting/list";
+        return "redirect:/meeting/detail?id=" + meetingDTO.getId();
     }
 
     @RequestMapping("/delete")
@@ -90,5 +94,15 @@ public class MeetingController {
         meetingService.deleteMeeting(id, authentication.getName());
 
         return "redirect:/meeting/list";
+    }
+
+    @GetMapping("currentImage")
+    public ResponseEntity<Map<String, String>> currentProfile(@RequestParam("id") Long id, Authentication authentication) {
+        String currentImage = meetingService.currentImage(id);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("imageUrl", currentImage);
+
+        return ResponseEntity.ok(response);
     }
 }

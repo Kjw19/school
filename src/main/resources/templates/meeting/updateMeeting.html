@@ -3,25 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <title>미팅 수정 폼</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-<form th:object="${meetingDTO}" th:action="@{/meeting/update}" method="post">
+<form th:object="${meetingDTO}" th:action="@{/meeting/update}" method="post"  enctype="multipart/form-data">
     <div>
         <input type="hidden" th:field="*{id}">
         <label for="title">미팅 파티 이름</label>
         <input type="text" id="title" name="school" th:field="*{title}" required>
         <p th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></p>
     </div>
+
     <div>
         <label for="introduction">미팅 소개글</label>
         <input type="text" id="introduction" name="introduction" th:field="*{introduction}" required>
         <p th:if="${#fields.hasErrors('introduction')}" th:errors="*{introduction}"></p>
     </div>
     <div>
+        <label for="profileImg">이미지</label>
+        <img id="current-img" src="#" alt="현재 이미지" th:src="@{''}">
+        <input type="file" id="profileImg" name="profileImg" accept="image/*"/>
+    </div>
+    <div>
         <label for="school">학교</label>
         <input type="text" id="school" name="school" th:field="*{school}" required>
         <p th:if="${#fields.hasErrors('school')}" th:errors="*{school}"></p>
     </div>
+
     <div>
         <label for="major">전공</label>
         <input type="text" id="major" name="major" th:field="*{major}" required>
@@ -42,6 +50,28 @@
         <button type="submit">수정하기</button>
     </div>
 </form>
-
+<script type="text/javascript">
+    $(document).ready(function() {
+        let id = $('#id').val();
+        $('#profileImg').on('change', function() {
+            let size = this.files[0].size;
+            if (size > 5000000) { // 5MB
+                alert("5MB 이하의 사진만 가능합니다.");
+                $(this).val("");
+            }
+        });
+        $.ajax({
+            url: '/meeting/currentImage',
+            data: {id : id},
+            type: 'GET',
+            success: function (data) {
+                $('#current-img').attr('src',data.imageUrl)
+            },
+            error: function () {
+                alert('오류 발생');
+            }
+        });
+    });
+</script>
 </body>
 </html>

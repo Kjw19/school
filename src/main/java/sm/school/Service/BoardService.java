@@ -69,12 +69,9 @@ public class BoardService {
     }
 
     public void updateImage(BoardDTO boardDTO, MultipartFile multipartFile) {
-        if (!multipartFile.isEmpty()) {
-            if (multipartFile.getSize() > 5000000) {
-                throw new FileSizeException();
-            }
-            String profileImageUrl = commonService.uploadFileToS3(multipartFile);
-            boardDTO.setPicture(profileImageUrl);
+        String upload = commonService.processUpload(multipartFile);
+        if (upload != null) {
+            boardDTO.setPicture(upload);
         }
     }
 
