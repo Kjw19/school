@@ -5,16 +5,17 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import sm.school.Service.MemberService;
-import sm.school.dto.MemberDTO;
+import sm.school.dto.member.MemberDTO;
 
 import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/member")
@@ -24,7 +25,6 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    private final PasswordEncoder passwordEncoder;
 
     @GetMapping("/login")
     public String login() {
@@ -62,5 +62,32 @@ public class MemberController {
         model.addAttribute("user", memberService.findMember(authentication.getName()));
 
         return "/member/myPage";
+    }
+
+    @GetMapping("/modify")
+    public String modifyMemberForm(Model model, Authentication authentication) {
+
+        model.addAttribute("memberDTO", memberService.findMember(authentication.getName()));
+
+        return "member/modifyMember";
+    }
+
+    @PostMapping("/modify")
+    public String modifyMember(@Valid MemberDTO memberDTO, @RequestParam("profileImg") MultipartFile multipartFile,
+                               BindingResult bindingResult, Authentication authentication) {
+
+        memberService.modifyMember(memberDTO, multipartFile, bindingResult, authentication.getName());
+
+        return "redirect:/member/myPage";
+    }
+
+    @GetMapping("/currentProfile")
+    public ResponseEntity<Map<String, String>> currentProfile(Authentication authentication) {
+        String currentProfile = memberService.getCurrentProfile(authentication.getName());
+
+        Map<String, String> response = new HashMap<>();
+        response.put("profileImageUrl", currentProfile);
+
+        return ResponseEntity.ok(response);
     }
 }

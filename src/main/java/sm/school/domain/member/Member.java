@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
-import sm.school.dto.MemberDTO;
+import sm.school.dto.member.MemberDTO;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -68,10 +68,9 @@ public class Member {
     }
 
     //회원수정 메서드
-    public void updateMember(String userId, String school, String major,
+    public void updateMember(String school, String major,
                   String profile, PersonalInf personalInf,
                   Address address) {
-        this.userId = userId;
         this.school = school;
         this.major = major;
         this.profile = profile;

@@ -2,7 +2,6 @@ package sm.school.Controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,12 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import sm.school.Service.MeetingService;
 import sm.school.Service.MemberService;
 import sm.school.Service.StudyService;
-import sm.school.domain.enumType.MemRole;
-import sm.school.dto.MemberDTO;
 
 import java.nio.file.AccessDeniedException;
-import java.util.Collection;
-import java.util.List;
 
 @Controller
 @RequestMapping("/admin")

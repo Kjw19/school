@@ -5,15 +5,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import sm.school.Service.Contest.ContestMemberService;
 import sm.school.Service.Contest.ContestService;
 import sm.school.Service.MemberDetailsService;
-import sm.school.Service.MemberService;
 import sm.school.domain.contest.ContestDTO;
 import sm.school.domain.member.Member;
-import sm.school.dto.MemberDTO;
 
 import javax.validation.Valid;
 
