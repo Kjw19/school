@@ -24,7 +24,7 @@ public class Study {
     @Column(name = "study_id")
     private Long id;//기본값
 
-    @Column(name = "study_name" ,unique = true, nullable = false)
+    @Column(name = "study_name", nullable = false)
     private String name; // 스터디이름
 
     private String region; //스터디 지역

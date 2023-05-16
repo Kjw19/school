@@ -2,6 +2,7 @@ package sm.school.Controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +14,9 @@ import sm.school.dto.StudyDTO;
 
 import javax.validation.Valid;
 import java.nio.file.AccessDeniedException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/study")
@@ -62,8 +65,9 @@ public class StudyController {
 
     @PostMapping("/update")
     public String studyUpdate(@ModelAttribute("studyDTO") StudyDTO studyDTO,
-                              Authentication authentication) throws AccessDeniedException {
-        studyService.updateStudy(studyDTO, authentication.getName());
+                              Authentication authentication,
+                              @RequestParam("profileImg") MultipartFile multipartFile) throws AccessDeniedException {
+        studyService.updateStudy(studyDTO, authentication.getName(), multipartFile);
 
         return "redirect:/study/detail?id=" + studyDTO.getId();
     }
@@ -72,5 +76,15 @@ public class StudyController {
     public String studyDelete(@RequestParam("id") Long id, Authentication authentication) throws AccessDeniedException {
         studyService.deleteStudy(id, authentication.getName());
         return "redirect:/study/list";
+    }
+
+    @GetMapping("currentImage")
+    public ResponseEntity<Map<String, String>> currentProfile(@RequestParam("id") Long id, Authentication authentication) {
+        String currentImage = studyService.currentImage(id);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("imageUrl", currentImage);
+
+        return ResponseEntity.ok(response);
     }
 }

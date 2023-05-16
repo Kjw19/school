@@ -41,6 +41,12 @@
       if (size > 5000000) { // 5MB
         alert("5MB 이하의 사진만 가능합니다.");
         $(this).val("");
+      } else {
+        let reader = new FileReader();
+        reader.onload = function(e) {
+          $('#current-img').attr('src', e.target.result);
+        }
+        reader.readAsDataURL(this.files[0]);
       }
     });
     $.ajax({

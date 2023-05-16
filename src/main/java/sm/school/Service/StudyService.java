@@ -10,10 +10,12 @@ import sm.school.Service.commonError.FileSizeException;
 import sm.school.Service.commonError.MemberNotExistException;
 import sm.school.dao.study.JpaStudyDao;
 import sm.school.dao.study.JpaStudyMemberDao;
+import sm.school.domain.meeting.Meeting;
 import sm.school.domain.study.Study;
 import sm.school.domain.study.StudyMember;
 import sm.school.dto.StudyDTO;
 import sm.school.dto.StudyMemberDTO;
+import sm.school.dto.meeting.MeetingDTO;
 
 import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
@@ -43,13 +45,10 @@ public class StudyService{
     }
 
     public Study createStudy(StudyDTO studyDTO, MultipartFile imageFile, Authentication authentication) {
-        if (!imageFile.isEmpty()) {
-            if (imageFile.getSize() > 5000000) {
-                throw new FileSizeException();
-            }
-            String image = commonService.uploadFileToS3(imageFile);
-            studyDTO.setProfile(image);
-        }
+
+        updateProfile(studyDTO, imageFile);
+
+
         studyDTO.setMember(commonService.getMemberFromAuthentication(authentication));
 
         Study study = studyDTO.toStudyEntity();
@@ -70,11 +69,21 @@ public class StudyService{
         return selectedStudyDTO;
     }
 
-    public void updateStudy(StudyDTO studyDTO, String userId) throws AccessDeniedException {
+    public void updateStudy(StudyDTO studyDTO, String userId,
+                            MultipartFile multipartFile) throws AccessDeniedException {
+
         validateUserAccess(studyDTO.getId(), userId);
         Study study = jpaStudyDao.findStudyById(studyDTO.getId());
+        studyDTO.setProfile(study.getProfile());
+        updateProfile(studyDTO, multipartFile);
 
         study.UpdateStudy(studyDTO.getName(), studyDTO.getContent(),studyDTO.getRegion(), studyDTO.getProfile(),studyDTO.getRegType());
+    }
+
+    public String currentProfile(Long id) {
+        Study study = jpaStudyDao.findStudyById(id);
+        StudyDTO studyDTO = study.toStudyDTO();
+        return studyDTO.getProfile();
     }
 
     public void deleteStudy(Long studyId, String userId) throws AccessDeniedException {
@@ -91,6 +100,14 @@ public class StudyService{
         }
         jpaStudyDao.deleteById(studyId);
     }
+
+    public void updateProfile(StudyDTO studyDTO, MultipartFile multipartFile) {
+        String upload = commonService.processUpload(multipartFile);
+        if (upload != null) {
+            studyDTO.setProfile(upload);
+        }
+    }
+
 
     //스터디 회원
 
@@ -131,4 +148,13 @@ public class StudyService{
         }
         jpaStudyMemberDao.deleteById(studyMemberId);
     }
+
+    public String currentImage(Long id) {
+
+        Study study = jpaStudyDao.findStudyById(id);
+        StudyDTO studyDTO = study.toStudyDTO();
+        return studyDTO.getProfile();
+    }
+
+
 }
