@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import sm.school.Service.commonError.DataNotFoundException;
+import sm.school.Service.commonError.FileSizeException;
 import sm.school.Service.commonError.MemberNotExistException;
 import sm.school.dao.meeting.JpaMeetingDao;
 import sm.school.dao.meeting.JpaMeetingProposerDao;
@@ -45,9 +46,10 @@ public class MeetingService {
 
         if (!imageFile.isEmpty()) {
             if (imageFile.getSize() > 5000000) {
-                String profileImageUrl = commonService.uploadFileToS3(imageFile);
-                meetingDTO.setProfile(profileImageUrl);
+                throw new FileSizeException();
             }
+            String profileImageUrl = commonService.uploadFileToS3(imageFile);
+            meetingDTO.setProfile(profileImageUrl);
         }
         //사용자 정보를 받아 memberDetails로 저장
         meetingDTO.setMember(commonService.getMemberFromAuthentication(authentication));

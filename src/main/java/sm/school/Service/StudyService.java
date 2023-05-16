@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import sm.school.Service.commonError.DataNotFoundException;
+import sm.school.Service.commonError.FileSizeException;
 import sm.school.Service.commonError.MemberNotExistException;
 import sm.school.dao.study.JpaStudyDao;
 import sm.school.dao.study.JpaStudyMemberDao;
@@ -46,9 +47,10 @@ public class StudyService{
     public Study createStudy(StudyDTO studyDTO, MultipartFile imageFile, Authentication authentication) {
         if (!imageFile.isEmpty()) {
             if (imageFile.getSize() > 5000000) {
-                String image = commonService.uploadFileToS3(imageFile);
-                studyDTO.setProfile(image);
+                throw new FileSizeException();
             }
+            String image = commonService.uploadFileToS3(imageFile);
+            studyDTO.setProfile(image);
         }
         studyDTO.setMember(commonService.getMemberFromAuthentication(authentication));
 

@@ -6,11 +6,15 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-  <h1>미팅 상세</h1>
+  <h1>스터디 상세</h1>
   <table>
     <tr>
       <th>스터디 명</th>
       <td th:text="${studyDTO.name}"></td>
+    </tr>
+    <tr>
+      <th>스터디 사진</th>
+      <td><img th:src="${studyDTO.getProfile()}" alt="게시글 사진"></td>
     </tr>
     <tr>
       <th>소개 글</th>

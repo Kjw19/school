@@ -5,7 +5,7 @@
     <title>스터디 생성</title>
 </head>
 <body>
-<form th:object="${studyDTO}" th:action="@{/study/create}" method="post">
+<form th:object="${studyDTO}" th:action="@{/study/create}" method="post"  enctype="multipart/form-data">
     <div>
         <label for="name">스터디 이름</label>
         <input type="text" id="name" name="name" th:field="*{name}" required>
@@ -21,6 +21,11 @@
         <input type="text" id="region" name="region" th:field="*{region}" required>
         <p th:if="${#fields.hasErrors('region')}" th:errors="*{region}"></p>
     </div>
+    <div>
+        <label for="profileImg">회원 이미지</label>
+        <input type="file" id="profileImg" name="profileImg" accept="image/*"/>
+    </div>
+
 
     <div>
         <label for="regType">가입방식</label>
