@@ -4,8 +4,10 @@ package sm.school.Controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -40,7 +42,7 @@ public class MemberController {
     public String signup(@Valid MemberDTO memberDTO, @RequestParam("profileImg") MultipartFile multipartFile,
                          BindingResult bindingResult) {
 
-        memberService.signUp(memberDTO, multipartFile,bindingResult);
+        memberService.signUp(memberDTO, multipartFile, bindingResult);
 
 
         return "redirect:/";
@@ -52,5 +54,13 @@ public class MemberController {
     @GetMapping("/{userId}/exists")
     public ResponseEntity<Boolean> checkUserIdDuplicate(@PathVariable String userId) {
         return ResponseEntity.ok(memberService.checkUserIdDuplicate(userId));
+    }
+
+    @GetMapping("/myPage")
+    public String myPageForm(Model model, Authentication authentication) {
+
+        model.addAttribute("user", memberService.findMember(authentication.getName()));
+
+        return "/member/myPage";
     }
 }

@@ -35,13 +35,11 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
 
-    private final MemberSecurityService memberSecurityService;
 
     private final PasswordEncoder passwordEncoder;
 
     private final CommonService commonService;
 
-    private final S3Client s3Client;
 
 
     //회원가입
@@ -85,5 +83,17 @@ public class MemberService {
         } else {
             member.changeRole(SELECTED);
         }
+    }
+
+    public MemberDTO  findMember(String userId) {
+
+        if (!memberRepository.existsByUserId(userId)) {
+            throw new MemberNotExistException();
+        }
+
+        Member member = memberRepository.findMemberByUserId(userId);
+        MemberDTO memberDTO = member.toMemberDTO();
+
+        return memberDTO;
     }
 }
