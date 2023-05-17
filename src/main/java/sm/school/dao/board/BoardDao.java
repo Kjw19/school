@@ -18,4 +18,8 @@ public interface BoardDao {
     void deleteById(Long id);
 
     Boolean existsById(Long id);
+
+    List<Board> findBoardByMemberUserId(String id);
 }
+
+

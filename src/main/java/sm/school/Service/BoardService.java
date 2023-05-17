@@ -83,5 +83,11 @@ public class BoardService {
 
         return boardDTO.getPicture();
     }
+
+    public List<BoardDTO> findBoardFromUser(String memId) {
+        return jpaBoardDao.findBoardByMemberUserId(memId).stream()
+                .map(Board::toBoardDTO)
+                .collect(Collectors.toList());
+    }
 }
 

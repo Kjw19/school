@@ -8,7 +8,7 @@
 <body>
 <h1>회원수정</h1>
 
-<form th:object="${memberDTO}" th:action="@{/member/modify}" method="post" enctype="multipart/form-data">
+<form th:object="${memberDTO}" th:action="@{/member/myPage/modify}" method="post" enctype="multipart/form-data">
     <div>
         <label for="school">학교</label>
         <input type="text" id="school" name="school" th:field="*{school}"/>

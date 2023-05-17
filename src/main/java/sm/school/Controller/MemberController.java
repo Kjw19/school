@@ -10,11 +10,14 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import sm.school.Service.BoardService;
 import sm.school.Service.MemberService;
+import sm.school.dto.BoardDTO;
 import sm.school.dto.member.MemberDTO;
 
 import javax.validation.Valid;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -24,6 +27,7 @@ import java.util.Map;
 public class MemberController {
 
     private final MemberService memberService;
+    private final BoardService boardService;
 
 
     @GetMapping("/login")
@@ -41,7 +45,6 @@ public class MemberController {
     @PostMapping("/signup")
     public String signup(@Valid MemberDTO memberDTO, @RequestParam("profileImg") MultipartFile multipartFile,
                          BindingResult bindingResult) {
-
         memberService.signUp(memberDTO, multipartFile, bindingResult);
 
 
@@ -64,7 +67,7 @@ public class MemberController {
         return "/member/myPage";
     }
 
-    @GetMapping("/modify")
+    @GetMapping("/myPage/modify")
     public String modifyMemberForm(Model model, Authentication authentication) {
 
         model.addAttribute("memberDTO", memberService.findMember(authentication.getName()));
@@ -72,7 +75,7 @@ public class MemberController {
         return "member/modifyMember";
     }
 
-    @PostMapping("/modify")
+    @PostMapping("/myPage/modify")
     public String modifyMember(@Valid MemberDTO memberDTO, @RequestParam("profileImg") MultipartFile multipartFile,
                                BindingResult bindingResult, Authentication authentication) {
 
@@ -89,5 +92,13 @@ public class MemberController {
         response.put("profileImageUrl", currentProfile);
 
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/myPage/board")
+    public String findBoardFromUser(Model model, Authentication authentication) {
+        List<BoardDTO> boardFromUser = boardService.findBoardFromUser(authentication.getName());
+        model.addAttribute("boards", boardFromUser);
+
+        return "/member/boardFromUser";
     }
 }

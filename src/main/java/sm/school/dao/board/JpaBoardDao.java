@@ -43,4 +43,9 @@ public class JpaBoardDao implements BoardDao {
     public Boolean existsById(Long id) {
         return boardRepository.existsById(id);
     }
+
+    @Override
+    public List<Board> findBoardByMemberUserId(String id) {
+        return boardRepository.findBoardByMemberUserId(id);
+    }
 }
