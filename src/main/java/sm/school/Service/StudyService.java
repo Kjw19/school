@@ -1,6 +1,7 @@
 package sm.school.Service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +29,7 @@ import static sm.school.Service.commonConst.Status.SELECTED;
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class StudyService{
 
     private final JpaStudyDao jpaStudyDao;
@@ -71,13 +73,18 @@ public class StudyService{
 
     public void updateStudy(StudyDTO studyDTO, String userId,
                             MultipartFile multipartFile) throws AccessDeniedException {
-
+        log.info("오류시작0");
         validateUserAccess(studyDTO.getId(), userId);
+        log.info("오류시작1");
         Study study = jpaStudyDao.findStudyById(studyDTO.getId());
+        log.info("오류시작222");
         studyDTO.setProfile(study.getProfile());
+        log.info("profile {}", study.getProfile());
         updateProfile(studyDTO, multipartFile);
+        log.info("DTO profile {}", studyDTO.getProfile());
 
         study.UpdateStudy(studyDTO.getName(), studyDTO.getContent(),studyDTO.getRegion(), studyDTO.getProfile(),studyDTO.getRegType());
+        log.info("오류시작6666");
     }
 
     public String currentProfile(Long id) {
@@ -102,8 +109,11 @@ public class StudyService{
     }
 
     public void updateProfile(StudyDTO studyDTO, MultipartFile multipartFile) {
+        log.info("multipartFile {}", multipartFile);
         String upload = commonService.processUpload(multipartFile);
+        log.info("upload {}", upload);
         if (upload != null) {
+            log.info("오류시작3");
             studyDTO.setProfile(upload);
         }
     }

@@ -82,6 +82,7 @@ public class Study {
         this.name = name;
         this.content = content;
         this.region = region;
+        this.profile = profile;
         this.regType = regType;
     }
 

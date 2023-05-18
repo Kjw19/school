@@ -29,7 +29,6 @@ public class BoardService {
 
     public Board createBoard(BoardDTO boardDTO, MultipartFile imageFile, Authentication authentication) {
 
-
         updateImage(boardDTO, imageFile);
 
         boardDTO.setMember(commonService.getMemberFromAuthentication(authentication));
