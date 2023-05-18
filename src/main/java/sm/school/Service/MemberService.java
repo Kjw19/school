@@ -47,7 +47,7 @@ public class MemberService {
             throw new DataNotFoundException();
         }
         //프로필 사진 업로드
-        updateProfileImg(memberDTO, profileImage);
+        updateImage(memberDTO, profileImage);
 
 
         memberDTO.setPasswd(passwordEncoder.encode(memberDTO.getPasswd()));//패스워드 인코딩진행
@@ -65,7 +65,8 @@ public class MemberService {
         }
         Member member = jpaMemberDao.findMemberByUserId(userId);
 
-        updateProfileImg(memberDTO, profileImage);
+        memberDTO.setProfile(member.getProfile());
+        updateImage(memberDTO,profileImage);
         member.updateMember(memberDTO.getSchool(), memberDTO.getMajor(), memberDTO.getProfile(),
                 memberDTO.getPersonalInfDTO().toPersonalInf(), memberDTO.getAddressDTO().toAddress());
     }
@@ -103,16 +104,10 @@ public class MemberService {
         return memberDTO;
     }
 
-    public void updateProfileImg(MemberDTO memberDTO, MultipartFile multipartFile) {
-        //프로필 사진 업로드
-        if (multipartFile.isEmpty()) {
-            memberDTO.setProfile(DefaultProfileUrl.Url);
-        } else {
-            if (multipartFile.getSize() > 5000000){//5MB
-                throw new FileSizeException();
-            }
-            String profileImageUrl = commonService.uploadFileToS3(multipartFile);
-            memberDTO.setProfile(profileImageUrl);
+    public void updateImage(MemberDTO memberDTO, MultipartFile multipartFile) {
+        String upload = commonService.processUpload(multipartFile);
+        if (upload != null) {
+            memberDTO.setProfile(upload);
         }
     }
 
