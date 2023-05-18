@@ -33,9 +33,7 @@ public class CommonService {
         String bucketName = "schoolpro-s3-bucket";
         String key = file.getOriginalFilename();
 
-        try{
-            InputStream inputStream = file.getInputStream();
-
+        try (InputStream inputStream = file.getInputStream()) {
             PutObjectRequest putObjectRequest = PutObjectRequest.builder()
                     .bucket(bucketName)
                     .key(key)
@@ -45,7 +43,7 @@ public class CommonService {
 
             return s3Client.utilities().getUrl(builder -> builder.bucket(bucketName).key(key)).toString();
 
-        }catch (IOException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
