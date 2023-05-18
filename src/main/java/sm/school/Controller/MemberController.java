@@ -11,8 +11,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import sm.school.Service.BoardService;
+import sm.school.Service.MeetingService;
 import sm.school.Service.MemberService;
+import sm.school.Service.StudyService;
 import sm.school.dto.BoardDTO;
+import sm.school.dto.StudyDTO;
+import sm.school.dto.meeting.MeetingDTO;
 import sm.school.dto.member.MemberDTO;
 
 import javax.validation.Valid;
@@ -28,6 +32,8 @@ public class MemberController {
 
     private final MemberService memberService;
     private final BoardService boardService;
+    private final StudyService studyService;
+    private final MeetingService meetingService;
 
 
     @GetMapping("/login")
@@ -100,5 +106,19 @@ public class MemberController {
         model.addAttribute("boards", boardFromUser);
 
         return "/member/boardFromUser";
+    }
+    @GetMapping("/myPage/study")
+    public String findStudyFromUser(Model model, Authentication authentication) {
+        List<StudyDTO> studyFromUser = studyService.findStudyFromUser(authentication.getName());
+        model.addAttribute("list", studyFromUser);
+
+        return "/member/studyFromUser";
+    }
+    @GetMapping("/myPage/meeting")
+    public String findMeetingFromUser(Model model, Authentication authentication) {
+        List<MeetingDTO> meetingFromUser = meetingService.findMeetingFromUser(authentication.getName());
+        model.addAttribute("list", meetingFromUser);
+
+        return "/member/meetingFromUser";
     }
 }

@@ -219,4 +219,9 @@ public class MeetingService {
         return meetingDTO.getProfile();
     }
 
+    public List<MeetingDTO> findMeetingFromUser(String memId) {
+        return jpaMeetingDao.findMeetingByMemberUserId(memId).stream()
+                .map(Meeting::toMeetingDTO)
+                .collect(Collectors.toList());
+    }
 }

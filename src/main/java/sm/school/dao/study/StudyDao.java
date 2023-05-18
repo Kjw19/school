@@ -18,4 +18,6 @@ public interface StudyDao {
     void deleteById(Long id);
 
     Boolean existsById(Long id);
+
+    List<Study> findStudyByMemberUserId(String userId);
 }

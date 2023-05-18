@@ -156,5 +156,9 @@ public class StudyService{
         return studyDTO.getProfile();
     }
 
-
+    public List<StudyDTO> findStudyFromUser(String memId) {
+        return jpaStudyDao.findStudyByMemberUserId(memId).stream()
+                .map(Study::toStudyDTO)
+                .collect(Collectors.toList());
+    }
 }

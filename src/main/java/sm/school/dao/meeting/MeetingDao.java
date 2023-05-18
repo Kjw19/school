@@ -17,4 +17,6 @@ public interface MeetingDao {
     void deleteById(Long id);
 
     Boolean existsById(Long id);
+
+    List<Meeting> findMeetingByMemberUserId(String userId);
 }

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>스터디 목록</h1>
+<table>
+    <thead>
+    <tr>
+        <th>스터디 명</th>
+        <th>지역</th>
+        <th>스터디장</th>
+        <th>생성일</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="study : ${list}">
+            <td>
+                <a th:href="@{/study/detail(id=${study.id})}" th:text="${study.getName()}"></a>
+            </td>
+            <td th:text="${study.getRegion()}"/>
+            <td th:text="${study.getMember().getUserId()}"/>
+            <td th:text="${#dates.format(study.getDate(), 'yyyy년 MM월 dd일')}"/>
+    </tr>
+    </tbody>
+</table>
+<a th:href="@{/}">홈으로</a>
+<a th:href="@{/member/myPage}">마이페이지</a>
+</body>
+</html>

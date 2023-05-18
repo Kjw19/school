@@ -44,4 +44,9 @@ public class JpaMeetingDao implements MeetingDao{
         return meetingRepository.existsById(id);
     }
 
+    @Override
+    public List<Meeting> findMeetingByMemberUserId(String userId) {
+        return meetingRepository.findMeetingByMemberUserId(userId);
+    }
+
 }

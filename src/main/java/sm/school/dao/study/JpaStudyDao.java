@@ -43,4 +43,9 @@ public class JpaStudyDao implements StudyDao {
     public Boolean existsById(Long id) {
         return studyRepository.existsById(id);
     }
+
+    @Override
+    public List<Study> findStudyByMemberUserId(String userId) {
+        return studyRepository.findStudyByMemberUserId(userId);
+    }
 }
