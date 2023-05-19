@@ -20,4 +20,6 @@ public interface StudyDao {
     Boolean existsById(Long id);
 
     List<Study> findStudyByMemberUserId(String userId);
+
+    Boolean existsByName(String name);
 }

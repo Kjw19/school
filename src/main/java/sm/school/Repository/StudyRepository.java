@@ -13,4 +13,6 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
     Boolean deleteStudiesById(Long id);
 
     List<Study> findStudyByMemberUserId(String userId);
+
+    Boolean existsByName(String name);
 }

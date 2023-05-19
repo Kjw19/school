@@ -57,6 +57,10 @@ public class StudyService{
 
         return jpaStudyDao.save(study);
     }
+    public boolean checkStudyNameDuplicate(String name) {
+        log.info("name {}", name);
+        return jpaStudyDao.existsByName(name);
+    }
 
     public List<StudyDTO> findAllStudy() {
         return jpaStudyDao.findAll().stream()
@@ -73,18 +77,14 @@ public class StudyService{
 
     public void updateStudy(StudyDTO studyDTO, String userId,
                             MultipartFile multipartFile) throws AccessDeniedException {
-        log.info("오류시작0");
         validateUserAccess(studyDTO.getId(), userId);
-        log.info("오류시작1");
         Study study = jpaStudyDao.findStudyById(studyDTO.getId());
-        log.info("오류시작222");
         studyDTO.setProfile(study.getProfile());
         log.info("profile {}", study.getProfile());
         updateProfile(studyDTO, multipartFile);
         log.info("DTO profile {}", studyDTO.getProfile());
 
-        study.UpdateStudy(studyDTO.getName(), studyDTO.getContent(),studyDTO.getRegion(), studyDTO.getProfile(),studyDTO.getRegType());
-        log.info("오류시작6666");
+        study.UpdateStudy(studyDTO.getContent(),studyDTO.getRegion(), studyDTO.getProfile(),studyDTO.getRegType());
     }
 
     public String currentProfile(Long id) {
@@ -113,7 +113,6 @@ public class StudyService{
         String upload = commonService.processUpload(multipartFile);
         log.info("upload {}", upload);
         if (upload != null) {
-            log.info("오류시작3");
             studyDTO.setProfile(upload);
         }
     }

@@ -78,8 +78,7 @@ public class Study {
     }
 
     //스터디 정보 수정
-    public void UpdateStudy(String name, String content,String region, String profile, int regType) {
-        this.name = name;
+    public void UpdateStudy(String content,String region, String profile, int regType) {
         this.content = content;
         this.region = region;
         this.profile = profile;

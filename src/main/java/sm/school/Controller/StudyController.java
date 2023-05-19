@@ -46,6 +46,12 @@ public class StudyController {
         return "redirect:/study/list";
     }
 
+    @GetMapping("/{name}/exists")
+    public ResponseEntity<Boolean> checkStudyNameDuplicate(@PathVariable String name) {
+        return ResponseEntity.ok(studyService.checkStudyNameDuplicate(name));
+    }
+
+
     @GetMapping("/detail")
     public String studyDetail(@RequestParam("id") long id, Model model) {
 
