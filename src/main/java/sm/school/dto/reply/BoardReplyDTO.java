@@ -18,8 +18,8 @@ public class BoardReplyDTO extends ReplyDTO{
     private Board board; //게시글 id
 
     @Builder
-    public BoardReplyDTO(String content, Member member, Long id, Board board) {
-        super(content, member);
+    public BoardReplyDTO(String content, Member member, String picture, Long id, Board board) {
+        super(content, member,picture);
         this.id = id;
         this.board = board;
     }

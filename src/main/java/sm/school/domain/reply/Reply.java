@@ -1,6 +1,7 @@
 package sm.school.domain.reply;
 
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,6 +25,8 @@ public abstract class Reply {
     @JoinColumn(name = "mem_id")
     private Member member; //작성자
 
+    private String picture;
+
     @CreationTimestamp
     @Column(name = "reply_date")
     private Date date; // 작성 시간
@@ -31,9 +34,10 @@ public abstract class Reply {
     @UpdateTimestamp
     @Column(name = "modify_reply_date")
     private Date modify_date; //수정 시간
-
-    protected Reply(String content, Member member) {
+    
+    protected Reply(String content, Member member, String picture) {
         this.content = content;
         this.member = member;
+        this.picture = picture;
     }
 }
