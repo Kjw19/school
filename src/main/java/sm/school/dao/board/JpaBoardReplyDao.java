@@ -30,6 +30,11 @@ public class JpaBoardReplyDao implements BoardReplyDao{
     }
 
     @Override
+    public BoardReply findBoardReplyById(Long id) {
+        return boardReplyRepository.findBoardReplyById(id);
+    }
+
+    @Override
     public List<BoardReply> findBoardRepliesByBoardId(Long id) {
         return boardReplyRepository.findBoardRepliesByBoardId(id);
     }

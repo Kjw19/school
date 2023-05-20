@@ -13,6 +13,8 @@ public interface BoardReplyDao {
 
     void deleteById(Long id);
 
+    BoardReply findBoardReplyById(Long id);
+
     List<BoardReply> findBoardRepliesByBoardId(Long id);
 
     List<BoardReply> findBoardRepliesByMemberUserId(String userId);
