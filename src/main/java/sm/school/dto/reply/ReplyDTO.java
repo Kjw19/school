@@ -27,9 +27,11 @@ public abstract class ReplyDTO {
 
     private Date modify_date; //수정 시간
 
-    protected ReplyDTO(String content, Member member, String picture) {
+    protected ReplyDTO(String content, Member member, String picture, Date date, Date modify_date) {
         this.content = content;
         this.member = member;
         this.picture = picture;
+        this.date = date;
+        this.modify_date = modify_date;
     }
 }

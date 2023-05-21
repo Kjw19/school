@@ -14,7 +14,6 @@ import java.util.Date;
 
 //댓글 추상체
 @Getter
-@Setter
 @NoArgsConstructor
 @MappedSuperclass
 public abstract class Reply {
@@ -36,9 +35,11 @@ public abstract class Reply {
     @Column(name = "modify_reply_date")
     private Date modify_date; //수정 시간
 
-    protected Reply(String content, Member member, String picture) {
+    protected Reply(String content, Member member, String picture, Date date, Date modify_date) {
         this.content = content;
         this.member = member;
         this.picture = picture;
+        this.date = date;
+        this.modify_date = modify_date;
     }
 }

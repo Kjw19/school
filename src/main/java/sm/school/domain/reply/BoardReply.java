@@ -9,6 +9,7 @@ import sm.school.domain.member.Member;
 import sm.school.dto.reply.BoardReplyDTO;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -25,8 +26,8 @@ public class BoardReply extends Reply {
     private Board board; //게시글 id
 
     @Builder
-    public BoardReply(String content, Member member, String picture, Long id, Board board) {
-        super(content, member,picture);
+    public BoardReply(String content, Member member, String picture, Date date, Date modify_date, Long id, Board board) {
+        super(content, member,picture, date, modify_date);
         this.id = id;
         this.board = board;
     }
@@ -36,6 +37,8 @@ public class BoardReply extends Reply {
                 .content(this.getContent())
                 .member(this.getMember())
                 .picture(this.getPicture())
+                .date(this.getDate())
+                .modify_date(this.getModify_date())
                 .id(id)
                 .board(board)
                 .build();
