@@ -9,8 +9,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import sm.school.Service.BoardReplyService;
 import sm.school.Service.BoardService;
+import sm.school.domain.reply.BoardReply;
 import sm.school.dto.BoardDTO;
+import sm.school.dto.reply.BoardReplyDTO;
 
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -22,6 +25,7 @@ import java.util.Map;
 public class BoardController {
 
     private final BoardService boardService;
+    private final BoardReplyService replyService;
 
     @GetMapping("/list")
     public String BoardList(Model model) {
@@ -32,12 +36,12 @@ public class BoardController {
     }
 
     @GetMapping("/create")
-    public String CreateBoardForm(@ModelAttribute("boardDTO") BoardDTO boardDTO) {
+    public String createBoardForm(@ModelAttribute("boardDTO") BoardDTO boardDTO) {
         return "board/createBoard";
     }
 
     @PostMapping("/create")
-    public String CreateBoard(@Valid BoardDTO boardDTO, @RequestParam("image") MultipartFile multipartFile,
+    public String createBoard(@Valid BoardDTO boardDTO, @RequestParam("image") MultipartFile multipartFile,
                               Authentication authentication) {
 
         boardService.createBoard(boardDTO, multipartFile, authentication);
@@ -49,6 +53,7 @@ public class BoardController {
     public String boardDetail(@RequestParam("id") long id, Model model) {
 
         model.addAttribute("board", boardService.selectBoard(id));
+        model.addAttribute("boardReplyDTO", new BoardReplyDTO());
 
         return "board/boardDetail";
     }
@@ -85,5 +90,21 @@ public class BoardController {
         response.put("imageUrl", currentImage);
 
         return ResponseEntity.ok(response);
+    }
+
+
+    //게시글 댓글
+    @GetMapping("/createReply")
+    public String createReplyForm(@ModelAttribute("boardReplyDTO") BoardReplyDTO boardReplyDTO) {
+
+        return "board/createReply";
+    }
+
+    @PostMapping("/createReply/{boardId}")
+    public String createReply(@RequestParam("boardId") Long id, @Valid BoardReplyDTO boardReplyDTO,
+                              @RequestParam("image") MultipartFile multipartFile, Authentication authentication) {
+        replyService.createReply(boardReplyDTO, id, multipartFile, authentication);
+
+        return "redirect:/board/detail?id=" + id;
     }
 }

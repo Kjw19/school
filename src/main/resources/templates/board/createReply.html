@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<form th:object="${boardReplyDTO}" th:action="@{'/board/createReply/' + ${boardId}}" method="post" enctype="multipart/form-data">
+
+    <div>
+        <label for="content">내용</label>
+        <input type="text" id="content" name="content" th:field="*{content}" required>
+        <p th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></p>
+    </div>
+    <div>
+        <label for="image">이미지</label>
+        <input type="file" id="image" name="image" accept="image/*"/>
+    </div>
+    <input type="hidden" name="boardId" th:value="${boardId}" />
+    <button type="submit">작성 하기</button>
+</form>
+
+</body>
+</html>

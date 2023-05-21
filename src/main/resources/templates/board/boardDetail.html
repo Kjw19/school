@@ -45,6 +45,12 @@
         <td th:text="${board.content}"></td>
     </tr>
 </table>
+<h1>댓글</h1>
+<br><br>
+<h1>댓글 작성</h1>
+<div th:replace="board/createReply :: body(boardId=${board.id})">
+    <!-- 게시글 덧글이 여기에 추가됌-->
+</div>
 <a th:href="@{/board/list}">목록으로</a>
 <!-- 로그인한 사용자와 작성자를 비교-->
 <div th:if="${board.member.userId} eq ${#authentication.name}">
