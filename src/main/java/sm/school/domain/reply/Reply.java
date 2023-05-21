@@ -16,6 +16,7 @@ import java.util.Date;
 @Getter
 @Setter
 @NoArgsConstructor
+@MappedSuperclass
 public abstract class Reply {
 
     @Column(columnDefinition = "TEXT",  nullable = false)
@@ -34,7 +35,7 @@ public abstract class Reply {
     @UpdateTimestamp
     @Column(name = "modify_reply_date")
     private Date modify_date; //수정 시간
-    
+
     protected Reply(String content, Member member, String picture) {
         this.content = content;
         this.member = member;

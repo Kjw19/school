@@ -26,8 +26,9 @@ public class BoardReplyDTO extends ReplyDTO{
 
     public BoardReply toBoardReply() {
         return BoardReply.builder()
-                .content(builder().content)
-                .member(builder().member)
+                .content(this.getContent())
+                .member(this.getMember())
+                .picture(this.getPicture())
                 .id(id)
                 .board(board)
                 .build();

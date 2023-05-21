@@ -33,8 +33,9 @@ public class BoardReply extends Reply {
 
     public BoardReplyDTO toBoardReplyDTO() {
         return BoardReplyDTO.builder()
-                .content(builder().content)
-                .member(builder().member)
+                .content(this.getContent())
+                .member(this.getMember())
+                .picture(this.getPicture())
                 .id(id)
                 .board(board)
                 .build();

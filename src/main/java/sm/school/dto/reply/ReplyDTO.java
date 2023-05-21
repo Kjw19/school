@@ -27,7 +27,6 @@ public abstract class ReplyDTO {
 
     private Date modify_date; //수정 시간
 
-    @Builder
     protected ReplyDTO(String content, Member member, String picture) {
         this.content = content;
         this.member = member;
