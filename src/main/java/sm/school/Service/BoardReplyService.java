@@ -6,13 +6,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import sm.school.dao.board.BoardReplyDao;
+import sm.school.dao.board.JpaBoardDao;
 import sm.school.dao.board.JpaBoardReplyDao;
 import sm.school.domain.reply.BoardReply;
 import sm.school.dto.BoardDTO;
 import sm.school.dto.reply.BoardReplyDTO;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,14 +21,16 @@ import java.util.stream.Collectors;
 public class BoardReplyService {
 
     private final JpaBoardReplyDao jpaBoardReplyDao;
-    private final CommonService commonService;
+    private final JpaBoardDao jpaBoardDao;
 
+    private final CommonService commonService;
     //댓글
-    public BoardReply createBoard(BoardReplyDTO boardReplyDTO, MultipartFile imageFile, Authentication authentication) {
+    public BoardReply createReply(BoardReplyDTO boardReplyDTO,Long boardId, MultipartFile imageFile, Authentication authentication) {
 
         updateImage(boardReplyDTO, imageFile);
 
         boardReplyDTO.setMember(commonService.getMemberFromAuthentication(authentication));
+        boardReplyDTO.setBoard(jpaBoardDao.findBoardById(boardId));
 
         BoardReply boardReply = boardReplyDTO.toBoardReply();
 
