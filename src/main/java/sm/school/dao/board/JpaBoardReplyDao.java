@@ -41,6 +41,6 @@ public class JpaBoardReplyDao implements BoardReplyDao{
 
     @Override
     public List<BoardReply> findBoardRepliesByMemberUserId(String userId) {
-        return boardReplyRepository.findBoardRepliesByMemberUserId(userId);
+        return boardReplyRepository.findBoardReplyByMemberUserId(userId);
     }
 }

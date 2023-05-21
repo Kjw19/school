@@ -11,6 +11,6 @@ public interface BoardReplyRepository extends JpaRepository<BoardReply, Long> {
     BoardReply findBoardReplyById(Long id);
     List<BoardReply> findBoardRepliesByBoardId(Long id);
 
-    List<BoardReply> findBoardRepliesByMemberUserId(String userId);
+    List<BoardReply> findBoardReplyByMemberUserId(String userId);
 
 }
