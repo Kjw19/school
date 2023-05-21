@@ -47,9 +47,34 @@
 </table>
 <h1>댓글</h1>
 <br><br>
+<div>
+    <table>
+        <thead>
+        <tr>
+            <td>내용</td>
+            <td>작성자</td>
+            <td>작성일</td>
+            <td>사진</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="reply : ${list}">
+            <td th:text="${reply.content}"/>
+            <td th:text="${reply.member.getUserId()}"/>
+            <div th:if="${reply.modify_date == reply.date}">
+                <td th:text="${#dates.format(reply.getDate(), 'yyyy-mm-dd')}"/>
+            </div>
+            <div th:if="${reply.modify_date != reply.date}">
+                <td th:text="${#dates.format(reply.modify_date, 'yyyy-mm-dd')}"/>
+            </div>
+            <td><img th:src="${reply.picture}" alt="댓글 이미지"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 <h1>댓글 작성</h1>
 <div th:replace="board/createReply :: body(boardId=${board.id})">
-    <!-- 게시글 덧글이 여기에 추가됌-->
+    <!-- 게시글 덧글작성이 여기에 추가됌-->
 </div>
 <a th:href="@{/board/list}">목록으로</a>
 <!-- 로그인한 사용자와 작성자를 비교-->

@@ -17,6 +17,7 @@ import sm.school.dto.reply.BoardReplyDTO;
 
 import javax.validation.Valid;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -51,9 +52,12 @@ public class BoardController {
 
     @GetMapping("/detail")
     public String boardDetail(@RequestParam("id") long id, Model model) {
+        //댓글 불러오기
+        List<BoardReplyDTO> replyDTOList = replyService.findReplyByBoardId(id);
 
         model.addAttribute("board", boardService.selectBoard(id));
         model.addAttribute("boardReplyDTO", new BoardReplyDTO());
+        model.addAttribute("list", replyService.findReplyByBoardId(id));
 
         return "board/boardDetail";
     }
