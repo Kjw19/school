@@ -105,10 +105,19 @@ public class BoardController {
     }
 
     @PostMapping("/createReply/{boardId}")
-    public String createReply(@RequestParam("boardId") Long id, @Valid BoardReplyDTO boardReplyDTO,
+    public String createReply(@RequestParam("boardId") Long boardId, @Valid BoardReplyDTO boardReplyDTO,
                               @RequestParam("image") MultipartFile multipartFile, Authentication authentication) {
-        replyService.createReply(boardReplyDTO, id, multipartFile, authentication);
+        replyService.createReply(boardReplyDTO, boardId, multipartFile, authentication);
 
-        return "redirect:/board/detail?id=" + id;
+        return "redirect:/board/detail?id=" + boardId;
     }
+
+    @RequestMapping("/deleteReply")
+    public String deleteReply(@RequestParam("replyId") Long replyId,
+                              @RequestParam("boardId") Long boardId) {
+
+        replyService.deleteReply(replyId);
+        return "redirect:/board/detail?id=" + boardId;
+    }
+
 }
