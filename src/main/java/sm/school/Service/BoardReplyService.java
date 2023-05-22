@@ -5,6 +5,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import sm.school.Service.commonError.DataNotFoundException;
 import sm.school.dao.board.BoardReplyDao;
 import sm.school.dao.board.JpaBoardDao;
 import sm.school.dao.board.JpaBoardReplyDao;
@@ -59,5 +60,13 @@ public class BoardReplyService {
         if (upload != null) {
             boardReplyDTO.setPicture(upload);
         }
+    }
+
+    public void deleteReply(Long replyId) {
+
+        if (!jpaBoardReplyDao.existsById(replyId)) {
+            throw new DataNotFoundException();
+        }
+        jpaBoardReplyDao.deleteById(replyId);
     }
 }

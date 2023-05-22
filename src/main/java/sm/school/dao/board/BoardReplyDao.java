@@ -19,4 +19,6 @@ public interface BoardReplyDao {
 
     List<BoardReply> findBoardRepliesByMemberUserId(String userId);
 
+    Boolean existsById(Long id);
+
 }
