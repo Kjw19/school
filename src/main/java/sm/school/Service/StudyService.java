@@ -7,19 +7,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import sm.school.Service.commonError.DataNotFoundException;
-import sm.school.Service.commonError.FileSizeException;
 import sm.school.Service.commonError.MemberNotExistException;
 import sm.school.dao.study.JpaStudyDao;
 import sm.school.dao.study.JpaStudyMemberDao;
-import sm.school.domain.meeting.Meeting;
 import sm.school.domain.study.Study;
 import sm.school.domain.study.StudyMember;
 import sm.school.dto.StudyDTO;
 import sm.school.dto.StudyMemberDTO;
-import sm.school.dto.meeting.MeetingDTO;
 
 import java.nio.file.AccessDeniedException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -124,6 +120,9 @@ public class StudyService{
                                          StudyMemberDTO studyMemberDTO,
                                          Authentication authentication) {
         StudyDTO studyDTO = detailStudy(id);
+        if (studyDTO.getRegType() == 0) {
+            studyMemberDTO.setRole(SELECTED);
+        }
 
         studyMemberDTO.setStudy(studyDTO.toStudyEntity());
         studyMemberDTO.setMember(commonService.getMemberFromAuthentication(authentication));
