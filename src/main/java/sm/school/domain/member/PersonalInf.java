@@ -1,13 +1,12 @@
 package sm.school.domain.member;
 
 import lombok.*;
-import sm.school.dto.PersonalInfDTO;
+import sm.school.dto.member.PersonalInfRequestDto;
+import sm.school.dto.member.PersonalInfResponseDto;
 
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 @Embeddable
 @Getter
@@ -23,19 +22,16 @@ public class PersonalInf {
     @Column(nullable = false)
     private String phone;
 
+    @Column(nullable = false)
+    private String email;
+
     //개인정보 생성자
     @Builder
-    public PersonalInf(String name, String birth, String phone) {
+    public PersonalInf(String name, String birth, String phone, String email) {
         this.name = name;
         this.birth = birth;
         this.phone = phone;
+        this.email = email;
     }
 
-    public PersonalInfDTO toPersonalInfDTO() {
-        return PersonalInfDTO.builder()
-                .name(name)
-                .birth(birth)
-                .phone(phone)
-                .build();
-    }
 }
