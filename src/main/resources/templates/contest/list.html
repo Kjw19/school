@@ -19,7 +19,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="contest : ${contests}">
+    <tr th:each="contest : ${list}">
         <td th:text="${contest.id}"></td>
         <td>
             <a th:href="@{/contest/detail(id=${contest.id})}" th:text="${contest.getConName()}"></a>

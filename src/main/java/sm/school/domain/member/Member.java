@@ -21,7 +21,9 @@ public class Member {
     @Column(name = "memId")
     private Long id;//기본값
 
+
     @Column(unique = true, nullable = false)
+
     private String userId;//유저 아이디
 
 

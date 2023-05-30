@@ -8,7 +8,7 @@ import java.util.Date;
 
 @Getter
 @Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 public class ContestMemberDTO {
     private Long id;//기본값
 
@@ -18,14 +18,14 @@ public class ContestMemberDTO {
 
     private Date date;//참여 날짜
 
-    private Integer regType;//권한
+    private int role=0;//권한
     @Builder
-    public ContestMemberDTO(Long id, Contest contest, Member member, Date date, Integer regType) {
+    public ContestMemberDTO(Long id, Contest contest, Member member, Date date, int role) {
         this.id = id;
         this.contest = contest;
         this.member = member;
         this.date = date;
-        this.regType = regType;
+        this.role = role;
     }
     public ContestMember toContestMemberEntity(){
         return ContestMember.builder()
@@ -33,7 +33,7 @@ public class ContestMemberDTO {
                 .contest(contest)
                 .member(member)
                 .date(date)
-                .regType(regType)
+                .role(role)
                 .build();
 
     }

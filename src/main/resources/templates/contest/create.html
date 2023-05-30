@@ -3,21 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>콘테스트 생성</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 <h1>콘테스트 생성</h1>
 
-<form th:object="${contestDTO}" th:action="@{/contest/create}" method="post">
+<form th:object="${contestDTO}" th:action="@{/contest/create}" method="post" enctype="multipart/form-data">
     <div>
-        <label for="conName">대회 이름</label>
-        <input type="text" id="conName" name="conName" th:field="*{conName}"/>
-
+        <label for="conName">스터디 이름</label>
+        <input type="text" id="conName" name="conName" th:field="*{conName}" required>
+        <p th:if="${#fields.hasErrors('conName')}" th:errors="*{conName}"></p>
     </div>
-
+    <input type="button" class="check_conName_btn" id="check_conName_btn" value="아이디 중복 체크"/>
     <div>
-        <label for="conInf">대회 정보</label>
-        <input type="text" id="conInf" name="conInf" th:field="*{conInf}"/>
-
+        <label for="conInf">내용</label>
+        <textarea id="conInf" name="conInf" th:field="*{conInf}" required></textarea>
+        <p th:if="${#fields.hasErrors('conInf')}" th:errors="*{conInf}"></p>
     </div>
 
 
@@ -51,6 +52,11 @@
 
     </div>
 
+    <div>
+        <label for="profileImg">회원 이미지</label>
+        <input type="file" id="profileImg" name="profileImg" accept="image/*"/>
+    </div>
+
 
     <div>
         <label for="regType">가입방식</label>
@@ -58,11 +64,65 @@
             <option value="0">즉시가입</option>
             <option value="1">승인 후 가입</option>
         </select>
-
+        <p th:if="${#fields.hasErrors('regType')}" th:errors="*{regType}"></p>
     </div>
-    <button type="submit">등록</button>
+    <div>
+        <button type="submit">작성 하기</button>
+        <a th:href="@{/}">홈으로</a>
+    </div>
+
 
 
 </form>
+<script>
+    $(document).ready(function() {
+        let isDuplicated = false;
+
+        $('#check_conName_btn').click(function(event) {
+            event.preventDefault(); // 기본 동작 막기
+            let name = $('#conName').val();
+            if (name == '') {
+                alert('대회 명을 입력해주세요.');
+            }
+            else {
+                $.ajax({
+                    url: '/contest/' + name + '/exists',
+                    type: 'GET',
+                    success: function (data) {
+                        if (data === true) {
+                            alert('이미 존재하는 이름입니다.');
+                        } else {
+                            isDuplicated = true;
+                            alert('사용가능한 이름입니다.');
+                        }
+                    },
+                    error: function () {
+                        alert('오류 발생');
+                    }
+                });
+            }
+        });
+        $('form').submit(function (event) {
+            if (isDuplicated == false) {
+                event.preventDefault();
+                alert('이름 중복 체크를 필수!');
+            }
+            let size = $('#profileImg')[0].files[0].size;
+        });
+        $('#profileImg').on('change', function() {
+            let size = this.files[0].size;
+            if (size > 5000000) { // 5MB
+                alert("5MB 이하의 사진만 가능합니다.");
+                $(this).val("");
+            } else {
+                let reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#current-img').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+    });
+</script>
 </body>
 </html>

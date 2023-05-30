@@ -21,7 +21,9 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
         if (pathMatcher.match("/study/**", requestUri) ||
                 pathMatcher.match("/studyMember/**", requestUri) ||
                 pathMatcher.match("/meeting/**", requestUri) ||
-                pathMatcher.match("/meetingPro/**", requestUri)) {
+                pathMatcher.match("/meetingPro/**", requestUri) ||
+                pathMatcher.match("/contest/**", requestUri) ||
+                pathMatcher.match("/contestMember/**", requestUri)) {
             response.sendRedirect("/member/login");
         }else {
             response.sendRedirect("/accessBlock");

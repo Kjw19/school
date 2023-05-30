@@ -10,28 +10,32 @@
 <table>
     <tr>
         <th>번호</th>
-        <td th:text="${contest.id}"></td>
+        <td th:text="${contestDTO.id}"></td>
     </tr>
     <tr>
         <th>제목</th>
-        <td th:text="${contest.conName}"></td>
+        <td th:text="${contestDTO.conName}"></td>
     </tr>
     <tr>
         <th>작성자</th>
-        <td th:text="${contest.member.userId}"></td>
+        <td th:text="${contestDTO.member.userId}"></td>
+    </tr>
+    <tr>
+        <th>사진</th>
+        <td><img th:src="${contestDTO.getConPicture()}" alt="게시글 사진"></td>
     </tr>
     <tr>
         <th>작성시간</th>
-        <td th:text="${#dates.format(contest.date, 'yy년 MM월 dd일 HH시 mm분')}"></td>
+        <td th:text="${#dates.format(contestDTO.date, 'yy년 MM월 dd일 HH시 mm분')}"></td>
     </tr>
     <tr>
         <th>대회 장소</th>
-        <td th:text="${contest.location}"></td>
+        <td th:text="${contestDTO.location}"></td>
     </tr>
     <tr>
         <th>가입 방식</th>
-        <td th:if="${contest.regType == 0}">즉시가입</td>
-        <td th:if="${contest.regType == 1}">승인 후 가입</td>
+        <td th:if="${contestDTO.regType == 0}">즉시가입</td>
+        <td th:if="${contestDTO.regType == 1}">승인 후 가입</td>
     </tr>
 
 
@@ -41,37 +45,20 @@
     </tr>
     <tr>
         <th>내용</th>
-        <td th:text="${contest.conInf}"></td>
+        <td th:text="${contestDTO.conInf}"></td>
     </tr>
 
 </table>
 
 <a th:href="@{/contest/}">목록으로</a>
-<!-- 로그인한 사용자와 작성자를 비교-->
-<div th:if="${contest.member.userId} eq ${#authentication.name}">
-    <a th:href="@{/contest/update(id=${contest.id})}">수정</a>
-    <form th:action="@{/contest/delete}" th:object="${contest}" method="post" style="display:inline;">
-        <input type="hidden" th:name="id" th:value="${contest.id}" />
+<a th:href="@{/contestMember/create(id=${contestDTO.getId()})}">가입신청</a>
+<a th:href="@{/contestMember/member(id=${contestDTO.getId()})}">성공화면</a>
+<div th:if="${contestDTO.member.userId} eq ${#authentication.name}">
+    <a th:href="@{/contest/update(id=${contestDTO.id})}">수정</a>
+    <form th:action="@{/contest/delete}" th:object="${contestDTO}" method="post" style="display: inline">
+        <input type="hidden" th:name="id" th:value="${contestDTO.id}">
         <button type="button" id="deleteBtn">삭제</button>
     </form>
-</div>
-<a th:href="@{/contestPro/member(id=${contest.getId()})}">성공화면</a>
-<div th:if="${contest.member.userId} != ${#authentication.name}">
-    <div th:if="${#lists.isEmpty(contestPro)}">
-        <a th:href="@{/contestPro/create(id=${contest.id})}">가입신청</a>
-    </div>
-    <div th:each="conMember : ${contestPro}">
-        <div th:if="${conMember.member.userId} != ${#authentication.name}">
-            <a th:href="@{/contestPro/create(id=${contest.id})}">가입신청</a>
-        </div>
-        <div th:if="${conMember.member.userId} eq ${#authentication.name}">
-            <div th:if="${conMember.regType} == 0">
-                <p>가입 대기</p>
-            </div>
-
-        </div>
-
-    </div>
 </div>
 <script>
     $(document).ready(function () {

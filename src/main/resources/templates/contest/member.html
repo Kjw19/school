@@ -9,7 +9,7 @@
 <table>
     <thead>
     <tr>
-
+        <th>프로필</th>
         <th>아이디</th>
         <th>이름</th>
         <th>학교</th>
@@ -22,22 +22,23 @@
     <tbody>
     <tr th:each="list : ${List}">
 
+        <td><img th:src="${list.member.profile}" alt="프로필 이미지"></td>
         <td th:text="${list.member.userId}"/>
         <td th:text="${list.member.personalInf.name}"/>
         <td th:text="${list.member.school}"/>
         <td th:text="${list.member.major}"/>
         <td th:text="${#dates.format(list.date, 'yyyy년 MM월 dd일')}"/>
-        <td th:utext="${list.regType}"></td>
-        <td th:if="${list.regType == 1}">승인완료</td>
-        <td th:if="${list.regType == 1}">
+        <td th:utext="${list.role}"></td>
+        <td th:if="${list.role == 1}">승인완료</td>
+        <td th:if="${list.role == 1}">
             <form th:action="@{/contestMember/delete}" th:object="${list}" method="post" style="display:inline;" id="expelForm">
                 <input type="hidden" th:name="id" th:value="${list.id}" />
                 <input type="hidden" th:name="contestId" th:value="${contestDTO.id}">
                 <button type="button" id="expelBtn">추방</button>
             </form>
         </td>
-        <td th:if="${list.regType == 0}">대기중</td>
-        <td th:if="${list.regType == 0}">
+        <td th:if="${list.role == 0}">대기중</td>
+        <td th:if="${list.role == 0}">
             <form th:action="@{/contestMember/access}" th:object="${list}" method="post" style="display:inline;" id="accessForm">
                 <input type="hidden" th:name="id" th:value="${list.id}" />
                 <input type="hidden" th:name="contestId" th:value="${contestDTO.id}">
